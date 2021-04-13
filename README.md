@@ -1,4 +1,4 @@
-# Dźwig kratowniczy
+# Dźwig kratownicowy
 
 ## Członkowie zespołu
 + Konrad Lechowski
