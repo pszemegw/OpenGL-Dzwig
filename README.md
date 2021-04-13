@@ -1,2 +1,6 @@
-# 101.3 Dźwig kratownicowy
+# Dźwig kratowniczy
+
+## Członkowie zespołu
++ Konrad Lechowski
++ Przemysław Wieczorkowski
 

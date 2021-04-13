@@ -1,0 +1,9 @@
+﻿  Dzwig.cpp
+  ShaderProgram.cpp
+  Generowanie kodu...
+Dzwig.obj : warning LNK4075: zignorowano opcję „/EDITANDCONTINUE” z powodu określenia opcji „/INCREMENTAL:NO”
+  soil.lib(SOIL.obj) : znaleziono moduł .netmodule MSIL lub moduł skompilowany z opcją /GL; konsolidowanie zostanie rozpoczęte ponownie z opcją /LTCG; dodaj opcję /LTCG do wiersza polecenia konsolidacji w celu podwyższenia wydajności konsolidatora
+Dzwig.obj : warning LNK4075: zignorowano opcj� �/EDITANDCONTINUE� z powodu okre�lenia opcji �/INCREMENTAL:NO�
+  Trwa generowanie kodu
+  Zako�czono generowanie kodu
+  Dzwig.vcxproj -> D:\GKOM_PROJ\101.3\Debug\Dzwig.exe
