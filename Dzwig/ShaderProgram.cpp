@@ -41,7 +41,19 @@ GLuint compile_shader(const GLchar* shaderCode, GLenum shaderType)
 
 ShaderProgram::ShaderProgram(const GLchar* vertexPath, const GLchar* fragmentPath)
 {
-	// prepare vertex and fragment shaders
+	this->vertexPath = _strdup(vertexPath);
+	this->fragmentPath = _strdup(fragmentPath);
+	this->compileShader();
+
+}
+
+ShaderProgram::ShaderProgram()
+{
+
+}
+
+void ShaderProgram::compileShader()
+{
 	string vertex_code = read_shader_code(vertexPath);
 	GLuint vertex_id = compile_shader(vertex_code.c_str(), GL_VERTEX_SHADER);
 
@@ -68,4 +80,11 @@ ShaderProgram::ShaderProgram(const GLchar* vertexPath, const GLchar* fragmentPat
 	// Delete the shaders as they're linked into our program now and no longer necessery
 	glDeleteShader(vertex_id);
 	glDeleteShader(fragment_id);
+}
+
+void ShaderProgram::setShaderPaths(GLchar * v, GLchar * f)
+{
+	vertexPath = v;
+	fragmentPath = f;
+	compileShader();
 }
