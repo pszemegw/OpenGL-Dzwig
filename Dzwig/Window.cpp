@@ -9,43 +9,50 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Window.h"
+#include "Texture2D.h"
+#include "CubemapTexture.h"
+#include "Cuboid.h"
 
 using namespace std;
 
-void Window::onKey(int key, int scancode, int actions, int mods)
+void Window::onKey(int key, int scancode, int action, int mods)
 {
 	cout << key << endl;
 	if (!isFocused) return;
-	if (key == GLFW_KEY_ESCAPE && actions == GLFW_PRESS)
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(this->openglWindow, GL_TRUE);
-	if (key == GLFW_KEY_Q && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.DOWN);
-	if (key == GLFW_KEY_E && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.UP);
-	if (key == GLFW_KEY_A && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.LEFT);
-	if (key == GLFW_KEY_D && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.RIGHT);
-	if (key == GLFW_KEY_S && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.BACKWARD);
-	if (key == GLFW_KEY_W && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.moveCamera(camera.FORWARD);
-	if (key == GLFW_KEY_R && actions == GLFW_PRESS)
+	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		camera.resetCamera();
 
-	if (key == GLFW_KEY_KP_8 && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_8 && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.rotateCamera(0,5);
-	if (key == GLFW_KEY_KP_6 && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_6 && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.rotateCamera(-5, 0);
-	if (key == GLFW_KEY_KP_4 && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_4 && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.rotateCamera(5, 0);
-	if (key == GLFW_KEY_KP_2 && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_2 && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.rotateCamera(0, -5);
-	if (key == GLFW_KEY_KP_MULTIPLY && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_MULTIPLY && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.setFOV(camera.getFOV()+ 1.0f);
-	if (key == GLFW_KEY_KP_DIVIDE && actions == GLFW_PRESS | GLFW_REPEAT)
+	if (key == GLFW_KEY_KP_DIVIDE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.setFOV(camera.getFOV() - 1.0f);
-	
+
+	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1]+1, cube.getPosition()[2]);
+	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1] - 1, cube.getPosition()[2]);
 
 }
 
@@ -67,6 +74,7 @@ void Window::focus_callback(int focused)
 
 void Window::scroll_callback(double xoffset, double yoffset)
 {
+	cout << xoffset << "    " << yoffset << endl;
 }
 
 void Window::mouse_button_callback(int button, int action, int mods)
@@ -86,25 +94,6 @@ void Window::key_callback(GLFWwindow * window, int key, int scancode, int action
 	cout << key << endl;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-}
-
-GLuint Window::LoadMipmapTexture(GLuint texId, const char * fname)
-{
-	int width, height;
-	unsigned char* image = SOIL_load_image(fname, &width, &height, 0, SOIL_LOAD_RGB);
-	if (image == nullptr)
-		throw exception("Failed to load texture file");
-
-	GLuint texture;
-	glGenTextures(1, &texture);
-
-	glActiveTexture(texId);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	return texture;
 }
 
 Window::Window(GLuint w, GLuint h)
@@ -161,14 +150,8 @@ Window::Window(GLuint w, GLuint h)
 		glViewport(0, 0, this->width, this->height);
 		glfwSwapInterval(1);
 
-		/*string vv = , ff = "gl_05.frag";
-		GLchar v[20];
-		GLchar f[20];
-		vv.copy(v, vv.length(), 0);
-		ff.copy(f, ff.length(), 0);
-
-		shaderProgram.setShaderPaths(f,v);*/
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
+		this->skyboxShader = ShaderProgram("skybox.vert", "skybox.frag");
 	}
 	catch (exception ex)
 	{
@@ -180,79 +163,65 @@ Window::Window(GLuint w, GLuint h)
 int Window::mainLoop()
 {
 	try
-	{	
-		GLfloat vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-		};
-
+	{
 		GLuint VBO, VAO;
+		unsigned int skyboxVAO, skyboxVBO;
+		Cuboid skyboxCube;
+		;
+		cube.setTexture("tex.jpg");
+		//cube.setScale(1.f, 2.f, 3.f);
+		cube.setRotation(1, 1, 1, 45);
+
+		std::vector<std::string> fileNames =
+		{
+			"skybox/right.jpg",
+			"skybox/left.jpg",
+			"skybox/top.jpg",
+			"skybox/bottom.jpg",
+			"skybox/front.jpg",
+			"skybox/back.jpg"
+		};
+		CubemapTexture skyboxTexture(fileNames);
+		
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBufferData(
+			GL_ARRAY_BUFFER, 
+			cube.getVertexTextureArraySize()*sizeof(GLfloat), 
+			cube.getVertexTextureArrayPointer(), 
+			GL_STATIC_DRAW);
 
 		// position
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
 		// texture
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBindVertexArray(0);
 
-							  
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		
-		GLuint texture1 = LoadMipmapTexture(GL_TEXTURE0, "tex.jpg");
+		// skybox VAO
+		glGenVertexArrays(1, &skyboxVAO);
+		glGenBuffers(1, &skyboxVBO);
+		glBindVertexArray(skyboxVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 
+		int x = skyboxCube.getVertexArraySize();
+		glBufferData
+		(
+			GL_ARRAY_BUFFER, 
+			sizeof(GLfloat)*skyboxCube.getVertexArraySize(), 
+			skyboxCube.getVertexArrayPointer(), 
+			GL_STATIC_DRAW
+		);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
 		{
@@ -264,7 +233,7 @@ int Window::mainLoop()
 
 			// bind textures on corresponding texture units
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture1);
+			glBindTexture(GL_TEXTURE_2D, cube.getTexture().getTextureID());
 
 			// activate shader
 			shaderProgram.Use();
@@ -273,8 +242,9 @@ int Window::mainLoop()
 			glm::mat4 model = glm::mat4(1.0f);
 			glm::mat4 view = glm::mat4(1.0f);
 			glm::mat4 projection = glm::mat4(1.0f);
-			model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f));
-			projection = glm::perspective(glm::radians(camera.getFOV()), (float)width / (float)height, 0.1f, 100.0f);
+			model = glm::translate(model, glm::vec3(1.0f, 1.0f, 1.0f));
+			model = cube.getModelMatrix();
+			projection = glm::perspective(glm::radians(camera.getFOV()), (float)width / height, 0.1f, 1000.0f);
 
 			glm::mat4 trans = projection*camera.getWorldToViewMatrix()*model;
 			
@@ -283,6 +253,21 @@ int Window::mainLoop()
 			// render box
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
+
+			glDepthFunc(GL_LEQUAL);
+			skyboxShader.Use();
+			view = glm::mat4(glm::mat3(camera.getWorldToViewMatrix()));
+			glUniformMatrix4fv(glGetUniformLocation(skyboxShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(skyboxShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
+
+			// skybox
+			glBindVertexArray(skyboxVAO);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture.getTextureID());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glBindVertexArray(0);
+			glDepthFunc(GL_LESS); // set depth function back to default
+
 
 			glfwSwapBuffers(openglWindow);
 		}

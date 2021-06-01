@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include "ShaderProgram.h"
 #include "Camera.h"
+#include "Cuboid.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -18,6 +19,7 @@ class Window
 	GLuint height = 600;
 	GLFWwindow* openglWindow;
 	ShaderProgram shaderProgram;
+	ShaderProgram skyboxShader;
 	Camera camera;
 	bool lmbPressed = false;
 	bool rmbPressed = false;
@@ -25,9 +27,10 @@ class Window
 
 	glm::dvec2 prevMousePos;
 
+	Cuboid cube;
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-	GLuint LoadMipmapTexture(GLuint texId, const char* fname);
+	//GLuint LoadMipmapTexture(GLuint texId, const char* fname);
 	static void onKey(GLFWwindow* window, int key, int scancode, int actions, int mods)
 	{
 		Window* obj = (Window*)glfwGetWindowUserPointer(window);
