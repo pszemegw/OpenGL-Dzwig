@@ -28,6 +28,7 @@ class Window
 	glm::dvec2 prevMousePos;
 
 	Cuboid cube;
+	Cuboid ground;
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 	//GLuint LoadMipmapTexture(GLuint texId, const char* fname);
@@ -64,6 +65,7 @@ class Window
 
 	
 public:
+	//Window();
 	Window(GLuint w = 800, GLuint h = 600);
 	int mainLoop();
 

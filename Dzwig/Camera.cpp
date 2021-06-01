@@ -100,3 +100,13 @@ void Camera::resetCamera()
 {
 	//todo
 }
+
+void Camera::increaseCameraSpeed(GLfloat inc)
+{
+	movSpeed = movSpeed + inc > 10.f ? 10.f : movSpeed + inc;
+}
+
+void Camera::decreaseCameraSpeed(GLfloat dec)
+{
+	movSpeed = movSpeed - dec < 0.1f ? 0.1f : movSpeed - dec;
+}

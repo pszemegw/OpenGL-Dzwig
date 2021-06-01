@@ -10,9 +10,12 @@ using namespace std;
 #include <glm/gtc/type_ptr.hpp>
 #include "Window.h"
 
+#define WIDTH 800
+#define HEIGHT 600
+
 int main()
 {
-	Window mainWindow;
+	Window mainWindow(WIDTH, HEIGHT);
 	mainWindow.mainLoop();
 	return 0;
 }

@@ -33,5 +33,8 @@ public:
 	void setFOV(GLfloat fov);
 	void rotateCamera(GLfloat dx, GLfloat dy);
 	void resetCamera();
+
+	void increaseCameraSpeed(GLfloat inc);
+	void decreaseCameraSpeed(GLfloat dec);
 };
 

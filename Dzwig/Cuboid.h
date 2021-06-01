@@ -43,7 +43,7 @@ public:
 	Cuboid(
 		GLfloat posX = 0.f, GLfloat posY = 0.f, GLfloat posZ = 0.f, 
 		GLfloat scaleX=1.0f, GLfloat scaleY=1.0f, GLfloat scaleZ=1.0f,
-		GLfloat rotX=0.f, GLfloat rotY=0.f, GLfloat rotZ=0.f, GLfloat rotAngle = 0.f);
+		GLfloat rotX=1.f, GLfloat rotY=1.f, GLfloat rotZ=1.f, GLfloat rotAngle = 0.f);
 	void generateVertices();
 
 	glm::mat4 getModelMatrix();
@@ -65,6 +65,8 @@ public:
 
 	void setTexture(std::string fname, GLuint type = GL_TEXTURE_2D);
 	void setTexture(std::vector<std::string> fnames, GLuint type = GL_TEXTURE_CUBE_MAP);
+
+	void divideTextureCoords(GLfloat div);
 
 	Texture getTexture();
 

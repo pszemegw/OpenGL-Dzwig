@@ -63,48 +63,51 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 	modelMatrix = glm::mat4(1.0f);
 
 	vertexTexture = {
-		-1.0f,  1.0f, -1.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f, 1.0f, 1.0f,
-		 1.0f, -1.0f, -1.0f, 1.0f, 1.0f,
-		 1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
-		-1.0f,  1.0f, -1.0f, 0.0f, 0.0f,
+		-1.0f,  -1.0f, -1.0f, 0.0f, 0.0f,
+		1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+		 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
+		 -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+		-1.0f,  -1.0f, -1.0f, 0.0f, 0.0f,
 
 		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		-1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
-		-1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
+		1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+		1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
+		1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
 		-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
 		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
 
-		 1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f, 1.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f, -1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
+		 -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		 -1.0f, 1.0f,  -1.0f, 1.0f, 1.0f,
+		 -1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
+		 -1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
+		 -1.0f,  -1.0f, 1.0f, 0.0f, 0.0f,
+		 -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
 
-		-1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
-		-1.0f,  1.0f,  1.0f, 1.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f,  1.0f, 1.0f, 0.0f,
+		1.0f,  1.0f,  -1.0f, 1.0f, 1.0f,
+		 1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
+		 1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
 		 1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f,  1.0f, 1.0f, 0.0f,
+		1.0f, 1.0f,  1.0f, 1.0f, 0.0f,
 
-		-1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f, -1.0f, 1.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f, 1.0f, 0.0f,
-		-1.0f,  1.0f,  1.0f, 0.0f, 0.0f,
-		-1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
+		-1.0f,  -1.0f, -1.0f, 0.0f, 1.0f,
+		 1.0f,  -1.0f, -1.0f, 1.0f, 1.0f,
+		 1.0f,  -1.0f,  1.0f, 1.0f, 0.0f,
+		 1.0f,  -1.0f,  1.0f, 1.0f, 0.0f,
+		-1.0f,  -1.0f,  1.0f, 0.0f, 0.0f,
+		-1.0f,  -1.0f, -1.0f, 0.0f, 1.0f,
 
-		-1.0f, -1.0f, -1.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f,  1.0f, 1.0f, 1.0f,
-		 1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f, 1.0f
+		-1.0f, 1.0f, -1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f,  -1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		-1.0f, 1.0f,  1.0f, 0.0f, 0.0f,
+		 -1.0f, 1.0f,  -1.0f, 0.0f, 1.0f,
+		 -1.0f, 1.0f,  -1.0f, 0.0f, 1.0f
 	};
+
+	generateModelMatrix();
 }
 
 void Cuboid::generateVertices()
@@ -135,9 +138,13 @@ void Cuboid::scale()
 void Cuboid::generateModelMatrix()
 {
 	modelMatrix = glm::mat4(1.0f);
-	scale();
-	rotate();
+
+	
 	translate();
+	rotate();
+	scale();
+	
+	
 }
 
 GLfloat* Cuboid::getVertexArrayPointer()
@@ -163,18 +170,21 @@ GLuint Cuboid::getVertexTextureArraySize()
 void Cuboid::setScale(GLfloat x, GLfloat y, GLfloat z)
 {
 	scaleX = x; scaleY = y; scaleZ = z;
+	//glm::scale(modelMatrix, glm::vec3(x, y, z));
 	generateModelMatrix();
 }
 
 void Cuboid::setPosition(GLfloat x, GLfloat y, GLfloat z)
 {
 	posX = x; posY = y; posZ = z;
+	//glm::translate(modelMatrix, glm::vec3(x, y, z));
 	generateModelMatrix();
 }
 
 void Cuboid::setRotation(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 {
 	rotX = x; rotY = y; rotZ = z; rotAngle = angle;
+	//glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(x, y, z));
 	generateModelMatrix();
 }
 
@@ -201,6 +211,21 @@ void Cuboid::setTexture(std::string fname, GLuint type)
 void Cuboid::setTexture(std::vector<std::string> fnames, GLuint type)
 {
 	cubeTexture = CubemapTexture(fnames);
+}
+
+void Cuboid::divideTextureCoords(GLfloat div)
+{
+	int j = 3;
+	for (int i = 0; i < vertexTexture.size(); ++i)
+	{
+		if (i == j)
+			vertexTexture[i] /= div;
+		if (i == j + 1)
+		{
+			vertexTexture[i] /= div;
+			j += 5;
+		}
+	}
 }
 
 Texture Cuboid::getTexture()
