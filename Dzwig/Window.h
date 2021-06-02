@@ -25,6 +25,8 @@ class Window
 	bool rmbPressed = false;
 	bool isFocused = true;
 
+	bool test = true;
+
 	glm::dvec2 prevMousePos;
 
 	Cuboid cube;

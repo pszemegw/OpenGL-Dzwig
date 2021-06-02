@@ -15,6 +15,9 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 	this->rotX = rotX;
 	this->rotY = rotY;
 	this->rotZ = rotZ;
+	this->rotAngle = rotAngle;
+
+	modelMatrix = glm::mat4(1.0f);
 
 
 	vertices = { 
@@ -60,7 +63,7 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f };
 
-	modelMatrix = glm::mat4(1.0f);
+	
 
 	vertexTexture = {
 		-1.0f,  -1.0f, -1.0f, 0.0f, 0.0f,
@@ -110,6 +113,10 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 	generateModelMatrix();
 }
 
+/*Cuboid::Cuboid() : Cuboid(0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 0.f)
+{
+}
+*/
 void Cuboid::generateVertices()
 {
 	
@@ -122,16 +129,19 @@ glm::mat4 Cuboid::getModelMatrix()
 
 void Cuboid::translate()
 {
+	if (posX == 0.f && posY == 0.f && posZ == 0.f) return;
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(posX, posY, posZ));
 }
 
 void Cuboid::rotate()
 {
+	if (rotAngle == 0.f) return;
 	modelMatrix = glm::rotate(modelMatrix,glm::radians(rotAngle),glm::vec3(rotX,rotY,rotZ));
 }
 
 void Cuboid::scale()
 {
+	if (scaleX == 1.f && scaleY == 1.f && scaleZ == 1.f) return;
 	modelMatrix = glm::scale(modelMatrix,glm::vec3(scaleX,scaleY,scaleZ));
 }
 
@@ -139,7 +149,6 @@ void Cuboid::generateModelMatrix()
 {
 	modelMatrix = glm::mat4(1.0f);
 
-	
 	translate();
 	rotate();
 	scale();

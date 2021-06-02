@@ -49,15 +49,18 @@ void Window::onKey(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_KP_DIVIDE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera.setFOV(camera.getFOV() - 1.0f);
 	if (key == GLFW_KEY_KP_ADD && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.increaseCameraSpeed(1.f);
+		camera.increaseCameraSpeed(.5f);
 	if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.decreaseCameraSpeed(1.f);
+		camera.decreaseCameraSpeed(.5f);
 
 	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1]+1, cube.getPosition()[2]);
 	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1] - 1, cube.getPosition()[2]);
 
+
+	if (key == GLFW_KEY_KP_DECIMAL && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		test = !test;
 }
 
 void Window::mouseCallback(double xpos, double ypos)
@@ -158,8 +161,6 @@ Window::Window(GLuint w, GLuint h)
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 		this->skyboxShader = ShaderProgram("skybox.vert", "skybox.frag");
 
-		//ground = Cuboid(0,0,0,2,3,1,1,0,0,45);
-		
 	}
 	catch (exception ex)
 	{
@@ -181,6 +182,19 @@ int Window::mainLoop()
 		ground.setPosition(0, -20, 0);
 		ground.setScale(1000, 1, 1000);
 		ground.divideTextureCoords(0.008f);
+
+		Cuboid b[4];
+		b[0].setPosition(-1, 0, -1);
+		b[1].setPosition(-1, 0, 1);
+		b[2].setPosition(1, 0, 1);
+		b[3].setPosition(1, 0, -1);
+		for (int i = 0; i < 4; ++i)
+		{
+			b[i].setTexture("metal.png");
+			b[i].divideTextureCoords(5.f);
+			b[i].setScale(.1f, 50.f, .1f);
+			
+		}
 		
 
 		std::vector<std::string> fileNames =
@@ -282,11 +296,27 @@ int Window::mainLoop()
 
 			// render box
 			glBindVertexArray(VAO);
+			if (test) glEnableVertexAttribArray(1);
+			else glDisableVertexAttribArray(1);
+			glDisableVertexAttribArray(0);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glEnableVertexAttribArray(0);
 
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, b[0].getTexture().getTextureID());
+			for (int i = 0; i < 4; ++i)
+			{
+				trans = projection * view*b[i].getModelMatrix();
+				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+				if (test) glEnableVertexAttribArray(1);
+				else glDisableVertexAttribArray(1);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
 			glBindVertexArray(VAO1);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, ground.getTexture().getTextureID());
+			if (test) glEnableVertexAttribArray(1);
+			else glDisableVertexAttribArray(1);
 
 			trans = projection * camera.getWorldToViewMatrix()*ground.getModelMatrix();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);

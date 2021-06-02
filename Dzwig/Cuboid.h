@@ -21,7 +21,7 @@ class Cuboid
 	GLfloat scaleX, scaleY, scaleZ; // skala
 	GLfloat posX, posY, posZ; // pozycja/przesuniecie
 	GLfloat rotX, rotY, rotZ; // wektor wyznaczajacy os obrotu
-	GLfloat rotAngle; // kat obrotu (stopnie)
+	GLfloat rotAngle = 0.f; // kat obrotu (stopnie)
 	glm::mat4 modelMatrix;
 	vector<GLfloat> vertices;
 	vector<GLuint> indices;
@@ -44,6 +44,7 @@ public:
 		GLfloat posX = 0.f, GLfloat posY = 0.f, GLfloat posZ = 0.f, 
 		GLfloat scaleX=1.0f, GLfloat scaleY=1.0f, GLfloat scaleZ=1.0f,
 		GLfloat rotX=1.f, GLfloat rotY=1.f, GLfloat rotZ=1.f, GLfloat rotAngle = 0.f);
+	//Cuboid();
 	void generateVertices();
 
 	glm::mat4 getModelMatrix();
