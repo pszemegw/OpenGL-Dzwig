@@ -21,102 +21,146 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 
 
 	vertices = { 
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
+		// back face (CCW wi
 		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
 		-1.0f, -1.0f, -1.0f,
 		-1.0f,  1.0f, -1.0f,
 		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
 		 1.0f,  1.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f };
+		 // front face (CCW w
+		 -1.0f, -1.0f,  1.0f,
+		  1.0f, -1.0f,  1.0f,
+		  1.0f,  1.0f,  1.0f,
+		  1.0f,  1.0f,  1.0f,
+		 -1.0f,  1.0f,  1.0f,
+		 -1.0f, -1.0f,  1.0f,
+		 // left face (CCW)
+		 -1.0f, -1.0f, -1.0f,
+		 -1.0f, -1.0f,  1.0f,
+		 -1.0f,  1.0f,  1.0f,
+		 -1.0f,  1.0f,  1.0f,
+		 -1.0f,  1.0f, -1.0f,
+		 -1.0f, -1.0f, -1.0f,
+		 // right face (CCW)
+		  1.0f, -1.0f,  1.0f,
+		  1.0f, -1.0f, -1.0f,
+		  1.0f,  1.0f, -1.0f,
+		  1.0f,  1.0f, -1.0f,
+		  1.0f,  1.0f,  1.0f,
+		  1.0f, -1.0f,  1.0f,
+		  // bottom face (CCW)
+		  -1.0f, -1.0f, -1.0f,
+		   1.0f, -1.0f, -1.0f,
+		   1.0f, -1.0f,  1.0f,
+		   1.0f, -1.0f,  1.0f,
+		  -1.0f, -1.0f,  1.0f,
+		  -1.0f, -1.0f, -1.0f,
+		  // top face (CCW)
+		  -1.0f,  1.0f,  1.0f,
+		   1.0f,  1.0f,  1.0f,
+		   1.0f,  1.0f, -1.0f,
+		   1.0f,  1.0f, -1.0f,
+		  -1.0f,  1.0f, -1.0f,
+		  -1.0f,  1.0f,  1.0f,
+	};
 
 	
 
+	/*vertexTexture = {
+			// back face (CCW winding)
+			 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			-1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
+			-1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			-1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			 1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
+			 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			// front face (CCW winding)
+			-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			 1.0f, -1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
+			 1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			 1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			-1.0f,  1.0f,  1.0f,  0.0f, 1.0f, // top-left
+			-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			// left face (CCW)
+			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			-1.0f, -1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
+			-1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			-1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			-1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
+			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			// right face (CCW)
+			 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			 1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
+			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			 1.0f,  1.0f,  1.0f,  0.0f, 1.0f, // top-left
+			 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			// bottom face (CCW)      
+			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			 1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
+			 1.0f, -1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			 1.0f, -1.0f,  1.0f,  1.0f, 1.0f, // top-right
+			-1.0f, -1.0f,  1.0f,  0.0f, 1.0f, // top-left
+			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			// top face (CCW)
+			-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			 1.0f,  1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
+			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
+			-1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
+			-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+	};*/
+
+
 	vertexTexture = {
-		-1.0f,  -1.0f, -1.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, -1.0f, 1.0f, 0.0f,
-		 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
-		 1.0f, 1.0f, -1.0f, 1.0f, 1.0f,
-		 -1.0f,  1.0f, -1.0f, 0.0f, 1.0f,
-		-1.0f,  -1.0f, -1.0f, 0.0f, 0.0f,
-
-		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
-		1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f,  1.0f, 1.0f, 1.0f, 1.0f,
-		-1.0f,  1.0f,  1.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-
-		 -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		 -1.0f, 1.0f,  -1.0f, 1.0f, 1.0f,
-		 -1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
-		 -1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
-		 -1.0f,  -1.0f, 1.0f, 0.0f, 0.0f,
-		 -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-
-		1.0f, 1.0f,  1.0f, 1.0f, 0.0f,
-		1.0f,  1.0f,  -1.0f, 1.0f, 1.0f,
-		 1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
-		 1.0f,  -1.0f,  -1.0f, 0.0f, 1.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f, 0.0f,
-		1.0f, 1.0f,  1.0f, 1.0f, 0.0f,
-
-		-1.0f,  -1.0f, -1.0f, 0.0f, 1.0f,
-		 1.0f,  -1.0f, -1.0f, 1.0f, 1.0f,
-		 1.0f,  -1.0f,  1.0f, 1.0f, 0.0f,
-		 1.0f,  -1.0f,  1.0f, 1.0f, 0.0f,
-		-1.0f,  -1.0f,  1.0f, 0.0f, 0.0f,
-		-1.0f,  -1.0f, -1.0f, 0.0f, 1.0f,
-
-		-1.0f, 1.0f, -1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f,  -1.0f, 1.0f, 1.0f,
-		 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		-1.0f, 1.0f,  1.0f, 0.0f, 0.0f,
-		 -1.0f, 1.0f,  -1.0f, 0.0f, 1.0f,
-		 -1.0f, 1.0f,  -1.0f, 0.0f, 1.0f
+		// back face (CCW winding)
+		 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		-1.0f, -1.0f, -1.0f,  1.0f*scaleX, 0.0f, // bottom-right
+		-1.0f,  1.0f, -1.0f,  1.0f*scaleX, 1.0f*scaleY, // top-right
+		-1.0f,  1.0f, -1.0f,  1.0f*scaleX, 1.0f*scaleY, // top-right
+		 1.0f,  1.0f, -1.0f,  0.0f, 1.0f*scaleY, // top-left
+		 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		// front face (CCW winding)
+		-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+		 1.0f, -1.0f,  1.0f,  1.0f*scaleX, 0.0f, // bottom-right
+		 1.0f,  1.0f,  1.0f,  1.0f*scaleX, 1.0f*scaleY, // top-right
+		 1.0f,  1.0f,  1.0f,  1.0f*scaleX, 1.0f*scaleY, // top-right
+		-1.0f,  1.0f,  1.0f,  0.0f, 1.0f*scaleY, // top-left
+		-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+		// left face (CCW)
+		-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		-1.0f, -1.0f,  1.0f,  1.0f*scaleZ, 0.0f, // bottom-right
+		-1.0f,  1.0f,  1.0f,  1.0f*scaleZ, 1.0f*scaleY, // top-right
+		-1.0f,  1.0f,  1.0f,  1.0f*scaleZ, 1.0f*scaleY, // top-right
+		-1.0f,  1.0f, -1.0f,  0.0f, 1.0f*scaleY, // top-left
+		-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		// right face (CCW)
+		 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+		 1.0f, -1.0f, -1.0f,  1.0f*scaleZ, 0.0f, // bottom-right
+		 1.0f,  1.0f, -1.0f,  1.0f*scaleZ, 1.0f*scaleY, // top-right
+		 1.0f,  1.0f, -1.0f,  1.0f*scaleZ, 1.0f*scaleY, // top-right
+		 1.0f,  1.0f,  1.0f,  0.0f, 1.0f*scaleY, // top-left
+		 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+		// bottom face (CCW)      
+		-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		 1.0f, -1.0f, -1.0f,  1.0f*scaleX, 0.0f, // bottom-right
+		 1.0f, -1.0f,  1.0f,  1.0f*scaleX, 1.0f*scaleZ, // top-right
+		 1.0f, -1.0f,  1.0f,  1.0f*scaleX, 1.0f*scaleZ, // top-right
+		-1.0f, -1.0f,  1.0f,  0.0f, 1.0f*scaleZ, // top-left
+		-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+		// top face (CCW)
+		-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+		 1.0f,  1.0f,  1.0f,  1.0f*scaleX, 0.0f, // bottom-right
+		 1.0f,  1.0f, -1.0f,  1.0f*scaleX, 1.0f*scaleZ, // top-right
+		 1.0f,  1.0f, -1.0f,  1.0f*scaleX, 1.0f*scaleZ, // top-right
+		-1.0f,  1.0f, -1.0f,  0.0f, 1.0f*scaleZ, // top-left
+		-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
 	};
 
 	generateModelMatrix();
 }
 
-/*Cuboid::Cuboid() : Cuboid(0.f, 0.f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 0.f)
-{
-}
-*/
 void Cuboid::generateVertices()
 {
 	
@@ -214,12 +258,12 @@ std::vector<GLfloat> Cuboid::getRotation()
 
 void Cuboid::setTexture(std::string fname, GLuint type)
 {
-	cubeTexture = Texture2D(fname);
+	cubeTexture = new Texture2D(fname);
 }
 
 void Cuboid::setTexture(std::vector<std::string> fnames, GLuint type)
 {
-	cubeTexture = CubemapTexture(fnames);
+	cubeTexture = new CubemapTexture(fnames);
 }
 
 void Cuboid::divideTextureCoords(GLfloat div)
@@ -239,5 +283,5 @@ void Cuboid::divideTextureCoords(GLfloat div)
 
 Texture Cuboid::getTexture()
 {
-	return cubeTexture;
+	return *cubeTexture;
 }

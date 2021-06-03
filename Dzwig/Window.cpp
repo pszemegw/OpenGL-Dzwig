@@ -22,41 +22,41 @@ void Window::onKey(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(this->openglWindow, GL_TRUE);
 	if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.DOWN);
+		camera->moveCamera(camera->DOWN);
 	if (key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.UP);
+		camera->moveCamera(camera->UP);
 	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.LEFT);
+		camera->moveCamera(camera->LEFT);
 	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.RIGHT);
+		camera->moveCamera(camera->RIGHT);
 	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.BACKWARD);
+		camera->moveCamera(camera->BACKWARD);
 	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.moveCamera(camera.FORWARD);
+		camera->moveCamera(camera->FORWARD);
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
-		camera.resetCamera();
+		camera->resetCamera();
 
 	if (key == GLFW_KEY_KP_8 && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.rotateCamera(0,5);
+		camera->rotateCamera(0,5);
 	if (key == GLFW_KEY_KP_6 && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.rotateCamera(-5, 0);
+		camera->rotateCamera(-5, 0);
 	if (key == GLFW_KEY_KP_4 && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.rotateCamera(5, 0);
+		camera->rotateCamera(5, 0);
 	if (key == GLFW_KEY_KP_2 && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.rotateCamera(0, -5);
+		camera->rotateCamera(0, -5);
 	if (key == GLFW_KEY_KP_MULTIPLY && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.setFOV(camera.getFOV()+ 1.0f);
+		camera->setFOV(camera->getFOV()+ 1.0f);
 	if (key == GLFW_KEY_KP_DIVIDE && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.setFOV(camera.getFOV() - 1.0f);
+		camera->setFOV(camera->getFOV() - 1.0f);
 	if (key == GLFW_KEY_KP_ADD && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.increaseCameraSpeed(.5f);
+		camera->increaseCameraSpeed(.5f);
 	if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera.decreaseCameraSpeed(.5f);
+		camera->decreaseCameraSpeed(.5f);
 
-	if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1]+1, cube.getPosition()[2]);
+	/*if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		cube->setPosition(cube->getPosition()[0], cube->getPosition()[1]+1, cube->getPosition()[2]);
 	if (key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		cube.setPosition(cube.getPosition()[0], cube.getPosition()[1] - 1, cube.getPosition()[2]);
+		cube->setPosition(cube->getPosition()[0], cube->getPosition()[1] - 1, cube->getPosition()[2]);*/
 
 
 	if (key == GLFW_KEY_KP_DECIMAL && (action == GLFW_PRESS || action == GLFW_REPEAT))
@@ -66,7 +66,7 @@ void Window::onKey(int key, int scancode, int action, int mods)
 void Window::mouseCallback(double xpos, double ypos)
 {
 	if (!isFocused) return;
-	camera.rotateCamera(prevMousePos.x - xpos, prevMousePos.y - ypos);
+	camera->rotateCamera(prevMousePos.x - xpos, prevMousePos.y - ypos);
 	prevMousePos = glm::vec2(xpos, ypos);
 }
 
@@ -109,7 +109,6 @@ Window::Window(GLuint w, GLuint h)
 	this->width = w;
 	this->height = h;
 	
-	
 	if (glfwInit() != GL_TRUE)
 	{
 		cout << "GLFW initialization failed" << endl;
@@ -150,6 +149,8 @@ Window::Window(GLuint w, GLuint h)
 		//Enable z-buffer test
 		glEnable(GL_DEPTH_TEST);
 
+		glEnable(GL_CULL_FACE);
+
 		glewExperimental = GL_TRUE;
 		// Init glew
 		if (glewInit() != GLEW_OK)
@@ -158,14 +159,29 @@ Window::Window(GLuint w, GLuint h)
 		glViewport(0, 0, this->width, this->height);
 		glfwSwapInterval(1);
 
+		skybox = new Skybox({ "skybox/right.jpg",
+			"skybox/left.jpg",
+			"skybox/top.jpg",
+			"skybox/bottom.jpg",
+			"skybox/front.jpg",
+			"skybox/back.jpg" });
+		camera = new Camera();
+		camera->increaseCameraSpeed(10.f);
+		camera->moveCamera(Camera::BACKWARD);
+		camera->decreaseCameraSpeed(10.f);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
-		this->skyboxShader = ShaderProgram("skybox.vert", "skybox.frag");
+
+		ground = new Cuboid(0, -20, 0, 1000, 1, 1000);
+		ground->setTexture("gnd1.jpg");
+		
+		
 
 	}
 	catch (exception ex)
 	{
 		cout << ex.what() << endl;
 	}
+	
 	return;
 }
 
@@ -173,40 +189,36 @@ int Window::mainLoop()
 {
 	try
 	{
-		GLuint VBO, VAO, VBO1, VAO1;
+		GLuint VBO, VAO, VBO1, VAO1, VAO2, VBO2;
 		unsigned int skyboxVAO, skyboxVBO;
-		Cuboid skyboxCube;
-		cube.setTexture("tex.jpg");
-		cube.setScale(20, 20, 1);
-		ground.setTexture("gnd1.jpg");
-		ground.setPosition(0, -20, 0);
-		ground.setScale(1000, 1, 1000);
-		ground.divideTextureCoords(0.008f);
+		//Cuboid skyboxCube;
+		//cube = new Cuboid(0,0,0,10,20,10);
+		//cube->setTexture("tex.jpg");
+		//cube.setScale(20, 20, 1);
+		//cube.setPosition(0, 0, 20);
+		//cube.setRotation(0, 0, 1, 45);
+		//cube.setScale(.1, 10, .1);
+		//ground->setPosition(0, -20, 0);
+		//ground->setScale(1000, 10, 1000);
+		//ground.divideTextureCoords(0.008f);
 
-		Cuboid b[4];
-		b[0].setPosition(-1, 0, -1);
+		Cuboid b[4] = {
+			Cuboid(-1,0,-1,.1,50.,.1),
+			Cuboid(-1,0,1,.1,50.,.1),
+			Cuboid(1,0,1,.1,50.,.1),
+			Cuboid(1,0,-1,.1,50.,.1),
+		};
+		/*b[0].setPosition(-1, 0, -1);
 		b[1].setPosition(-1, 0, 1);
 		b[2].setPosition(1, 0, 1);
-		b[3].setPosition(1, 0, -1);
+		b[3].setPosition(1, 0, -1);*/
 		for (int i = 0; i < 4; ++i)
 		{
 			b[i].setTexture("metal.png");
-			b[i].divideTextureCoords(5.f);
-			b[i].setScale(.1f, 50.f, .1f);
+			//b[i].divideTextureCoords(0.9f);
+			//b[i].setScale(.1f, 1.f, .1f);
 			
 		}
-		
-
-		std::vector<std::string> fileNames =
-		{
-			"skybox/right.jpg",
-			"skybox/left.jpg",
-			"skybox/top.jpg",
-			"skybox/bottom.jpg",
-			"skybox/front.jpg",
-			"skybox/back.jpg"
-		};
-		CubemapTexture skyboxTexture(fileNames);
 		
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
@@ -214,8 +226,8 @@ int Window::mainLoop()
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(
 			GL_ARRAY_BUFFER, 
-			cube.getVertexTextureArraySize()*sizeof(GLfloat), 
-			cube.getVertexTextureArrayPointer(), 
+			b[0].getVertexTextureArraySize()*sizeof(GLfloat), 
+			b[0].getVertexTextureArrayPointer(), 
 			GL_STATIC_DRAW);
 
 		// position
@@ -233,8 +245,8 @@ int Window::mainLoop()
 		glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 		glBufferData(
 			GL_ARRAY_BUFFER,
-			ground.getVertexTextureArraySize() * sizeof(GLfloat),
-			ground.getVertexTextureArrayPointer(),
+			ground->getVertexTextureArraySize() * sizeof(GLfloat),
+			ground->getVertexTextureArrayPointer(),
 			GL_STATIC_DRAW);
 
 		// position
@@ -248,25 +260,28 @@ int Window::mainLoop()
 
 		glBindVertexArray(0);
 
+		glGenVertexArrays(1, &VAO2);
+		glGenBuffers(1, &VBO2);
+		glBindVertexArray(VAO2);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+		glBufferData(
+			GL_ARRAY_BUFFER,
+			b[0].getVertexTextureArraySize() * sizeof(GLfloat),
+			b[0].getVertexTextureArrayPointer(),
+			GL_STATIC_DRAW);
+
+		// position
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+		glEnableVertexAttribArray(0);
+		// texture
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
 
 		// skybox VAO
 		glGenVertexArrays(1, &skyboxVAO);
 		glGenBuffers(1, &skyboxVBO);
 		glBindVertexArray(skyboxVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-
-		int x = skyboxCube.getVertexArraySize();
-		glBufferData
-		(
-			GL_ARRAY_BUFFER, 
-			sizeof(GLfloat)*skyboxCube.getVertexArraySize(), 
-			skyboxCube.getVertexArrayPointer(), 
-			GL_STATIC_DRAW
-		);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-		
 		
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
@@ -278,32 +293,40 @@ int Window::mainLoop()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// bind textures on corresponding texture units
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, cube.getTexture().getTextureID());
+			//glActiveTexture(GL_TEXTURE0);
+			//glBindTexture(GL_TEXTURE_2D, cube->getTexture().getTextureID());
 
 			// activate shader
 			shaderProgram.Use();
 
 			// create transformations
-			glm::mat4 view = camera.getWorldToViewMatrix();
+			glm::mat4 view = camera->getWorldToViewMatrix();
 			glm::mat4 projection = glm::mat4(1.0f);
 
-			projection = glm::perspective(glm::radians(camera.getFOV()), (float)width / height, 0.1f, 1000.0f);
+			projection = glm::perspective(glm::radians(camera->getFOV()), (float)width / height, 0.1f, 1000.0f);
 
-			glm::mat4 trans = projection*view*cube.getModelMatrix();
+			glm::mat4 rot = glm::rotate(glm::mat4(1.f), glm::radians((GLfloat) glfwGetTime()*1), glm::vec3(0.f, 1.f, 0.f));
+
+			//glm::mat4 trans = projection*view*rot*cube->getModelMatrix();
 			
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+			//glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 
 			// render box
 			glBindVertexArray(VAO);
 			if (test) glEnableVertexAttribArray(1);
 			else glDisableVertexAttribArray(1);
-			glDisableVertexAttribArray(0);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-			glEnableVertexAttribArray(0);
+			//glDrawArrays(GL_TRIANGLES, 0, 36);
+			
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, b[0].getTexture().getTextureID());
+			
+
+			glBindVertexArray(VAO2);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, b[0].getTexture().getTextureID());
+
+			glm::mat4 trans;
 			for (int i = 0; i < 4; ++i)
 			{
 				trans = projection * view*b[i].getModelMatrix();
@@ -312,31 +335,18 @@ int Window::mainLoop()
 				else glDisableVertexAttribArray(1);
 				glDrawArrays(GL_TRIANGLES, 0, 36);
 			}
+
 			glBindVertexArray(VAO1);
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, ground.getTexture().getTextureID());
+			glBindTexture(GL_TEXTURE_2D, ground->getTexture().getTextureID());
 			if (test) glEnableVertexAttribArray(1);
 			else glDisableVertexAttribArray(1);
 
-			trans = projection * camera.getWorldToViewMatrix()*ground.getModelMatrix();
+			trans = projection * camera->getWorldToViewMatrix()*ground->getModelMatrix();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
-			glDepthFunc(GL_LEQUAL);
-			skyboxShader.Use();
-			view = glm::mat4(glm::mat3(camera.getWorldToViewMatrix()));
-			glUniformMatrix4fv(glGetUniformLocation(skyboxShader.get_programID(), "view"), 1, GL_FALSE, &view[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(skyboxShader.get_programID(), "projection"), 1, GL_FALSE, &projection[0][0]);
-
-			// skybox
-			glBindVertexArray(skyboxVAO);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, skyboxTexture.getTextureID());
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-			glBindVertexArray(0);
-			glDepthFunc(GL_LESS); // set depth function back to default
-
-
+			skybox->draw(&(camera->getWorldToViewMatrix()), &projection);
 			glfwSwapBuffers(openglWindow);
 		}
 		glDeleteVertexArrays(1, &VAO);

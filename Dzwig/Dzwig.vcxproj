@@ -149,6 +149,7 @@
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="Dzwig.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="CubemapTexture.h" />
     <ClInclude Include="Cuboid.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Window.h" />

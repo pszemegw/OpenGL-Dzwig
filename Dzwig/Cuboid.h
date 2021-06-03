@@ -28,7 +28,7 @@ class Cuboid
 	vector<GLfloat> textureCoord;
 	vector<GLfloat> vertexTexture;
 
-	Texture cubeTexture;
+	Texture* cubeTexture;
 
 	void translate();
 	void rotate();

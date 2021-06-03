@@ -2,6 +2,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include "ShaderProgram.h"
+#include "Skybox.h"
 #include "Camera.h"
 #include "Cuboid.h"
 #include <GLFW/glfw3.h>
@@ -19,8 +20,9 @@ class Window
 	GLuint height = 600;
 	GLFWwindow* openglWindow;
 	ShaderProgram shaderProgram;
-	ShaderProgram skyboxShader;
-	Camera camera;
+	//ShaderProgram skyboxShader;
+	Camera* camera;
+	Skybox* skybox;
 	bool lmbPressed = false;
 	bool rmbPressed = false;
 	bool isFocused = true;
@@ -29,8 +31,8 @@ class Window
 
 	glm::dvec2 prevMousePos;
 
-	Cuboid cube;
-	Cuboid ground;
+	Cuboid* cube;
+	Cuboid* ground;
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 	//GLuint LoadMipmapTexture(GLuint texId, const char* fname);
