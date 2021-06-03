@@ -171,7 +171,7 @@ Window::Window(GLuint w, GLuint h)
 		camera->decreaseCameraSpeed(10.f);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 
-		ground = new Cuboid(0, -20, 0, 1000, 1, 1000);
+		ground = new Cuboid(0, -2, 0, 1000, 1, 1000);
 		ground->setTexture("gnd1.jpg");
 		
 		
@@ -208,6 +208,89 @@ int Window::mainLoop()
 			Cuboid(1,0,1,.1,50.,.1),
 			Cuboid(1,0,-1,.1,50.,.1),
 		};
+		int cc = 100;
+		Cuboid** c;
+		c = new Cuboid*[cc];
+		GLfloat h = -0.9f;
+		for (int i = 0; i < cc; ++i)
+		{
+			GLfloat rotx=0.f, roty=1.f, rotz=0.f, rotangle=0.f, scalex=1.f, scaley=.08f, scalez=.08f, posx=0.f, posy=h, posz=0.f;
+			if (i % 4 == 0)
+			{
+				posx = -1.f;
+				posz = 0;
+				rotangle = 90.f;
+			}
+			if (i % 4 == 1)
+			{
+				posx = .0f;
+				posz = 1.f;
+			}
+			if (i % 4 == 2)
+			{
+				posx = 1.f;
+				posz = 0.f;
+				rotangle = -90.f;
+			}
+			if (i % 4 == 3)
+			{
+				posx = .0f;
+				posz = -1.f;
+				h += 2.f;
+			}
+			c[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+			c[i]->setTexture("metal.png");
+		}
+		int dd = 100;
+		Cuboid** d = new Cuboid*[dd];
+		h = 0.f;
+		for (int i = 0; i < dd/4; ++i)
+		{
+			GLfloat rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 45.f, scalex = glm::sqrt(2), scaley = .08f, scalez = .08f, posx = 0.f, posy = h, posz = 1.f;
+			if (i % 2 == 0)
+				rotangle = 45.f;
+			if (i % 2 == 1)
+				rotangle = 135.f;
+			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+			d[i]->setTexture("metal.png");
+			h += 2.f;
+		}
+		h = 0.f;
+		for (int i = dd/4; i < dd / 2; ++i)
+		{
+			GLfloat rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 45.f, scalex = glm::sqrt(2), scaley = .08f, scalez = .08f, posx = 0.f, posy = h, posz = -1.f;
+			if (i % 2 == 0)
+				rotangle = 45.f;
+			if (i % 2 == 1)
+				rotangle = 135.f;
+			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+			d[i]->setTexture("metal.png");
+			h += 2.f;
+		}
+		h = 0.f;
+		for (int i = dd / 2; i < 3*dd / 4; ++i)
+		{
+			GLfloat rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 45.f, scalex = .08f, scaley = .08f, scalez = glm::sqrt(2), posx = -1.f, posy = h, posz = 0.f;
+			if (i % 2 == 0)
+				rotangle = 45.f;
+			if (i % 2 == 1)
+				rotangle = 135.f;
+			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+			d[i]->setTexture("metal.png");
+			h += 2.f;
+		}
+		h = 0.f;
+		for (int i = 3*dd / 4; i < dd ; ++i)
+		{
+			GLfloat rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 45.f, scalex = .08f, scaley = .08f, scalez = glm::sqrt(2), posx = 1.f, posy = h, posz = 0.f;
+			if (i % 2 == 0)
+				rotangle = 45.f;
+			if (i % 2 == 1)
+				rotangle = 135.f;
+			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+			d[i]->setTexture("metal.png");
+			h += 2.f;
+		}
 		/*b[0].setPosition(-1, 0, -1);
 		b[1].setPosition(-1, 0, 1);
 		b[2].setPosition(1, 0, 1);
@@ -330,6 +413,23 @@ int Window::mainLoop()
 			for (int i = 0; i < 4; ++i)
 			{
 				trans = projection * view*b[i].getModelMatrix();
+				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+				if (test) glEnableVertexAttribArray(1);
+				else glDisableVertexAttribArray(1);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+			for (int i = 0; i < cc; ++i)
+			{
+				trans = projection * view*c[i]->getModelMatrix();
+				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+				if (test) glEnableVertexAttribArray(1);
+				else glDisableVertexAttribArray(1);
+				glDrawArrays(GL_TRIANGLES, 0, 36);
+			}
+
+			for (int i = 0; i < dd; ++i)
+			{
+				trans = projection * view*d[i]->getModelMatrix();
 				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 				if (test) glEnableVertexAttribArray(1);
 				else glDisableVertexAttribArray(1);

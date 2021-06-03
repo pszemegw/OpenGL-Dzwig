@@ -19,100 +19,6 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 
 	modelMatrix = glm::mat4(1.0f);
 
-
-	vertices = { 
-		// back face (CCW wi
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 // front face (CCW w
-		 -1.0f, -1.0f,  1.0f,
-		  1.0f, -1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f,  1.0f,  1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		 -1.0f, -1.0f,  1.0f,
-		 // left face (CCW)
-		 -1.0f, -1.0f, -1.0f,
-		 -1.0f, -1.0f,  1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		 -1.0f,  1.0f,  1.0f,
-		 -1.0f,  1.0f, -1.0f,
-		 -1.0f, -1.0f, -1.0f,
-		 // right face (CCW)
-		  1.0f, -1.0f,  1.0f,
-		  1.0f, -1.0f, -1.0f,
-		  1.0f,  1.0f, -1.0f,
-		  1.0f,  1.0f, -1.0f,
-		  1.0f,  1.0f,  1.0f,
-		  1.0f, -1.0f,  1.0f,
-		  // bottom face (CCW)
-		  -1.0f, -1.0f, -1.0f,
-		   1.0f, -1.0f, -1.0f,
-		   1.0f, -1.0f,  1.0f,
-		   1.0f, -1.0f,  1.0f,
-		  -1.0f, -1.0f,  1.0f,
-		  -1.0f, -1.0f, -1.0f,
-		  // top face (CCW)
-		  -1.0f,  1.0f,  1.0f,
-		   1.0f,  1.0f,  1.0f,
-		   1.0f,  1.0f, -1.0f,
-		   1.0f,  1.0f, -1.0f,
-		  -1.0f,  1.0f, -1.0f,
-		  -1.0f,  1.0f,  1.0f,
-	};
-
-	
-
-	/*vertexTexture = {
-			// back face (CCW winding)
-			 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			-1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
-			-1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			-1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
-			 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			// front face (CCW winding)
-			-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			 1.0f, -1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
-			 1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			 1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-1.0f,  1.0f,  1.0f,  0.0f, 1.0f, // top-left
-			-1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			// left face (CCW)
-			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			-1.0f, -1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
-			-1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-1.0f,  1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
-			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			// right face (CCW)
-			 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			 1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
-			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 1.0f,  1.0f,  1.0f,  0.0f, 1.0f, // top-left
-			 1.0f, -1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			// bottom face (CCW)      
-			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			 1.0f, -1.0f, -1.0f,  1.0f, 0.0f, // bottom-right
-			 1.0f, -1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			 1.0f, -1.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-1.0f, -1.0f,  1.0f,  0.0f, 1.0f, // top-left
-			-1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			// top face (CCW)
-			-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			 1.0f,  1.0f,  1.0f,  1.0f, 0.0f, // bottom-right
-			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 1.0f,  1.0f, -1.0f,  1.0f, 1.0f, // top-right
-			-1.0f,  1.0f, -1.0f,  0.0f, 1.0f, // top-left
-			-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-	};*/
-
-
 	vertexTexture = {
 		// back face (CCW winding)
 		 1.0f, -1.0f, -1.0f,  0.0f, 0.0f, // bottom-left
@@ -200,20 +106,20 @@ void Cuboid::generateModelMatrix()
 	
 }
 
-GLfloat* Cuboid::getVertexArrayPointer()
+/*GLfloat* Cuboid::getVertexArrayPointer()
 {
 	return &vertices[0];
-}
+}*/
 
 GLfloat * Cuboid::getVertexTextureArrayPointer()
 {
 	return &vertexTexture[0];
 }
 
-GLuint Cuboid::getVertexArraySize()
+/*GLuint Cuboid::getVertexArraySize()
 {
 	return vertices.size();
-}
+}*/
 
 GLuint Cuboid::getVertexTextureArraySize()
 {
