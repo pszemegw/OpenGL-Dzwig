@@ -191,6 +191,8 @@ int Window::mainLoop()
 	{
 		GLuint VBO, VAO, VBO1, VAO1, VAO2, VBO2;
 		unsigned int skyboxVAO, skyboxVBO;
+		unsigned int lightVAO;
+		
 		//Cuboid skyboxCube;
 		//cube = new Cuboid(0,0,0,10,20,10);
 		//cube->setTexture("tex.jpg");
@@ -319,6 +321,15 @@ int Window::mainLoop()
 		// texture
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
+
+		glGenVertexArrays(1, &lightVAO);
+		glBindVertexArray(lightVAO);
+		// we only need to bind to the VBO, the container's VBO's data already contains the data.
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		// set the vertex attribute 
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 

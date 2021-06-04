@@ -4,6 +4,23 @@
 + Konrad Lechowski
 + Przemysław Wieczorkowski
 
+## Milestones
+- [ ] Model dźwigu
+    - [x] Trzon
+    - [ ] Ramie
+    - [ ] Kabina
+    - [ ] Podstawa dzwigu z obciazeniem
+    - [ ] Hak i lina
+    - [ ] Przeciwwaga
+- [x] Teksturowanie
+- [x] Dodanie tła/skybox
+- [] Oświetlenie sceny
+- [x] Kamera
+- [ ] Dodanie interaktywnych elementów ruchomych
+    - [ ] Podnoszenie haka
+    - [ ] Obracanie dźwigu
+- [ ] Oddanie projektu
+
 ## Aktualny stan projektu
 
 ![current state](http://gitlab.ii.pw.edu.pl/gkom.21l/101.3-dzwig-kratownicowy/-/raw/master/stan.PNG)
