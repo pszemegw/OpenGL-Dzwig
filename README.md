@@ -14,7 +14,7 @@
     - [ ] Przeciwwaga
 - [x] Teksturowanie
 - [x] Dodanie tła/skybox
-- [] Oświetlenie sceny
+- [ ] Oświetlenie sceny
 - [x] Kamera
 - [ ] Dodanie interaktywnych elementów ruchomych
     - [ ] Podnoszenie haka
