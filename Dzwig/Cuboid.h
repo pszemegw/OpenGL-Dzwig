@@ -22,6 +22,8 @@ class Cuboid
 	GLfloat posX, posY, posZ; // pozycja/przesuniecie
 	GLfloat rotX, rotY, rotZ; // wektor wyznaczajacy os obrotu
 	GLfloat rotAngle; // kat obrotu (stopnie)
+	GLfloat rotX2 = 0.0f, rotY2 = 1.0f, rotZ2 = 0.0f; // wektor wyznaczajacy os obrotu
+	GLfloat rotAngle2 = 0.0f; // kat obrotu (stopnie)
 	glm::mat4 modelMatrix;
 	vector<GLfloat> vertices;
 	vector<GLuint> indices;
@@ -32,6 +34,7 @@ class Cuboid
 
 	void translate();
 	void rotate();
+	void rotate2();
 	void scale();
 	void generateModelMatrix();
 
@@ -51,6 +54,10 @@ public:
 	void setScale(GLfloat x, GLfloat y, GLfloat z);
 	void setPosition(GLfloat x, GLfloat y, GLfloat z);
 	void setRotation(GLfloat x, GLfloat y, GLfloat z, GLfloat angle);
+	void setRotation2(GLfloat x, GLfloat y, GLfloat z, GLfloat angle);
+	void setAll(GLfloat posX = 0.f, GLfloat posY = 0.f, GLfloat posZ = 0.f,
+		GLfloat scaleX = 1.0f, GLfloat scaleY = 1.0f, GLfloat scaleZ = 1.0f,
+		GLfloat rotX = 1.f, GLfloat rotY = 1.f, GLfloat rotZ = 1.f, GLfloat rotAngle = 0.f);
 
 	std::vector<GLfloat> getScale();
 	std::vector<GLfloat> getPosition();

@@ -12,6 +12,7 @@
 #include "Texture2D.h"
 #include "CubemapTexture.h"
 #include "Cuboid.h"
+#include "CraneTower.h"
 
 using namespace std;
 
@@ -192,140 +193,13 @@ int Window::mainLoop()
 		GLuint VBO, VAO, VBO1, VAO1, VAO2, VBO2;
 		unsigned int skyboxVAO, skyboxVBO;
 		unsigned int lightVAO;
-		
-		//Cuboid skyboxCube;
-		//cube = new Cuboid(0,0,0,10,20,10);
-		//cube->setTexture("tex.jpg");
-		//cube.setScale(20, 20, 1);
-		//cube.setPosition(0, 0, 20);
-		//cube.setRotation(0, 0, 1, 45);
-		//cube.setScale(.1, 10, .1);
-		//ground->setPosition(0, -20, 0);
-		//ground->setScale(1000, 10, 1000);
-		//ground.divideTextureCoords(0.008f);
+		CraneTower tower("metal.png");
 
-		Cuboid b[4] = {
-			Cuboid(-1,0,-1,.1,50.,.1),
-			Cuboid(-1,0,1,.1,50.,.1),
-			Cuboid(1,0,1,.1,50.,.1),
-			Cuboid(1,0,-1,.1,50.,.1),
-		};
-		int cc = 100;
-		Cuboid** c;
-		c = new Cuboid*[cc];
-		GLfloat h = -0.9f;
-		for (int i = 0; i < cc; ++i)
-		{
-			GLfloat rotx=0.f, roty=1.f, rotz=0.f, rotangle=0.f, scalex=1.f, scaley=.08f, scalez=.08f, posx=0.f, posy=h, posz=0.f;
-			if (i % 4 == 0)
-			{
-				posx = -1.f;
-				posz = 0;
-				rotangle = 90.f;
-			}
-			if (i % 4 == 1)
-			{
-				posx = .0f;
-				posz = 1.f;
-			}
-			if (i % 4 == 2)
-			{
-				posx = 1.f;
-				posz = 0.f;
-				rotangle = -90.f;
-			}
-			if (i % 4 == 3)
-			{
-				posx = .0f;
-				posz = -1.f;
-				h += 2.f;
-			}
-			c[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-			c[i]->setTexture("metal.png");
-		}
-		int dd = 100;
-		Cuboid** d = new Cuboid*[dd];
-		h = 0.f;
-		for (int i = 0; i < dd/4; ++i)
-		{
-			GLfloat rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 45.f, scalex = glm::sqrt(2), scaley = .08f, scalez = .08f, posx = 0.f, posy = h, posz = 1.f;
-			if (i % 2 == 0)
-				rotangle = 45.f;
-			if (i % 2 == 1)
-				rotangle = 135.f;
-			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-			d[i]->setTexture("metal.png");
-			h += 2.f;
-		}
-		h = 0.f;
-		for (int i = dd/4; i < dd / 2; ++i)
-		{
-			GLfloat rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 45.f, scalex = glm::sqrt(2), scaley = .08f, scalez = .08f, posx = 0.f, posy = h, posz = -1.f;
-			if (i % 2 == 0)
-				rotangle = 45.f;
-			if (i % 2 == 1)
-				rotangle = 135.f;
-			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-			d[i]->setTexture("metal.png");
-			h += 2.f;
-		}
-		h = 0.f;
-		for (int i = dd / 2; i < 3*dd / 4; ++i)
-		{
-			GLfloat rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 45.f, scalex = .08f, scaley = .08f, scalez = glm::sqrt(2), posx = -1.f, posy = h, posz = 0.f;
-			if (i % 2 == 0)
-				rotangle = 45.f;
-			if (i % 2 == 1)
-				rotangle = 135.f;
-			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-			d[i]->setTexture("metal.png");
-			h += 2.f;
-		}
-		h = 0.f;
-		for (int i = 3*dd / 4; i < dd ; ++i)
-		{
-			GLfloat rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 45.f, scalex = .08f, scaley = .08f, scalez = glm::sqrt(2), posx = 1.f, posy = h, posz = 0.f;
-			if (i % 2 == 0)
-				rotangle = 45.f;
-			if (i % 2 == 1)
-				rotangle = 135.f;
-			d[i] = new Cuboid(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-			d[i]->setTexture("metal.png");
-			h += 2.f;
-		}
-		/*b[0].setPosition(-1, 0, -1);
-		b[1].setPosition(-1, 0, 1);
-		b[2].setPosition(1, 0, 1);
-		b[3].setPosition(1, 0, -1);*/
-		for (int i = 0; i < 4; ++i)
-		{
-			b[i].setTexture("metal.png");
-			//b[i].divideTextureCoords(0.9f);
-			//b[i].setScale(.1f, 1.f, .1f);
-			
-		}
-		
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(
-			GL_ARRAY_BUFFER, 
-			b[0].getVertexTextureArraySize()*sizeof(GLfloat), 
-			b[0].getVertexTextureArrayPointer(), 
-			GL_STATIC_DRAW);
-
-		// position
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
-		glEnableVertexAttribArray(0);
-		// texture
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
 
 		glGenVertexArrays(1, &lightVAO);
 		glBindVertexArray(lightVAO);
 		// we only need to bind to the VBO, the container's VBO's data already contains the data.
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		// set the vertex attribute 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -354,22 +228,6 @@ int Window::mainLoop()
 
 		glBindVertexArray(0);
 
-		glGenVertexArrays(1, &VAO2);
-		glGenBuffers(1, &VBO2);
-		glBindVertexArray(VAO2);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-		glBufferData(
-			GL_ARRAY_BUFFER,
-			b[0].getVertexTextureArraySize() * sizeof(GLfloat),
-			b[0].getVertexTextureArrayPointer(),
-			GL_STATIC_DRAW);
-
-		// position
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
-		glEnableVertexAttribArray(0);
-		// texture
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
 
 		// skybox VAO
 		glGenVertexArrays(1, &skyboxVAO);
@@ -386,10 +244,6 @@ int Window::mainLoop()
 			glClearColor(0.0f, 0.3f, 0.9f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			// bind textures on corresponding texture units
-			//glActiveTexture(GL_TEXTURE0);
-			//glBindTexture(GL_TEXTURE_2D, cube->getTexture().getTextureID());
-
 			// activate shader
 			shaderProgram.Use();
 
@@ -401,51 +255,8 @@ int Window::mainLoop()
 
 			glm::mat4 rot = glm::rotate(glm::mat4(1.f), glm::radians((GLfloat) glfwGetTime()*1), glm::vec3(0.f, 1.f, 0.f));
 
-			//glm::mat4 trans = projection*view*rot*cube->getModelMatrix();
-			
-			//glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
-
-			// render box
-			glBindVertexArray(VAO);
-			if (test) glEnableVertexAttribArray(1);
-			else glDisableVertexAttribArray(1);
-			//glDrawArrays(GL_TRIANGLES, 0, 36);
-			
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, b[0].getTexture().getTextureID());
-			
-
-			glBindVertexArray(VAO2);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, b[0].getTexture().getTextureID());
-
 			glm::mat4 trans;
-			for (int i = 0; i < 4; ++i)
-			{
-				trans = projection * view*b[i].getModelMatrix();
-				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
-				if (test) glEnableVertexAttribArray(1);
-				else glDisableVertexAttribArray(1);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-			for (int i = 0; i < cc; ++i)
-			{
-				trans = projection * view*c[i]->getModelMatrix();
-				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
-				if (test) glEnableVertexAttribArray(1);
-				else glDisableVertexAttribArray(1);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-
-			for (int i = 0; i < dd; ++i)
-			{
-				trans = projection * view*d[i]->getModelMatrix();
-				glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
-				if (test) glEnableVertexAttribArray(1);
-				else glDisableVertexAttribArray(1);
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
+			tower.draw(&shaderProgram, camera);
 
 			glBindVertexArray(VAO1);
 			glActiveTexture(GL_TEXTURE0);

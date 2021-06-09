@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CraneTower.cpp" />
     <ClCompile Include="CubemapTexture.cpp" />
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="Dzwig.cpp" />
@@ -156,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CraneTower.h" />
     <ClInclude Include="CubemapTexture.h" />
     <ClInclude Include="Cuboid.h" />
     <ClInclude Include="ShaderProgram.h" />

@@ -28,6 +28,7 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CraneTower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png" />
@@ -70,5 +71,6 @@
     <ClInclude Include="Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CraneTower.h" />
   </ItemGroup>
 </Project>

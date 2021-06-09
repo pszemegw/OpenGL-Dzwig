@@ -6,16 +6,7 @@
 
 Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLfloat rotX, GLfloat rotY, GLfloat rotZ, GLfloat rotAngle)
 {
-	this->posX = posX;
-	this->posY = posY;
-	this->posZ = posZ;
-	this->scaleX = scaleX;
-	this->scaleY = scaleY;
-	this->scaleZ = scaleZ;
-	this->rotX = rotX;
-	this->rotY = rotY;
-	this->rotZ = rotZ;
-	this->rotAngle = rotAngle;
+	setAll(posX,posY,posZ,scaleX,scaleY,scaleZ,rotX,rotY,rotZ,rotAngle);
 
 	modelMatrix = glm::mat4(1.0f);
 
@@ -74,6 +65,7 @@ void Cuboid::generateVertices()
 
 glm::mat4 Cuboid::getModelMatrix()
 {
+	generateModelMatrix();
 	return modelMatrix;
 }
 
@@ -89,6 +81,12 @@ void Cuboid::rotate()
 	modelMatrix = glm::rotate(modelMatrix,glm::radians(rotAngle),glm::vec3(rotX,rotY,rotZ));
 }
 
+void Cuboid::rotate2()
+{
+	if (rotAngle2 == 0.f) return;
+	modelMatrix = glm::rotate(modelMatrix, glm::radians(rotAngle2), glm::vec3(rotX2, rotY2, rotZ2));
+}
+
 void Cuboid::scale()
 {
 	if (scaleX == 1.f && scaleY == 1.f && scaleZ == 1.f) return;
@@ -101,6 +99,7 @@ void Cuboid::generateModelMatrix()
 
 	translate();
 	rotate();
+	rotate2();
 	scale();
 	
 	
@@ -145,6 +144,25 @@ void Cuboid::setRotation(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 	rotX = x; rotY = y; rotZ = z; rotAngle = angle;
 	//glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(x, y, z));
 	generateModelMatrix();
+}
+
+void Cuboid::setRotation2(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
+{
+	rotX2 = x; rotY2 = y; rotZ2 = z; rotAngle2 = angle;
+}
+
+void Cuboid::setAll(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLfloat rotX, GLfloat rotY, GLfloat rotZ, GLfloat rotAngle)
+{
+	this->posX = posX;
+	this->posY = posY;
+	this->posZ = posZ;
+	this->scaleX = scaleX;
+	this->scaleY = scaleY;
+	this->scaleZ = scaleZ;
+	this->rotX = rotX;
+	this->rotY = rotY;
+	this->rotZ = rotZ;
+	this->rotAngle = rotAngle;
 }
 
 std::vector<GLfloat> Cuboid::getScale()
