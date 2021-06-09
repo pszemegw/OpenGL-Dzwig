@@ -13,6 +13,7 @@
 #include "CubemapTexture.h"
 #include "Cuboid.h"
 #include "CraneTower.h"
+#include "CraneBase.h"
 
 using namespace std;
 
@@ -169,10 +170,11 @@ Window::Window(GLuint w, GLuint h)
 		camera = new Camera();
 		camera->increaseCameraSpeed(10.f);
 		camera->moveCamera(Camera::BACKWARD);
+		camera->moveCamera(Camera::UP);
 		camera->decreaseCameraSpeed(10.f);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 
-		ground = new Cuboid(0, -2, 0, 1000, 1, 1000);
+		ground = new Cuboid(0, -1.f, 0, 1000, 1, 1000);
 		ground->setTexture("gnd1.jpg");
 		
 		
@@ -194,13 +196,12 @@ int Window::mainLoop()
 		unsigned int skyboxVAO, skyboxVBO;
 		unsigned int lightVAO;
 		CraneTower tower("metal.png");
+		CraneBase base(1.5f,.2f,"concrete.jpg");
 
 
 		glGenVertexArrays(1, &lightVAO);
 		glBindVertexArray(lightVAO);
-		// we only need to bind to the VBO, the container's VBO's data already contains the data.
-		//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		// set the vertex attribute 
+
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 
@@ -256,7 +257,13 @@ int Window::mainLoop()
 			glm::mat4 rot = glm::rotate(glm::mat4(1.f), glm::radians((GLfloat) glfwGetTime()*1), glm::vec3(0.f, 1.f, 0.f));
 
 			glm::mat4 trans;
-			tower.draw(&shaderProgram, camera);
+
+
+
+			tower.draw(&shaderProgram, camera, this->width, this->height);
+			base.draw(&shaderProgram, camera, this->width, this->height);
+
+
 
 			glBindVertexArray(VAO1);
 			glActiveTexture(GL_TEXTURE0);

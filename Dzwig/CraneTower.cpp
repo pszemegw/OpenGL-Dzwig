@@ -19,17 +19,17 @@ CraneTower::CraneTower(std::string textureFileName)
 	glEnableVertexAttribArray(0);
 	// texture
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(1);
 
 	// pionowe belki
 
-	segment.setAll(-width/2, 0, -width/2, segmentScale * 2, height, segmentScale * 2);
+	segment.setAll(-width/2, height/2, -width/2, segmentScale * 2, height/2, segmentScale * 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(-width/2, 0, width/2, segmentScale * 2, height*1.0f, segmentScale * 2);
+	segment.setPosition(-width / 2, height / 2, width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(width/2, 0, width/2, segmentScale * 2, height*1.0f, segmentScale * 2);
+	segment.setPosition(width / 2, height / 2, width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(width/2, 0, -width/2, segmentScale * 2, height*1.0f, segmentScale * 2);
+	segment.setPosition(width / 2, height / 2, -width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
 
 	// poziome belki
@@ -159,11 +159,11 @@ CraneTower::CraneTower(std::string textureFileName)
 	
 }
 
-void CraneTower::draw(ShaderProgram * s, Camera * c)
+void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 {
 	glm::mat4 trans;
 	glm::mat4 view = c->getWorldToViewMatrix();
-	glm::mat4 projection = glm::perspective(glm::radians(c->getFOV()), 800.f / 600.f, 0.1f, 1000.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(c->getFOV()), w*1.0f / h, 0.1f, 1000.0f);
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);

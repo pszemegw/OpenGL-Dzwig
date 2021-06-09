@@ -7,7 +7,7 @@
 ## Milestones
 - [ ] Model dźwigu
     - [x] Trzon
-    - [ ] Ramie
+    - [ ] Ramię
     - [ ] Kabina
     - [ ] Podstawa dzwigu z obciazeniem
     - [ ] Hak i lina

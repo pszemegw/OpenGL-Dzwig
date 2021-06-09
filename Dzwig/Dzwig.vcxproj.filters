@@ -29,6 +29,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CraneTower.cpp" />
+    <ClCompile Include="CraneBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png" />
@@ -72,5 +73,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CraneTower.h" />
+    <ClInclude Include="CraneBase.h" />
   </ItemGroup>
 </Project>

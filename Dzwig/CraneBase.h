@@ -12,22 +12,17 @@ using namespace std;
 #include <glm/gtc/type_ptr.hpp>
 #include "Window.h"
 #include "Camera.h"
-
-class CraneTower
+class CraneBase
 {
-	Cuboid segment;
+	Cuboid* segment;
 	GLuint VAO, VBO;
+	GLfloat width = 2*glm::sqrt(2);
+	GLfloat height = 2 * glm::sqrt(2);
 	std::vector<glm::mat4> segmentTrans;
 
-	GLfloat height = 30.0f;
-	GLfloat width = 1.0f;
-	GLfloat segmentScale = 0.03f;
-
 public:
+	CraneBase(GLfloat width, GLfloat height, std::string textureFileName);
 
-	CraneTower(std::string textureFileName);
-	
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
-
 };
 

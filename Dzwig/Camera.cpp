@@ -43,10 +43,10 @@ void Camera::moveCamera(Movement m)
 		cameraPos -= movSpeed * cameraUpTemp;
 		break;
 	case LEFT:
-		cameraPos -= movSpeed * glm::cross(cameraDirection, cameraUp);
+		cameraPos += movSpeed * cameraRight;//glm::cross(glm::normalize(cameraDirection), glm::normalize(cameraUp));
 		break;
 	case RIGHT:
-		cameraPos += movSpeed * glm::cross(cameraDirection, cameraUp);
+		cameraPos -= movSpeed * cameraRight;//glm::cross(cameraDirection/glm::length(cameraDirection), cameraUp / glm::length(cameraUp));
 		break;
 	case FORWARD:
 		cameraPos += movSpeed * cameraDirection;
