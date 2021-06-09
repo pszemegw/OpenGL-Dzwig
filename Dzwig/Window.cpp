@@ -14,6 +14,7 @@
 #include "Cuboid.h"
 #include "CraneTower.h"
 #include "CraneBase.h"
+#include "CraneTop.h"
 
 using namespace std;
 
@@ -197,6 +198,7 @@ int Window::mainLoop()
 		unsigned int lightVAO;
 		CraneTower tower("metal.png");
 		CraneBase base(1.5f,.2f,"concrete.jpg");
+		CraneTop top("metal.png");
 
 
 		glGenVertexArrays(1, &lightVAO);
@@ -262,6 +264,7 @@ int Window::mainLoop()
 
 			tower.draw(&shaderProgram, camera, this->width, this->height);
 			base.draw(&shaderProgram, camera, this->width, this->height);
+			top.draw(&shaderProgram, camera, this->width, this->height);
 
 
 

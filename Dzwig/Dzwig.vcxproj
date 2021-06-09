@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CraneBase.cpp" />
+    <ClCompile Include="CraneTop.cpp" />
     <ClCompile Include="CraneTower.cpp" />
     <ClCompile Include="CubemapTexture.cpp" />
     <ClCompile Include="Cuboid.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CraneBase.h" />
+    <ClInclude Include="CraneTop.h" />
     <ClInclude Include="CraneTower.h" />
     <ClInclude Include="CubemapTexture.h" />
     <ClInclude Include="Cuboid.h" />

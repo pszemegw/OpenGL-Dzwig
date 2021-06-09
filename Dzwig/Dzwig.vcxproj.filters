@@ -30,6 +30,7 @@
     </ClCompile>
     <ClCompile Include="CraneTower.cpp" />
     <ClCompile Include="CraneBase.cpp" />
+    <ClCompile Include="CraneTop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png" />
@@ -74,5 +75,6 @@
     </ClInclude>
     <ClInclude Include="CraneTower.h" />
     <ClInclude Include="CraneBase.h" />
+    <ClInclude Include="CraneTop.h" />
   </ItemGroup>
 </Project>
