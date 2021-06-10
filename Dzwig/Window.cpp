@@ -9,14 +9,14 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Window.h"
-#include "Texture2D.h"
-#include "CubemapTexture.h"
-#include "Cuboid.h"
-#include "CraneTower.h"
-#include "CraneBase.h"
-#include "CraneTop.h"
+//#include "Texture2D.h"
+//#include "CubemapTexture.h"
+//#include "Cuboid.h"
+//#include "CraneTower.h"
+//#include "CraneBase.h"
+//#include "CraneTop.h"
 #include <windows.h>
-#include "Crane.h"
+//#include "Crane.h"
 
 using namespace std;
 
@@ -142,6 +142,11 @@ void Window::keyboardInput()
 		camera->increaseCameraSpeed(.1f);
 	if (glfwGetKey(openglWindow, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
 		camera->decreaseCameraSpeed(.1f);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
+		dzwig->rotateCrane(0.1f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		dzwig->rotateCrane(-0.1f);
 }
 
 
@@ -220,6 +225,7 @@ Window::Window(GLuint w, GLuint h)
 		//camera->moveCamera(Camera::BACKWARD);
 		//camera->moveCamera(Camera::UP);
 		//camera->decreaseCameraSpeed(10.f);
+		dzwig = new Crane();
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 
 		ground = new Cuboid(0, -1.f, 0, 10000, 1, 10000);
@@ -241,11 +247,11 @@ int Window::mainLoop()
 {
 	try
 	{
-		GLuint VBO, VAO, VBO1, VAO1, VAO2, VBO2;
+		GLuint VBO, VAO, VBO1, VAO1;
 		unsigned int skyboxVAO, skyboxVBO;
 		unsigned int lightVAO;
 		
-		Crane* dzwig = new Crane();
+		//Crane* dzwig = new Crane();
 
 		glGenVertexArrays(1, &lightVAO);
 		glBindVertexArray(lightVAO);
@@ -284,11 +290,11 @@ int Window::mainLoop()
 		glBindVertexArray(skyboxVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 		
-		GLfloat lastFrame = 0.0f;
+		GLdouble lastFrame = 0.0f;
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
 		{
-			GLfloat currentFrame = glfwGetTime();
+			GLdouble currentFrame = glfwGetTime();
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
 			camera->setDeltaTime(deltaTime);

@@ -1,3 +1,5 @@
+#ifndef _CRANE_H_
+#define _CRANE_H_
 #pragma once
 #include "CraneBase.h"
 #include "CraneTop.h"
@@ -18,6 +20,8 @@ class Crane
 	GLfloat towerHeight, towerWidth, armLength;
 	GLfloat segmentScale;
 
+	GLfloat rotationAngle = 0.f;
+
 	GLuint VAO, VBO;
 
 public:
@@ -26,6 +30,10 @@ public:
 
 	void draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h);
 
+	void rotateCrane(GLfloat angleDeg);
+
 
 };
 
+
+#endif

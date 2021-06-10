@@ -1,3 +1,6 @@
+#ifndef _TEXTURE_H_
+#define _TEXTURE_H_
+
 #pragma once
 #include <string>
 #include <iostream>
@@ -25,3 +28,4 @@ public:
 	int getHeight();
 };
 
+#endif

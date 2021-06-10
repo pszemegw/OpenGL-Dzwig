@@ -100,7 +100,7 @@ void Camera::rotateCamera(GLfloat dx, GLfloat dy)
 void Camera::resetCamera()
 {
 	glm::vec3 front;
-	cameraPos = glm::vec3(0.f, 10.f, 10.f);
+	cameraPos = glm::vec3(0.f, 10.f, 5.f);
 	yaw = -90.f;
 	pitch = 0.f;
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));

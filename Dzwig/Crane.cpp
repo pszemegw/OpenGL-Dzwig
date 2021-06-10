@@ -35,5 +35,10 @@ void Crane::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 {
 	base->draw(s, c, w, h);
 	tower->draw(s, c, w, h);
-	top->draw(s, c, w, h);
+	top->draw(s, c, w, h, rotationAngle);
+}
+
+void Crane::rotateCrane(GLfloat angleDeg)
+{
+	rotationAngle += angleDeg;
 }

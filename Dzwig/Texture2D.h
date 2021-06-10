@@ -1,3 +1,6 @@
+#ifndef _TEXTURE2D_H_
+#define _TEXTURE2D_H_
+
 #pragma once
 #include <string>
 #include <iostream>
@@ -20,3 +23,4 @@ public:
 	Texture2D(std::string fname);
 };
 
+#endif

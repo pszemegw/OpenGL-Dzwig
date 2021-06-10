@@ -1,3 +1,6 @@
+#ifndef _CRANETOP_H_
+#define _CRANETOP_H_
+
 #pragma once
 #include "Cuboid.h"
 #include <GL/glew.h>
@@ -10,7 +13,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Window.h"
+//#include "Window.h"
 #include "Camera.h"
 
 class CraneTop
@@ -38,6 +41,7 @@ public:
 		GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f,
 		Texture2D* texSeg = nullptr, Texture2D* texRope = nullptr, Texture2D* texConcrete = nullptr, GLuint vao = 0);
 
-	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
+	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h, GLfloat rot);
 };
 
+#endif

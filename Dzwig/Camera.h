@@ -1,4 +1,8 @@
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
+
 #pragma once
+
 #include <glm\glm.hpp>
 #include <GLFW/glfw3.h>
 class Camera
@@ -41,3 +45,4 @@ public:
 	void setDeltaTime(GLfloat t);
 };
 
+#endif _CAMERA_H_

@@ -5,6 +5,7 @@
 #include "Skybox.h"
 #include "Camera.h"
 #include "Cuboid.h"
+#include "Crane.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -18,12 +19,14 @@ class Window
 	GLint initStatus = 0;
 	GLuint width = 800;
 	GLuint height = 600;
-	GLfloat deltaTime = 0.f;
+	GLdouble deltaTime = 0.f;
 	GLFWwindow* openglWindow;
 	ShaderProgram shaderProgram;
+	
 	//ShaderProgram skyboxShader;
 	Camera* camera;
 	Skybox* skybox;
+	Crane* dzwig;
 	bool lmbPressed = false;
 	bool rmbPressed = false;
 	bool isFocused = true;

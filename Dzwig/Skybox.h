@@ -1,3 +1,6 @@
+#ifndef _SKYBOX_H_
+#define _SKYBOX_H_
+
 #pragma once
 #include "CubemapTexture.h"
 #include "ShaderProgram.h"
@@ -27,3 +30,4 @@ public:
 	void draw(glm::mat4* viewMatrix, glm::mat4* projectionMatrix);
 };
 
+#endif

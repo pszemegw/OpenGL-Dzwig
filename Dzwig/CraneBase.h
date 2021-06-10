@@ -1,3 +1,6 @@
+#ifndef _CRANEBASE_H_
+#define _CRANEBASE_H_
+
 #pragma once
 #include "Cuboid.h"
 #include <GL/glew.h>
@@ -10,7 +13,7 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "Window.h"
+//#include "Window.h"
 #include "Camera.h"
 class CraneBase
 {
@@ -29,3 +32,4 @@ public:
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
 };
 
+#endif

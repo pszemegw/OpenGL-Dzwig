@@ -1,3 +1,6 @@
+#ifndef _CUBEMAPTEXTURE_H_
+#define _CUBEMAPTEXTURE_H_
+
 #pragma once
 #include "Texture.h"
 
@@ -10,3 +13,4 @@ public:
 	GLuint LoadCubemapTexture();
 };
 
+#endif _CUBEMAPTEXTURE_H_

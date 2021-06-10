@@ -114,8 +114,9 @@ CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat x, GLfloat y, GLfloat z, Te
 	segmentTrans.push_back(segment.getModelMatrix());
 }
 
-void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
+void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat rot)
 {
+	glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), glm::radians(rot), glm::vec3(0, 1, 0));
 	glm::mat4 trans;
 	glm::mat4 view = c->getWorldToViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(c->getFOV()), w*1.0f / h, 0.1f, 1000.0f);
@@ -126,20 +127,20 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	for (int i = 0; i < segmentTrans.size()-3; ++i)
 	{
-		trans = projection * view * glm::rotate(glm::mat4(1.0f), (GLfloat)glfwGetTime()/36, glm::vec3(0, 1, 0)) * segmentTrans[i];
+		trans = projection * view * rotMat * segmentTrans[i];
 		glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	glBindTexture(GL_TEXTURE_2D, ropeTexture->getTextureID());
-	trans = projection * view * glm::rotate(glm::mat4(1.0f), (GLfloat)glfwGetTime() / 36, glm::vec3(0, 1, 0)) * segmentTrans[segmentTrans.size()-3];
+	trans = projection * view * rotMat * segmentTrans[segmentTrans.size()-3];
 	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	trans = projection * view * glm::rotate(glm::mat4(1.0f), (GLfloat)glfwGetTime() / 36, glm::vec3(0, 1, 0)) * segmentTrans[segmentTrans.size() - 2];
+	trans = projection * view * rotMat * segmentTrans[segmentTrans.size() - 2];
 	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 	glBindTexture(GL_TEXTURE_2D, concreteTexture->getTextureID());
-	trans = projection * view * glm::rotate(glm::mat4(1.0f), (GLfloat)glfwGetTime() / 36, glm::vec3(0, 1, 0)) * segmentTrans[segmentTrans.size() - 1];
+	trans = projection * view * rotMat * segmentTrans[segmentTrans.size() - 1];
 	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 

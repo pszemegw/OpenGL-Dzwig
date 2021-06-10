@@ -1,3 +1,7 @@
+#ifndef _CUBOID_H_
+#define _CUBOID_H_
+
+
 #pragma once
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -74,3 +78,5 @@ public:
 	
 
 };
+
+#endif

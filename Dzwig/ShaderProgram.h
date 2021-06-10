@@ -1,3 +1,6 @@
+#ifndef _SHADERP_H_
+#define _SHADERP_H_
+
 #pragma once
 
 class ShaderProgram
@@ -24,3 +27,5 @@ public:
 		return program_id;
 	}
 };
+
+#endif
