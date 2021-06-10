@@ -145,6 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Crane.cpp" />
     <ClCompile Include="CraneBase.cpp" />
     <ClCompile Include="CraneTop.cpp" />
     <ClCompile Include="CraneTower.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Crane.h" />
     <ClInclude Include="CraneBase.h" />
     <ClInclude Include="CraneTop.h" />
     <ClInclude Include="CraneTower.h" />

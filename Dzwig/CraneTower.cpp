@@ -1,10 +1,16 @@
 #include "CraneTower.h"
 
-CraneTower::CraneTower(std::string textureFileName)
+CraneTower::CraneTower(
+	GLfloat h, 
+	GLfloat w, 
+	GLfloat scale, 
+	Texture2D* tex , 
+	GLfloat x , GLfloat y , GLfloat z, GLuint vao)
 {
-	segment.setTexture(textureFileName);
-
-	glGenVertexArrays(1, &VAO);
+	//segment.setTexture(textureFileName);
+	height = h; width = w; segmentScale = scale; segmentTexture = tex;
+	posX = x; posY = y; posZ = z; VAO = vao;
+	/*glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -19,124 +25,122 @@ CraneTower::CraneTower(std::string textureFileName)
 	glEnableVertexAttribArray(0);
 	// texture
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(1);*/
 
 	// pionowe belki
 
-	segment.setAll(-width/2, height/2, -width/2, segmentScale * 2, height/2, segmentScale * 2);
+	segment.setAll(posX-width/2, posY + height/2, posZ-width/2, segmentScale * 2, height/2, segmentScale * 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setPosition(-width / 2, height / 2, width / 2);
+	segment.setPosition(posX -width / 2, posY +height / 2, posZ+ width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setPosition(width / 2, height / 2, width / 2);
+	segment.setPosition(posX+width / 2, posY + height / 2, posZ + width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setPosition(width / 2, height / 2, -width / 2);
+	segment.setPosition(posX+width / 2, posY+ height / 2, posZ -width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
 
 	// poziome belki
-	GLfloat h = 0.0f;
+	GLfloat hh = posY;
 	GLfloat rotx = 0.f, roty = 1.f, rotz = 0.f, rotangle = 0.f,
 		scalex = width / 2, scaley = segmentScale, scalez = segmentScale,
-		posx = 0.f, posy = h, posz = 0.f;
+		posx = posX, posy = h, posz = posZ;
 
 	
 	for (int i = 0; i < 4 * (1+(height / width)); ++i)
 	{	
-		posy = h;
+		posy = hh;
 		if (i % 4 == 0)
 		{
-			posx = 0.f;
-			posz = width/2;
+			posx = posX;
+			posz = posZ + width/2;
 			rotangle = 0.f;
 		}
 		if (i % 4 == 1)
 		{
-			posx = 0.0f;
-			posz = -width/2;
+			posx = posX;
+			posz = posZ -width/2;
 		}
 		if (i % 4 == 2)
 		{
-			posx = width/2;
-			posz = 0.f;
+			posx = posX + width/2;
+			posz = posZ;
 			rotangle = 90.f;
 		}
 		if (i % 4 == 3)
 		{
-			posx = -width/2;
-			posz = 0.f;
-			h += width;
+			posx = posX-width/2;
+			posz = posZ;
+			hh += width;
 		}
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segmentTrans.push_back(segment.getModelMatrix());
-		
-		
 	}
 
 	// poprzeczne
 	// przod
-	h = width/2;
+	hh = posY + width/2;
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 0.f,
 			scalex = glm::sqrt(2)*width / 2, scaley = segmentScale, scalez = segmentScale,
-			posx = 0.f, posy = h, posz = width/2;
+			posx = posX, posy = hh, posz = posZ + width/2;
 		if (i % 2 == 0)
 			rotangle = 45.f;
 		if (i % 2 == 1)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segmentTrans.push_back(segment.getModelMatrix());
-		h += width;
+		hh += width;
 	}
 
 	// tyl
 
-	h = width / 2;
+	hh = posY + width / 2;
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 0.f, roty = 0.f, rotz = 1.f, rotangle = 0.f,
 			scalex = glm::sqrt(2)*width / 2, scaley = segmentScale, scalez = segmentScale,
-			posx = 0.f, posy = h, posz = -width / 2;
+			posx = posX, posy = hh, posz = posZ-width / 2;
 		if (i % 2 == 1)
 			rotangle = 45.f;
-		if (i % 2 == 0)
-			rotangle = 135.f;
+		if (i % 2 == 0)			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+
 		segmentTrans.push_back(segment.getModelMatrix());
-		h += width;
+		hh += width;
 	}
 
 	//bok -x
 
-	h = width / 2;
+	hh = posY + width / 2;
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 0.f,
 			scalex = segmentScale, scaley = segmentScale, scalez = glm::sqrt(2)*width / 2,
-			posx = -width/2, posy = h, posz = 0.f;
+			posx = posX-width/2, posy = hh, posz = posZ;
 		if (i % 2 == 0)
 			rotangle = 45.f;
 		if (i % 2 == 1)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segmentTrans.push_back(segment.getModelMatrix());
-		h += width;
+		hh += width;
 	}
 
 	// bok +x
 
-	h = width / 2;
+	hh = posY + width / 2;
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 0.f,
 			scalex = segmentScale, scaley = segmentScale, scalez = glm::sqrt(2)*width / 2,
-			posx = width / 2, posy = h, posz = 0.f;
+			posx = posX + width / 2, posy = hh, posz = posZ;
 		if (i % 2 == 1)
 			rotangle = 45.f;
 		if (i % 2 == 0)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segmentTrans.push_back(segment.getModelMatrix());
-		h += width;
+		hh += width;
 	}
 
 	
@@ -151,7 +155,7 @@ void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, segment.getTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
 
 	for (int i = 0; i < segmentTrans.size(); ++i)
 	{

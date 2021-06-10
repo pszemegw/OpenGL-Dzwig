@@ -16,6 +16,7 @@
 #include "CraneBase.h"
 #include "CraneTop.h"
 #include <windows.h>
+#include "Crane.h"
 
 using namespace std;
 
@@ -221,9 +222,10 @@ Window::Window(GLuint w, GLuint h)
 		//camera->decreaseCameraSpeed(10.f);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 
-		ground = new Cuboid(0, -1.f, 0, 1000, 1, 1000);
-		ground->setTexture("gnd1.jpg");
+		ground = new Cuboid(0, -1.f, 0, 10000, 1, 10000);
 		
+		ground->setTexture("gnd1.jpg");
+		//ground->setScale(10000, 1, 10000);
 		
 
 	}
@@ -242,10 +244,8 @@ int Window::mainLoop()
 		GLuint VBO, VAO, VBO1, VAO1, VAO2, VBO2;
 		unsigned int skyboxVAO, skyboxVBO;
 		unsigned int lightVAO;
-		CraneTower tower("metal.png");
-		CraneBase base(1.5f,.2f,"concrete.jpg");
-		CraneTop top("metal.png");
-
+		
+		Crane* dzwig = new Crane();
 
 		glGenVertexArrays(1, &lightVAO);
 		glBindVertexArray(lightVAO);
@@ -319,10 +319,10 @@ int Window::mainLoop()
 			glm::mat4 trans;
 
 
-
-			tower.draw(&shaderProgram, camera, this->width, this->height);
+			dzwig->draw(&shaderProgram, camera, this->width, this->height);
+			/*tower.draw(&shaderProgram, camera, this->width, this->height);
 			base.draw(&shaderProgram, camera, this->width, this->height);
-			top.draw(&shaderProgram, camera, this->width, this->height);
+			top.draw(&shaderProgram, camera, this->width, this->height);*/
 
 
 

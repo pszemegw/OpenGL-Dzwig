@@ -18,14 +18,17 @@ class CraneTower
 	Cuboid segment;
 	GLuint VAO, VBO;
 	std::vector<glm::mat4> segmentTrans;
+	Texture2D* segmentTexture;
 
 	GLfloat height = 30.0f;
 	GLfloat width = 1.0f;
 	GLfloat segmentScale = 0.03f;
 
+	GLfloat posX, posY, posZ;
+
 public:
 
-	CraneTower(std::string textureFileName);
+	CraneTower(GLfloat h = 30.f, GLfloat w = 1.0f, GLfloat scale = 0.03f, Texture2D* tex = nullptr, GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f, GLuint vao=0);
 	
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
 

@@ -1,109 +1,68 @@
 #include "CraneTop.h"
 
-CraneTop::CraneTop(std::string textureFileName)
+void CraneTop::arm()
 {
-	
-	segment.setTexture(textureFileName);
-	ropeTexture = new Texture2D("black.png");
-	concreteTexture = new Texture2D("concrete.jpg");
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		segment.getVertexTextureArraySize() * sizeof(GLfloat),
-		segment.getVertexTextureArrayPointer(),
-		GL_STATIC_DRAW);
-
-	// position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(0);
-	// texture
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
-
-
 	GLfloat length2 = length - width / 2;
 
-	segment.setAll(-length, posy, -width/2, length /*+ width/2*/, segmentScale, segmentScale);
+	segment.setAll(posX - length, posY, posZ - width / 2, length /*+ width/2*/, segmentScale, segmentScale);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(-length, posy, width / 2, length /*+ width / 2*/, segmentScale, segmentScale);
+	segment.setAll(posX - length, posY, posZ + width / 2, length /*+ width / 2*/, segmentScale, segmentScale);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(-length2, posy+width*glm::sqrt(3)/2, 0, length2, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
-
-	for (int i = 0; i < 2*length / width -1; ++i)
-	{
-		segment.setAll(-width/2 - i*width, posy, 0, segmentScale, segmentScale, width/2);
-		segmentTrans.push_back(segment.getModelMatrix());
-	}
-	segment.setAll(-2*length, posy, 0, segmentScale, segmentScale, width / 2);
+	segment.setAll(posX - length2, posY + width * glm::sqrt(3) / 2, posZ, length2, segmentScale, segmentScale);
 	segmentTrans.push_back(segment.getModelMatrix());
 
-	for (int i = 0; i < 2 * length / width -1; ++i)
+	for (int i = 0; i < 2 * length / width - 1; ++i)
 	{
-		segment.setAll(-width / 2 - i * width, posy+ width*sqrt(3)/4, width/4, segmentScale, segmentScale, width / 2,1,0,0,60);
+		segment.setAll(posX - width / 2 - i * width, posY, posZ, segmentScale, segmentScale, width / 2);
 		segmentTrans.push_back(segment.getModelMatrix());
 	}
-	for (int i = 0; i < 2 * length / width -1; ++i)
+	segment.setAll(posX - 2 * length, posY, posZ, segmentScale, segmentScale, width / 2);
+	segmentTrans.push_back(segment.getModelMatrix());
+
+	for (int i = 0; i < 2 * length / width - 1; ++i)
 	{
-		segment.setAll(-width / 2 - i * width, posy + width * sqrt(3) / 4, -width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 120);
+		segment.setAll(posX - width / 2 - i * width, posY + width * sqrt(3) / 4, posZ + width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 60);
+		segmentTrans.push_back(segment.getModelMatrix());
+	}
+	for (int i = 0; i < 2 * length / width - 1; ++i)
+	{
+		segment.setAll(posX - width / 2 - i * width, posY + width * sqrt(3) / 4, posZ - width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 120);
 		segmentTrans.push_back(segment.getModelMatrix());
 	}
 
-	segment.setAll(- 2*length + width/2, posy + width * sqrt(3) / 4, -width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 120);
+	segment.setAll(posX - 2 * length + width / 2, posY + width * sqrt(3) / 4, posZ - width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 120);
 	segment.setRotation2(0, 1, 0, -45);
 	segmentTrans.push_back(segment.getModelMatrix());
-	segment.setAll(-2 * length + width / 2, posy + width * sqrt(3) / 4, width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 60);
+	segment.setAll(posX - 2 * length + width / 2, posY + width * sqrt(3) / 4, posZ + width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 60);
 	segment.setRotation2(0, 1, 0, -45);
 	segmentTrans.push_back(segment.getModelMatrix());
 	segment.setRotation2(0, 1, 0, 0);
-	//segment.setAll(-width / 2 - i * width, posy + width * sqrt(3) / 4, -width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 120);
-	
 
-	//segment.setAll( - 2 * length  - length/width, posy+width*sqrt(3)/4, width / 4, width*sqrt(6)/4, segmentScale, segmentScale, 0, 1, 0, 30);
-	//segment.setAll(-2 * length / width, posy, width / 2, width*sqrt(3) / 4, segmentScale, segmentScale,0,1,0,30);
-	//segment.setRotation2(0, 0, 1, 45);
-	//segmentTrans.push_back(segment.getModelMatrix());
 
-	
-
-	
-
-	GLfloat h = sqrt(2)* width * glm::tan(glm::radians(75.f))/2;
+	GLfloat h = sqrt(2)* width * glm::tan(glm::radians(75.f)) / 2;
 	GLfloat h2 = h - width * sqrt(3) / 2;
-	GLfloat lineLength = glm::sqrt(h2*h2 + length*length);
+	GLfloat lineLength = glm::sqrt(h2*h2 + length * length);
 
-	//segment.setAll(0, posy + h2/2 + h/4, 0, segmentScale, h2/2, segmentScale);
-	//segmentTrans.push_back(segment.getModelMatrix());
 
-	
-
-	
-
-	segment.setAll(0, posy+h/2, 0, segmentScale,h/2,segmentScale,0,0,1,/*glm::degrees(glm::atan(h2/2*(length-width)))*/0);
+	segment.setAll(posX, posY + h / 2, posZ, segmentScale, h / 2, segmentScale, 0, 0, 1,/*glm::degrees(glm::atan(h2/2*(length-width)))*/0);
 	segmentTrans.push_back(segment.getModelMatrix());
 
 
 	// zwienczenie
 	GLfloat alpha = glm::radians(75.f);
-	segment.setAll(-width / 4, posy + width * glm::sqrt(2)*glm::tan(alpha) / 4, width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 45);
+	segment.setAll(posX - width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ + width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 45);
 	segment.setRotation2(0, 0, 1, 75);
 	segmentTrans.push_back(segment.getModelMatrix());
 
-	segment.setAll(width / 4, posy + width * glm::sqrt(2)*glm::tan(alpha) / 4, width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 135);
+	segment.setAll(posX + width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ + width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 135);
 	segment.setRotation2(0, 0, 1, 75);
 	segmentTrans.push_back(segment.getModelMatrix());
 
-	segment.setAll(width / 4, posy + width * glm::sqrt(2)*glm::tan(alpha) / 4, -width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 225);
+	segment.setAll(posX + width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ - width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 225);
 	segment.setRotation2(0, 0, 1, 75);
 	segmentTrans.push_back(segment.getModelMatrix());
 
-	segment.setAll(-width / 4, posy + width * glm::sqrt(2)*glm::tan(alpha) / 4, -width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 315);
+	segment.setAll(posX - width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ - width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 315);
 	segment.setRotation2(0, 0, 1, 75);
 	segmentTrans.push_back(segment.getModelMatrix());
 
@@ -111,36 +70,48 @@ CraneTop::CraneTop(std::string textureFileName)
 
 	//tyl
 
-	segment.setAll(length / 2 - width / 2, posy, 0, length / 2, segmentScale, width / 2);
+	segment.setAll(posX + length / 2 - width / 2, posY, posZ, length / 2, segmentScale, width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
+}
 
+void CraneTop::lines()
+{
+	GLfloat h = sqrt(2)* width * glm::tan(glm::radians(75.f)) / 2;
+	GLfloat h2 = h - width * sqrt(3) / 2;
+	GLfloat lineLength = glm::sqrt(h2*h2 + length * length);
+	GLfloat length2 = length - width / 2;
 	//liny
 
 	GLfloat x = glm::degrees(glm::atan(h2 / (2 * length2 + width / 2)));
 	segment.setAll(
-		-length2, posy + width * sqrt(3) / 2 + h2 / 2, 0,
+		posX - length2, posY + width * sqrt(3) / 2 + h2 / 2, posZ,
 		length2, segmentScale / 5, segmentScale / 5,
 		0, 0, 1, x
 	);
 	segmentTrans.push_back(segment.getModelMatrix());
 
-	lineLength = glm::sqrt(h*h + (length-width/2)/2 * (length - width / 2) / 2);
-	x = -glm::degrees(glm::atan(h / (length - width/2)));
+	lineLength = glm::sqrt(h*h + (length - width / 2) / 2 * (length - width / 2) / 2);
+	x = -glm::degrees(glm::atan(h / (length - width / 2)));
 	segment.setAll(
-		length/2, posy + h / 2, 0,
+		posX + length / 2, posY + h / 2, posZ,
 		lineLength, segmentScale / 5, segmentScale / 5,
 		0, 0, 1, x
 	);
-
 	segmentTrans.push_back(segment.getModelMatrix());
 
+}
 
+CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat x, GLfloat y, GLfloat z, Texture2D * texSeg, Texture2D * texRope, Texture2D * texConcrete, GLuint vao)
+{
+	width = w; segmentScale = scale; posX = x; posY = y; posZ = z;
+	segmentTexture = texSeg; ropeTexture = texRope; concreteTexture = texConcrete; VAO = vao;
+	arm();
+	lines();
+	
 	// obciazenie
 
-	segment.setAll(length/2-width/2, posy, 0, 2 * width, width*sqrt(3) / 2, width/4);
+	segment.setAll(posX + length / 2 - width / 2, posY, posZ, 2 * width, width*sqrt(3) / 2, width / 4);
 	segmentTrans.push_back(segment.getModelMatrix());
-
-
 }
 
 void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
@@ -151,7 +122,7 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, segment.getTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
 
 	for (int i = 0; i < segmentTrans.size()-3; ++i)
 	{

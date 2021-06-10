@@ -1,10 +1,18 @@
 #include "CraneBase.h"
 
-CraneBase::CraneBase(GLfloat w, GLfloat h, std::string textureFileName) : width(w), height(h)
+CraneBase::CraneBase(
+	GLfloat w, 
+	GLfloat h, 
+	Texture2D* tex, 
+	GLfloat x, 
+	GLfloat y, 
+	GLfloat z,
+	GLuint vao) : width(w), height(h), posX(x), posY(y), posZ(z), VAO(vao)
 {
-	segment = new Cuboid(0, height, 0, 1, height, 1);
-	segment->setTexture(textureFileName);
-	glGenVertexArrays(1, &VAO);
+	segment = new Cuboid(posX, posY+height, posZ, width/2, height, width/2);
+	texture = tex;
+	//segment->setTexture(textureFileName);
+	/*glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -21,7 +29,7 @@ CraneBase::CraneBase(GLfloat w, GLfloat h, std::string textureFileName) : width(
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	glBindVertexArray(0);
+	glBindVertexArray(0);*/
 
 
 	segmentTrans.push_back(segment->getModelMatrix());
@@ -39,7 +47,7 @@ void CraneBase::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, segment->getTexture().getTextureID());
+	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
 
 	for (int i = 0; i < segmentTrans.size(); ++i)
 	{
