@@ -30,6 +30,14 @@ void CraneTop::arm()
 		segmentTrans.push_back(segment.getModelMatrix());
 	}
 
+
+	for (int i = 1; i < 2 * length / width - 1; ++i)
+	{
+		segment.setAll(posX - i * width, posY + width*sqrt(3)/4, posZ, width*sqrt(7) / 4, segmentScale, segmentScale,0,0,1,-glm::degrees(glm::atan(sqrt(3)/2)));
+		if (i % 2) segment.setRotation(0, 0, 1, glm::degrees(glm::atan(sqrt(3) / 2)));
+		segmentTrans.push_back(segment.getModelMatrix());
+	}
+
 	segment.setAll(posX - 2 * length + width / 2, posY + width * sqrt(3) / 4, posZ - width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 120);
 	segment.setRotation2(0, 1, 0, -45);
 	segmentTrans.push_back(segment.getModelMatrix());
