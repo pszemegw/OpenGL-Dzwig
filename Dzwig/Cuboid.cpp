@@ -55,6 +55,8 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 		-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
 	};
 
+	
+
 	generateModelMatrix();
 }
 

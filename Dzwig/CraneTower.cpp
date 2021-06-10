@@ -139,23 +139,7 @@ CraneTower::CraneTower(std::string textureFileName)
 		h += width;
 	}
 
-	// zwienczenie
-	GLfloat alpha = glm::radians(75.f);
-	segment.setAll(-width/4, height+width*glm::sqrt(2)*glm::tan(alpha)/4, width/4, width*sqrt(2)/(4*glm::cos(alpha)), segmentScale, segmentScale,0,1,0,45);
-	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
-
-	segment.setAll(width / 4, height + width * glm::sqrt(2)*glm::tan(alpha) / 4, width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 135);
-	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
-
-	segment.setAll(width / 4, height + width * glm::sqrt(2)*glm::tan(alpha) / 4, -width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 225);
-	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
-
-	segment.setAll(-width / 4, height + width * glm::sqrt(2)*glm::tan(alpha) / 4, -width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 315);
-	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
+	
 	
 }
 

@@ -18,6 +18,8 @@ class CraneTop
 	Cuboid segment;
 	GLuint VAO, VBO;
 	std::vector<glm::mat4> segmentTrans;
+	Texture2D* ropeTexture;
+	Texture2D* concreteTexture;
 
 	GLfloat length = 15.0f;
 	GLfloat posy = 30.0f;
