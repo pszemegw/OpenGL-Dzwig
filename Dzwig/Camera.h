@@ -5,8 +5,9 @@ class Camera
 {
 	const GLfloat minFOV = 20.0f, maxFOV = 140.0f;
 	GLfloat FOV = 80.0f;
-	GLfloat movSpeed = 0.1f;
+	GLfloat movSpeed = 2.f;
 	GLfloat rotSpeed = 0.1f;
+	GLfloat dt = 0.0f;
 	
 	glm::vec3 cameraPos;
 	// +z direction in camera coord system
@@ -36,5 +37,7 @@ public:
 
 	void increaseCameraSpeed(GLfloat inc);
 	void decreaseCameraSpeed(GLfloat dec);
+
+	void setDeltaTime(GLfloat t);
 };
 

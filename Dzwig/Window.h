@@ -18,6 +18,7 @@ class Window
 	GLint initStatus = 0;
 	GLuint width = 800;
 	GLuint height = 600;
+	GLfloat deltaTime = 0.f;
 	GLFWwindow* openglWindow;
 	ShaderProgram shaderProgram;
 	//ShaderProgram skyboxShader;
@@ -79,6 +80,8 @@ public:
 	void focus_callback(int focused);
 	void scroll_callback(double xoffset, double yoffset);
 	void mouse_button_callback(int button, int action, int mods);
+
+	void keyboardInput();
 	
 	
 

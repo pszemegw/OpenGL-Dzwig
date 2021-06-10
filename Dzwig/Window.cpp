@@ -15,6 +15,7 @@
 #include "CraneTower.h"
 #include "CraneBase.h"
 #include "CraneTop.h"
+#include <windows.h>
 
 using namespace std;
 
@@ -97,6 +98,51 @@ void Window::mouse_button_callback(int button, int action, int mods)
 	}
 }
 
+void Window::keyboardInput()
+{
+	if (glfwGetKey(this->openglWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(this->openglWindow, true);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_W) == GLFW_PRESS)
+		camera->moveCamera(Camera::FORWARD);
+	if (glfwGetKey(openglWindow, GLFW_KEY_S) == GLFW_PRESS)
+		camera->moveCamera(Camera::BACKWARD);
+	if (glfwGetKey(openglWindow, GLFW_KEY_A) == GLFW_PRESS)
+		camera->moveCamera(Camera::LEFT);
+	if (glfwGetKey(openglWindow, GLFW_KEY_D) == GLFW_PRESS)
+		camera->moveCamera(Camera::RIGHT);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_Q) == GLFW_PRESS)
+		camera->moveCamera(Camera::DOWN);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_E) == GLFW_PRESS)
+		camera->moveCamera(Camera::UP);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_R) == GLFW_PRESS)
+		camera->resetCamera();
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_2) == GLFW_PRESS)
+		camera->rotateCamera(0, -5);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_8) == GLFW_PRESS)
+		camera->rotateCamera(0, 5);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_6) == GLFW_PRESS)
+		camera->rotateCamera(-5, 0);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_4) == GLFW_PRESS)
+		camera->rotateCamera(5, 0);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_MULTIPLY) == GLFW_PRESS)
+		camera->setFOV(camera->getFOV() + 1.0f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_DIVIDE) == GLFW_PRESS)
+		camera->setFOV(camera->getFOV() - 1.0f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+		camera->increaseCameraSpeed(.1f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+		camera->decreaseCameraSpeed(.1f);
+}
+
 
 
 void Window::key_callback(GLFWwindow * window, int key, int scancode, int action, int mode)
@@ -130,7 +176,7 @@ Window::Window(GLuint w, GLuint h)
 		glfwSetWindowUserPointer(openglWindow, this);
 
 		// Set keyboard callback function
-		glfwSetKeyCallback(openglWindow, Window::onKey);
+		//glfwSetKeyCallback(openglWindow, Window::onKey);
 
 		// Set focus callback
 
@@ -169,10 +215,10 @@ Window::Window(GLuint w, GLuint h)
 			"skybox/front.jpg",
 			"skybox/back.jpg" });
 		camera = new Camera();
-		camera->increaseCameraSpeed(10.f);
-		camera->moveCamera(Camera::BACKWARD);
-		camera->moveCamera(Camera::UP);
-		camera->decreaseCameraSpeed(10.f);
+		//camera->increaseCameraSpeed(10.f);
+		//camera->moveCamera(Camera::BACKWARD);
+		//camera->moveCamera(Camera::UP);
+		//camera->decreaseCameraSpeed(10.f);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 
 		ground = new Cuboid(0, -1.f, 0, 1000, 1, 1000);
@@ -238,11 +284,23 @@ int Window::mainLoop()
 		glBindVertexArray(skyboxVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 		
+		GLfloat lastFrame = 0.0f;
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
 		{
+			GLfloat currentFrame = glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
+			camera->setDeltaTime(deltaTime);
+			keyboardInput();
 			// Check if any events have been activiated
 			glfwPollEvents();
+
+			if (!isFocused) 
+			{
+				Sleep(500); 
+				continue;
+			}
 
 			glClearColor(0.0f, 0.3f, 0.9f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
