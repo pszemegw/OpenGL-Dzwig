@@ -7,11 +7,11 @@
 ## Milestones
 - [ ] Model dźwigu
     - [x] Trzon
-    - [ ] Ramię
+    - [x] Ramię
     - [ ] Kabina
-    - [ ] Podstawa dzwigu z obciazeniem
+    - [x] Podstawa dzwigu z obciazeniem
     - [ ] Hak i lina
-    - [ ] Przeciwwaga
+    - [x] Przeciwwaga
 - [x] Teksturowanie
 - [x] Dodanie tła/skybox
 - [ ] Oświetlenie sceny
