@@ -317,6 +317,7 @@ int Window::mainLoop()
 			// activate shader
 			shaderProgram.Use();
 			this->shaderProgram.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+			this->shaderProgram.setVec3("lightPos", glm::vec3(glm::sin(glfwGetTime()), 10.f, 10 * glm::cos(glfwGetTime())));
 
 			// create transformations
 			glm::mat4 view = camera->getWorldToViewMatrix();
