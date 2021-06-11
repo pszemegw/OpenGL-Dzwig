@@ -45,6 +45,7 @@ public:
 	void printDebug();
 	void moveCamera(Movement m);
 	GLfloat getFOV();
+	glm::vec3* getCameraPosition();
 	void setFOV(GLfloat fov);
 	void rotateCamera(GLfloat dx, GLfloat dy);
 	void resetCamera();

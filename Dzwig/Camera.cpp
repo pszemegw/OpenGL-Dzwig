@@ -65,6 +65,11 @@ GLfloat Camera::getFOV()
 	return FOV;
 }
 
+glm::vec3 * Camera::getCameraPosition()
+{
+	return &cameraPos;
+}
+
 void Camera::setFOV(GLfloat fov)
 {
 	if (fov < minFOV) 
