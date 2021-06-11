@@ -9,20 +9,13 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Window.h"
-//#include "Texture2D.h"
-//#include "CubemapTexture.h"
-//#include "Cuboid.h"
-//#include "CraneTower.h"
-//#include "CraneBase.h"
-//#include "CraneTop.h"
 #include <windows.h>
-//#include "Crane.h"
 
 using namespace std;
 
 void Window::onKey(int key, int scancode, int action, int mods)
 {
-	cout << key << endl;
+	/*cout << key << endl;
 	if (!isFocused) return;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(this->openglWindow, GL_TRUE);
@@ -56,7 +49,7 @@ void Window::onKey(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_KP_ADD && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->increaseCameraSpeed(.5f);
 	if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera->decreaseCameraSpeed(.5f);
+		camera->decreaseCameraSpeed(.5f);*/
 
 	/*if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		cube->setPosition(cube->getPosition()[0], cube->getPosition()[1]+1, cube->getPosition()[2]);
@@ -64,8 +57,8 @@ void Window::onKey(int key, int scancode, int action, int mods)
 		cube->setPosition(cube->getPosition()[0], cube->getPosition()[1] - 1, cube->getPosition()[2]);*/
 
 
-	if (key == GLFW_KEY_KP_DECIMAL && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		test = !test;
+	/*if (key == GLFW_KEY_KP_DECIMAL && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		test = !test;*/
 }
 
 void Window::mouseCallback(double xpos, double ypos)
@@ -147,6 +140,11 @@ void Window::keyboardInput()
 		dzwig->rotateCrane(0.1f);
 	if (glfwGetKey(openglWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		dzwig->rotateCrane(-0.1f);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_L) == GLFW_PRESS)
+		dzwig->moveHookX(0.1f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_J) == GLFW_PRESS)
+		dzwig->moveHookX(-0.1f);
 }
 
 
@@ -173,6 +171,7 @@ Window::Window(GLuint w, GLuint h)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	//glHint(GL_FOG_HINT, GL_NICEST);
 	try
 	{
 		openglWindow = glfwCreateWindow(this->width, this->height, "GKOM Dzwig", nullptr, nullptr);
@@ -200,12 +199,12 @@ Window::Window(GLuint w, GLuint h)
 		glfwSetInputMode(openglWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwGetCursorPos(openglWindow, &(prevMousePos.x), &(prevMousePos.y));
 
-
 		//Enable z-buffer test
 		glEnable(GL_DEPTH_TEST);
 
+		//Enable face culling
 		glEnable(GL_CULL_FACE);
-
+		
 		glewExperimental = GL_TRUE;
 		// Init glew
 		if (glewInit() != GLEW_OK)
@@ -220,18 +219,11 @@ Window::Window(GLuint w, GLuint h)
 			"skybox/bottom.jpg",
 			"skybox/front.jpg",
 			"skybox/back.jpg" });
-		camera = new Camera();
-		//camera->increaseCameraSpeed(10.f);
-		//camera->moveCamera(Camera::BACKWARD);
-		//camera->moveCamera(Camera::UP);
-		//camera->decreaseCameraSpeed(10.f);
+		camera = new Camera(0.f,10.f,10.f,-90.f,0.f,90.f,width,height);
 		dzwig = new Crane();
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
-
 		ground = new Cuboid(0, -1.f, 0, 10000, 1, 10000);
-		
 		ground->setTexture("gnd1.jpg");
-		//ground->setScale(10000, 1, 10000);
 		
 
 	}
@@ -273,11 +265,14 @@ int Window::mainLoop()
 			GL_STATIC_DRAW);
 
 		// position
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
 		// texture
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
+		// normal
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
+		glEnableVertexAttribArray(2);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -291,6 +286,14 @@ int Window::mainLoop()
 		glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
 		
 		GLdouble lastFrame = 0.0f;
+
+		glEnable(GL_FOG);
+		GLfloat fogColor[] = { 0.0f, 0.3f, 0.9f, 1.0f };
+		glFogfv(GL_FOG_COLOR, fogColor);
+		glFogi(GL_FOG_MODE, GL_LINEAR);
+		glFogf(GL_FOG_START, 0.1f);
+		glFogf(GL_FOG_END, 100.0f);
+
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
 		{
@@ -313,6 +316,7 @@ int Window::mainLoop()
 
 			// activate shader
 			shaderProgram.Use();
+			this->shaderProgram.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 
 			// create transformations
 			glm::mat4 view = camera->getWorldToViewMatrix();
@@ -326,11 +330,6 @@ int Window::mainLoop()
 
 
 			dzwig->draw(&shaderProgram, camera, this->width, this->height);
-			/*tower.draw(&shaderProgram, camera, this->width, this->height);
-			base.draw(&shaderProgram, camera, this->width, this->height);
-			top.draw(&shaderProgram, camera, this->width, this->height);*/
-
-
 
 			glBindVertexArray(VAO1);
 			glActiveTexture(GL_TEXTURE0);
@@ -340,6 +339,9 @@ int Window::mainLoop()
 
 			trans = projection * camera->getWorldToViewMatrix()*ground->getModelMatrix();
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+			shaderProgram.setMat4("model", ground->getModelMatrix());
+			shaderProgram.setMat4("view", camera->getWorldToViewMatrix());
+			shaderProgram.setMat4("projection", projection);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 
 			skybox->draw(&(camera->getWorldToViewMatrix()), &projection);

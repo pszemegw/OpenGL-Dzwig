@@ -13,7 +13,6 @@ using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-//#include "Window.h"
 #include "Camera.h"
 
 class CraneTop
@@ -30,18 +29,20 @@ class CraneTop
 	GLfloat width = 1.0f;
 	GLfloat segmentScale = 0.03f;
 
+	GLfloat hookPosX;
+
 	void arm();
 	void lines();
-	//void weight();
+	
 
 public:
 
-	//CraneTop(std::string textureFileName);
-	CraneTop(GLfloat w = 1.0f, GLfloat scale = 0.03f,
+	CraneTop(GLfloat w = 1.0f, GLfloat scale = 0.03f, GLfloat l = 30.f,
 		GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f,
 		Texture2D* texSeg = nullptr, Texture2D* texRope = nullptr, Texture2D* texConcrete = nullptr, GLuint vao = 0);
 
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h, GLfloat rot);
+	void moveHookX(GLfloat dx);
 };
 
 #endif

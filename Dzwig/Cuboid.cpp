@@ -55,7 +55,50 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 		-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
 	};
 
-	
+	vertexTextureNormal = {
+		// back face (CCW winding)
+		 1.0f, -1.0f, -1.0f,					  0.0f, 0.0f, /* bottom-left			*/			0.0f, 0.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,					  1.0f*scaleX, 0.0f, /* bottom-right	*/			0.0f, 0.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleY, /* top-right*/			0.0f, 0.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleY, /*top-right	*/			0.0f, 0.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleY, /* top-left	*/				0.0f, 0.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,					  0.0f, 0.0f, /* bottom-left	*/					0.0f, 0.0f, -1.0f,
+		// front face (CCW winding)
+		-1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 0.0f, 1.0f,
+		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
+		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
+		-1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY,								0.0f, 0.0f, 1.0f,
+		-1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
+		// left face (CCW)
+		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
+		-1.0f, -1.0f,  1.0f,					  1.0f*scaleZ, 0.0f,								-1.0f, 0.0f, 0.0f,
+		-1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
+		-1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
+		-1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleY,								-1.0f, 0.0f, 0.0f,
+		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
+		// right face (CCW)
+		 1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										1.0f, 0.0f, 0.0f,
+		 1.0f, -1.0f, -1.0f,					  1.0f*scaleZ, 0.0f, 								1.0f, 0.0f, 0.0f,
+		 1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
+		 1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY, 								1.0f, 0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f,					  0.0f, 0.0f, 										1.0f, 0.0f, 0.0f,
+		// bottom face (CCW)					      
+		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f, -1.0f,					  1.0f*scaleX, 0.0f, 								0.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
+		-1.0f, -1.0f,  1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, -1.0f, 0.0f,
+		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
+		// top face (CCW)
+		-1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 1.0f, 0.0f,
+		 1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
+		 1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, 1.0f, 0.0f,
+		-1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f
+	};
 
 	generateModelMatrix();
 }
@@ -67,25 +110,25 @@ void Cuboid::generateVertices()
 
 glm::mat4 Cuboid::getModelMatrix()
 {
-	generateModelMatrix();
+	//generateModelMatrix();
 	return modelMatrix;
 }
 
 void Cuboid::translate()
 {
-	if (posX == 0.f && posY == 0.f && posZ == 0.f) return;
+	//if (posX == 0.f && posY == 0.f && posZ == 0.f) return;
 	modelMatrix = glm::translate(modelMatrix, glm::vec3(posX, posY, posZ));
 }
 
 void Cuboid::rotate()
 {
-	if (rotAngle == 0.f) return;
+	//if (rotAngle == 0.f) return;
 	modelMatrix = glm::rotate(modelMatrix,glm::radians(rotAngle),glm::vec3(rotX,rotY,rotZ));
 }
 
 void Cuboid::rotate2()
 {
-	if (rotAngle2 == 0.f) return;
+	//if (rotAngle2 == 0.f) return;
 	modelMatrix = glm::rotate(modelMatrix, glm::radians(rotAngle2), glm::vec3(rotX2, rotY2, rotZ2));
 }
 
@@ -114,7 +157,7 @@ void Cuboid::generateModelMatrix()
 
 GLfloat * Cuboid::getVertexTextureArrayPointer()
 {
-	return &vertexTexture[0];
+	return &vertexTextureNormal[0];
 }
 
 /*GLuint Cuboid::getVertexArraySize()
@@ -124,11 +167,12 @@ GLfloat * Cuboid::getVertexTextureArrayPointer()
 
 GLuint Cuboid::getVertexTextureArraySize()
 {
-	return vertexTexture.size();
+	return vertexTextureNormal.size();
 }
 
 void Cuboid::setScale(GLfloat x, GLfloat y, GLfloat z)
 {
+	if (x == scaleX && y == scaleY && z == scaleZ) return;
 	scaleX = x; scaleY = y; scaleZ = z;
 	//glm::scale(modelMatrix, glm::vec3(x, y, z));
 	generateModelMatrix();
@@ -136,6 +180,7 @@ void Cuboid::setScale(GLfloat x, GLfloat y, GLfloat z)
 
 void Cuboid::setPosition(GLfloat x, GLfloat y, GLfloat z)
 {
+	if (x == posX && y == posY && z == posZ) return;
 	posX = x; posY = y; posZ = z;
 	//glm::translate(modelMatrix, glm::vec3(x, y, z));
 	generateModelMatrix();
@@ -143,6 +188,7 @@ void Cuboid::setPosition(GLfloat x, GLfloat y, GLfloat z)
 
 void Cuboid::setRotation(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 {
+	if (x == rotX && y == rotY && z == rotZ && rotAngle == angle) return;
 	rotX = x; rotY = y; rotZ = z; rotAngle = angle;
 	//glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(x, y, z));
 	generateModelMatrix();
@@ -150,11 +196,16 @@ void Cuboid::setRotation(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 
 void Cuboid::setRotation2(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 {
+	if (rotX2 == x && rotY2 == y && rotZ2 == z && rotAngle2 == angle) return;
 	rotX2 = x; rotY2 = y; rotZ2 = z; rotAngle2 = angle;
+	generateModelMatrix();
 }
 
 void Cuboid::setAll(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLfloat rotX, GLfloat rotY, GLfloat rotZ, GLfloat rotAngle)
 {
+	if (this->posX == posX && this->posY == posY && this->posZ == posZ
+		&& this->scaleX == scaleX && this->scaleY == scaleY && this->scaleZ == scaleZ
+		&& this->rotX == rotX && this->rotY == rotY && this->rotZ == rotZ && this->rotAngle == rotAngle) return;
 	this->posX = posX;
 	this->posY = posY;
 	this->posZ = posZ;
@@ -165,6 +216,8 @@ void Cuboid::setAll(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GL
 	this->rotY = rotY;
 	this->rotZ = rotZ;
 	this->rotAngle = rotAngle;
+
+	generateModelMatrix();
 }
 
 std::vector<GLfloat> Cuboid::getScale()

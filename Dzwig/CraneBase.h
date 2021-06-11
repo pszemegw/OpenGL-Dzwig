@@ -24,11 +24,9 @@ class CraneBase
 	GLfloat posX, posY, posZ;
 	std::vector<glm::mat4> segmentTrans;
 	Texture2D* texture;
-	//GLuint VAO;
 
 public:
 	CraneBase(GLfloat w = 2 * glm::sqrt(2), GLfloat h = 2 * glm::sqrt(2), Texture2D* tex = nullptr, GLfloat x=0.f, GLfloat y=0.f, GLfloat z=0.f, GLuint vao=0);
-
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
 };
 

@@ -31,9 +31,7 @@ public:
 	void draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h);
 
 	void rotateCrane(GLfloat angleDeg);
-
-
+	void moveHookX(GLfloat dx);
 };
-
 
 #endif

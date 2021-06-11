@@ -93,7 +93,7 @@ void CraneTop::lines()
 	GLfloat x = glm::degrees(glm::atan(h2 / (2 * length2 + width / 2)));
 	segment.setAll(
 		posX - length2, posY + width * sqrt(3) / 2 + h2 / 2, posZ,
-		length2, segmentScale / 5, segmentScale / 5,
+		length2, segmentScale / 2, segmentScale / 2,
 		0, 0, 1, x
 	);
 	segmentTrans.push_back(segment.getModelMatrix());
@@ -102,54 +102,79 @@ void CraneTop::lines()
 	x = -glm::degrees(glm::atan(h / (length - width / 2)));
 	segment.setAll(
 		posX + length / 2, posY + h / 2, posZ,
-		lineLength, segmentScale / 5, segmentScale / 5,
+		lineLength, segmentScale / 2, segmentScale / 2,
 		0, 0, 1, x
 	);
 	segmentTrans.push_back(segment.getModelMatrix());
 
 }
 
-CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat x, GLfloat y, GLfloat z, Texture2D * texSeg, Texture2D * texRope, Texture2D * texConcrete, GLuint vao)
+void CraneTop::moveHookX(GLfloat dx)
 {
-	width = w; segmentScale = scale; posX = x; posY = y; posZ = z;
+	hookPosX += dx;
+	if (hookPosX < posX - 2*length + width) hookPosX = posX - 2*length + width;
+	else if (hookPosX > posX - width) hookPosX = posX - width;
+
+}
+
+CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat l, GLfloat x, GLfloat y, GLfloat z, Texture2D * texSeg, Texture2D * texRope, Texture2D * texConcrete, GLuint vao)
+{
+
+	width = w; segmentScale = scale; posX = x; posY = y; posZ = z; length = l;
 	segmentTexture = texSeg; ropeTexture = texRope; concreteTexture = texConcrete; VAO = vao;
+	hookPosX = posX - length + width;
+
 	arm();
 	lines();
 	
+	segment.setAll(0, posY - segmentScale, posZ, width/3, segmentScale, width/2);
+	segmentTrans.push_back(segment.getModelMatrix());
+
 	// obciazenie
 
 	segment.setAll(posX + length / 2 - width / 2, posY, posZ, 2 * width, width*sqrt(3) / 2, width / 4);
 	segmentTrans.push_back(segment.getModelMatrix());
+
+
 }
 
 void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat rot)
 {
 	glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), glm::radians(rot), glm::vec3(0, 1, 0));
-	glm::mat4 trans;
-	glm::mat4 view = c->getWorldToViewMatrix();
-	glm::mat4 projection = glm::perspective(glm::radians(c->getFOV()), w*1.0f / h, 0.1f, 1000.0f);
+	glm::mat4 transpose = glm::translate(glm::mat4(1.0f), glm::vec3(hookPosX, 0, 0));
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
 
-	for (int i = 0; i < segmentTrans.size()-3; ++i)
+	s->setMat4("projection", *(c->getProjectionMatrix()));
+	s->setMat4("view", c->getWorldToViewMatrix());
+
+	for (int i = 0; i < segmentTrans.size()-4; ++i)
 	{
-		trans = projection * view * rotMat * segmentTrans[i];
-		glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+		s->setMat4("model", rotMat*segmentTrans[i]);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	glBindTexture(GL_TEXTURE_2D, ropeTexture->getTextureID());
-	trans = projection * view * rotMat * segmentTrans[segmentTrans.size()-3];
-	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	trans = projection * view * rotMat * segmentTrans[segmentTrans.size() - 2];
-	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+
+	// Liny
+
+	for (int i = segmentTrans.size() - 4; i < segmentTrans.size() - 2; ++i)
+	{
+		s->setMat4("model", rotMat*segmentTrans[i]);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
+	//Hak
+
+	s->setMat4("model", rotMat * transpose * segmentTrans[segmentTrans.size() - 2]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
+
+	// Obciazenie
+
 	glBindTexture(GL_TEXTURE_2D, concreteTexture->getTextureID());
-	trans = projection * view * rotMat * segmentTrans[segmentTrans.size() - 1];
-	glUniformMatrix4fv(glGetUniformLocation(s->get_programID(), "transform"), 1, GL_FALSE, &trans[0][0]);
+	s->setMat4("model", rotMat * segmentTrans[segmentTrans.size() - 1]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 }

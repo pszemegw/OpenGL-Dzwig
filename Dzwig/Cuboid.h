@@ -33,6 +33,7 @@ class Cuboid
 	vector<GLuint> indices;
 	vector<GLfloat> textureCoord;
 	vector<GLfloat> vertexTexture;
+	vector<GLfloat> vertexTextureNormal;
 
 	Texture* cubeTexture;
 
@@ -73,10 +74,6 @@ public:
 	void divideTextureCoords(GLfloat div);
 
 	Texture getTexture();
-
-
-	
-
 };
 
 #endif

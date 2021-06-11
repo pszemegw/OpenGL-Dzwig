@@ -13,6 +13,9 @@ class Camera
 	GLfloat rotSpeed = 0.1f;
 	GLfloat dt = 0.0f;
 	
+	GLfloat defaultFOV = 80.f, defaultYaw = -90.f, defaultPitch = 0.f;
+	glm::vec3 defaultCameraPos;
+
 	glm::vec3 cameraPos;
 	// +z direction in camera coord system
 	glm::vec3 cameraDirection;
@@ -27,10 +30,17 @@ class Camera
 	GLfloat pitch = 0.0f;
 
 
+	glm::mat4 projectionMatrix;// = glm::perspective(glm::radians(c->getFOV()), w*1.0f / h, 0.1f, 1000.0f);
+	GLuint windowWidth, windowHeight;
+	GLfloat nearPlane, farPlane;
+
 	
 public:
 	enum Movement { UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD };
-	Camera();
+	//Camera();
+	Camera(GLfloat posX = 0.f, GLfloat posY = 0.f, GLfloat posZ = 0.f,
+		GLfloat yaw = -90.f, GLfloat pitch = 0.f,
+		GLfloat fov = 80.f, GLuint w = 800, GLuint h = 600, GLfloat near = 0.1f, GLfloat far = 1000.f);
 	glm::mat4 getWorldToViewMatrix() const;
 	void printDebug();
 	void moveCamera(Movement m);
@@ -43,6 +53,9 @@ public:
 	void decreaseCameraSpeed(GLfloat dec);
 
 	void setDeltaTime(GLfloat t);
+
+	void generateProjectionMatrix();
+	glm::mat4* getProjectionMatrix();
 };
 
 #endif _CAMERA_H_

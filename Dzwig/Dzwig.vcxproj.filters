@@ -28,18 +28,36 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CraneTower.cpp" />
-    <ClCompile Include="CraneBase.cpp" />
-    <ClCompile Include="CraneTop.cpp" />
-    <ClCompile Include="Crane.cpp" />
+    <ClCompile Include="Crane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CraneBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CraneTop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CraneTower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="iipw.png" />
     <Image Include="weiti.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="gl_05.frag" />
-    <None Include="gl_05.vert" />
+    <None Include="gl_05.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="gl_05.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="skybox.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="skybox.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -47,6 +65,9 @@
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{8d6ac1b1-05fc-4cd9-ba84-d7f919e1fb2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{21f770d1-2077-4069-8e22-f449f3e2c1ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +95,17 @@
     <ClInclude Include="Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CraneTower.h" />
-    <ClInclude Include="CraneBase.h" />
-    <ClInclude Include="CraneTop.h" />
-    <ClInclude Include="Crane.h" />
+    <ClInclude Include="CraneTower.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CraneTop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CraneBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Crane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

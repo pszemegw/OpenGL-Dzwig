@@ -3,17 +3,18 @@
 #include <glm/gtx/transform.hpp>
 
 
-Camera::Camera()
+Camera::Camera(GLfloat posX , GLfloat posY, GLfloat posZ,
+	GLfloat yaw, GLfloat pitch,
+	GLfloat fov, GLuint w, GLuint h, GLfloat near, GLfloat far)
 {
-	/*glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-	cameraDirection = glm::normalize(front);
+	cameraPos = glm::vec3(posX, posY, posZ);
+	defaultCameraPos = cameraPos;
+	this->yaw = yaw; this->pitch = pitch;
+	defaultYaw = yaw; defaultFOV = fov; defaultPitch = pitch;
+	FOV = fov;
+	windowHeight = h; windowWidth = w;
+	nearPlane = near; farPlane = far;
 
-	cameraRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection));
-	cameraUp = glm::cross(cameraDirection, cameraRight);
-	cameraUpTemp = cameraUp;*/
 	resetCamera();
 }
 
@@ -78,6 +79,7 @@ void Camera::setFOV(GLfloat fov)
 	}
 
 	FOV = fov;
+	generateProjectionMatrix();
 }
 
 void Camera::rotateCamera(GLfloat dx, GLfloat dy)
@@ -100,9 +102,11 @@ void Camera::rotateCamera(GLfloat dx, GLfloat dy)
 void Camera::resetCamera()
 {
 	glm::vec3 front;
-	cameraPos = glm::vec3(0.f, 10.f, 5.f);
-	yaw = -90.f;
-	pitch = 0.f;
+	yaw = defaultYaw;
+	pitch = defaultPitch;
+	cameraPos = defaultCameraPos;
+	FOV = defaultFOV;
+
 	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
@@ -111,6 +115,8 @@ void Camera::resetCamera()
 	cameraRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection));
 	cameraUp = glm::cross(cameraDirection, cameraRight);
 	cameraUpTemp = cameraUp;
+
+	generateProjectionMatrix();
 
 }
 
@@ -127,4 +133,14 @@ void Camera::decreaseCameraSpeed(GLfloat dec)
 void Camera::setDeltaTime(GLfloat t)
 {
 	dt = t;
+}
+
+void Camera::generateProjectionMatrix()
+{
+	projectionMatrix = glm::perspective(glm::radians(FOV), windowWidth*1.0f / windowHeight, nearPlane, farPlane);
+}
+
+glm::mat4 * Camera::getProjectionMatrix()
+{
+	return &projectionMatrix;
 }
