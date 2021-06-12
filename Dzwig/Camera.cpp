@@ -149,3 +149,13 @@ glm::mat4 * Camera::getProjectionMatrix()
 {
 	return &projectionMatrix;
 }
+
+glm::vec3 Camera::getCameraFront()
+{
+	return glm::vec3
+	(
+		cos(glm::radians(yaw)) * cos(glm::radians(yaw)),
+		sin(glm::radians(pitch)),
+		sin(glm::radians(yaw)) * cos(glm::radians(pitch))
+	);
+}

@@ -179,6 +179,7 @@
   <ItemGroup>
     <None Include="gl_05.frag" />
     <None Include="gl_05.vert" />
+    <None Include="instance.vert" />
     <None Include="skybox.frag" />
     <None Include="skybox.vert" />
   </ItemGroup>

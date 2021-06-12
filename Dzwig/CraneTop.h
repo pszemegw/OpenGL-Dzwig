@@ -19,6 +19,10 @@ class CraneTop
 {
 	Cuboid segment;
 	GLuint VAO, VBO;
+	GLuint VAOs[20], VBOs[20];
+	GLuint index[20];
+	GLuint j=0;
+	GLfloat hookLength = 1.0f;
 	std::vector<glm::mat4> segmentTrans;
 	Texture2D* segmentTexture;
 	Texture2D* ropeTexture;
@@ -42,7 +46,13 @@ public:
 		Texture2D* texSeg = nullptr, Texture2D* texRope = nullptr, Texture2D* texConcrete = nullptr, GLuint vao = 0);
 
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h, GLfloat rot);
+	void generateVO(GLuint * vao, GLuint * vbo, Cuboid * segment);
 	void moveHookX(GLfloat dx);
+
+	void moveHookY(GLfloat dy);
+
+
+
 };
 
 #endif

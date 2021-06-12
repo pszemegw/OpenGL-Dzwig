@@ -57,6 +57,7 @@ public:
 
 	void generateProjectionMatrix();
 	glm::mat4* getProjectionMatrix();
+	glm::vec3 getCameraFront();
 };
 
 #endif _CAMERA_H_

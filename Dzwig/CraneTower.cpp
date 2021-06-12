@@ -10,6 +10,24 @@ CraneTower::CraneTower(
 	height = h; width = w; segmentScale = scale; segmentTexture = tex;
 	posX = x; posY = y; posZ = z; VAO = vao;
 
+	glGenBuffers(4, VBOs);
+	glGenVertexArrays(4, VAOs);
+
+	GLuint j = 0;
+	index[0] = j;
+
+	segment.setAll(posX, posY, posZ, width/4, segmentScale, 3*width, 0, 1, 0, 45);
+	segmentTrans.push_back(segment.getModelMatrix());
+	segment.setAll(posX, posY, posZ, width/4, segmentScale, 3*width, 0, 1, 0, 135);
+	segmentTrans.push_back(segment.getModelMatrix());
+
+	segment.generateVertices();
+
+	j += 2;
+	index[1] = j;
+
+	generateVO(&VAOs[0], &VBOs[0], &segment);
+
 	// pionowe belki
 
 	segment.setAll(posX-width/2, posY + height/2, posZ-width/2, segmentScale * 2, height/2, segmentScale * 2);
@@ -21,6 +39,13 @@ CraneTower::CraneTower(
 	segment.setPosition(posX+width / 2, posY+ height / 2, posZ -width / 2);
 	segmentTrans.push_back(segment.getModelMatrix());
 
+	segment.generateVertices();
+
+	j += 4;
+	index[2] = j;
+
+	generateVO(&VAOs[1], &VBOs[1], &segment);
+
 	// poziome belki
 	GLfloat hh = posY;
 	GLfloat rotx = 0.f, roty = 1.f, rotz = 0.f, rotangle = 0.f,
@@ -28,7 +53,7 @@ CraneTower::CraneTower(
 		posx = posX, posy = h, posz = posZ;
 
 	
-	for (int i = 0; i < 4 * (1+(height / width)); ++i)
+	for (int i = 0; i < 4 * (1+(height / width)); ++i, ++j)
 	{	
 		posy = hh;
 		if (i % 4 == 0)
@@ -58,6 +83,10 @@ CraneTower::CraneTower(
 		segmentTrans.push_back(segment.getModelMatrix());
 	}
 
+	index[3] = j+1;
+	segment.generateVertices();
+	generateVO(&VAOs[2], &VBOs[2], &segment);
+
 	// poprzeczne
 	// przod
 	hh = posY + width/2;
@@ -85,7 +114,8 @@ CraneTower::CraneTower(
 			posx = posX, posy = hh, posz = posZ-width / 2;
 		if (i % 2 == 1)
 			rotangle = 45.f;
-		if (i % 2 == 0)			rotangle = 135.f;
+		if (i % 2 == 0)			
+			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 
 		segmentTrans.push_back(segment.getModelMatrix());
@@ -98,13 +128,14 @@ CraneTower::CraneTower(
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 0.f,
-			scalex = segmentScale, scaley = segmentScale, scalez = glm::sqrt(2)*width / 2,
+			scalex = glm::sqrt(2)*width / 2, scaley = segmentScale, scalez = segmentScale,
 			posx = posX-width/2, posy = hh, posz = posZ;
 		if (i % 2 == 0)
 			rotangle = 45.f;
 		if (i % 2 == 1)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+		segment.setRotation2(0, 1, 0, 90);
 		segmentTrans.push_back(segment.getModelMatrix());
 		hh += width;
 	}
@@ -115,16 +146,22 @@ CraneTower::CraneTower(
 	for (int i = 0; i < height / width; ++i)
 	{
 		rotx = 1.f, roty = 0.f, rotz = 0.f, rotangle = 0.f,
-			scalex = segmentScale, scaley = segmentScale, scalez = glm::sqrt(2)*width / 2,
+			scalex = glm::sqrt(2)*width / 2, scaley = segmentScale, scalez = segmentScale,
 			posx = posX + width / 2, posy = hh, posz = posZ;
 		if (i % 2 == 1)
 			rotangle = 45.f;
 		if (i % 2 == 0)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
+		segment.setRotation2(0, 1, 0, -90);
 		segmentTrans.push_back(segment.getModelMatrix());
 		hh += width;
 	}
+
+	segment.generateVertices();
+
+	generateVO(&VAOs[3], &VBOs[3], &segment);
+
 }
 
 void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
@@ -132,18 +169,43 @@ void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 	glm::mat4 trans;
 	glm::mat4 projection = glm::perspective(glm::radians(c->getFOV()), w*1.0f / h, 0.1f, 1000.0f);
 
-	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
 
 	s->setMat4("projection", *(c->getProjectionMatrix()));
 	s->setMat4("view", c->getWorldToViewMatrix());
-
+	glBindVertexArray(VAOs[0]);
 	for (int i = 0; i < segmentTrans.size(); ++i)
 	{
+		if (i == 2) glBindVertexArray(VAOs[1]);
+		if (i == 6) glBindVertexArray(VAOs[2]);
+		if (i >= index[3]) glBindVertexArray(VAOs[3]);
 		s->setMat4("model", segmentTrans[i]);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
+}
 
+void CraneTower::generateVO(GLuint* vao, GLuint* vbo, Cuboid* segment)
+{
+	glGenVertexArrays(1, vao);
+	glBindVertexArray(*vao);
+	glGenBuffers(1, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
+	glBufferData(
+		GL_ARRAY_BUFFER,
+		segment->getVertexTextureArraySize() * sizeof(GLfloat),
+		segment->getVertexTextureArrayPointer(),
+		GL_STATIC_DRAW);
 
+	// position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+	// texture
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+	// normal
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	glBindVertexArray(0);
 }

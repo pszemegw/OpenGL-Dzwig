@@ -145,6 +145,11 @@ void Window::keyboardInput()
 		dzwig->moveHookX(0.1f);
 	if (glfwGetKey(openglWindow, GLFW_KEY_J) == GLFW_PRESS)
 		dzwig->moveHookX(-0.1f);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_K) == GLFW_PRESS)
+		dzwig->moveHookY(0.1f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_I) == GLFW_PRESS)
+		dzwig->moveHookY(-0.1f);
 }
 
 
@@ -213,13 +218,15 @@ Window::Window(GLuint w, GLuint h)
 		glViewport(0, 0, this->width, this->height);
 		glfwSwapInterval(1);
 
-		skybox = new Skybox({ "skybox/right.jpg",
-			"skybox/left.jpg",
-			"skybox/top.jpg",
-			"skybox/bottom.jpg",
-			"skybox/front.jpg",
-			"skybox/back.jpg" });
-		camera = new Camera(0.f,10.f,10.f,-90.f,0.f,90.f,width,height);
+		skybox = new Skybox({ 
+			"skybox/xpos.png",
+			"skybox/xneg.png",
+			"skybox/ypos.png",
+			"skybox/yneg.png",
+			"skybox/zpos.png",
+			"skybox/zneg1.png" });
+		camera = new Camera(0.f,10.f,10.f,-90.f,0.f,90.f,width,height,0.1f,10000.f);
+		camera->increaseCameraSpeed(10.f);
 		dzwig = new Crane();
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 		ground = new Cuboid(0, -1.f, 0, 10000, 1, 10000);
@@ -242,8 +249,6 @@ int Window::mainLoop()
 		GLuint VBO, VAO, VBO1, VAO1;
 		unsigned int skyboxVAO, skyboxVBO;
 		unsigned int lightVAO;
-		
-		//Crane* dzwig = new Crane();
 
 		glGenVertexArrays(1, &lightVAO);
 		glBindVertexArray(lightVAO);
@@ -316,10 +321,21 @@ int Window::mainLoop()
 
 			// activate shader
 			shaderProgram.Use();
-			this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 1.0f, 1.0f));
-			this->shaderProgram.setVec3("lightPos", glm::vec3(10*glm::cos(glfwGetTime()), 2.f, 10 * glm::sin(glfwGetTime())));
+			this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 1.f, .5f));
+			this->shaderProgram.setVec3("ambientColor", glm::vec3(0.2f, .2f, 1.0f));
+			//this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 0.0f, 0.0f));
+			this->shaderProgram.setVec3("lightPos", *(camera->getCameraPosition()));
+			this->shaderProgram.setVec3("light.position", *(camera->getCameraPosition()));
+			//this->shaderProgram.setVec3("light.direction", 10.f, 1.0f, 0.f);
+
+			shaderProgram.setFloat("light.constant", 0.5f);
+			shaderProgram.setFloat("light.linear", 0.01f);
+			shaderProgram.setFloat("light.quadratic", 0.0032f);
+
 			this->shaderProgram.setVec3("fogColor", glm::vec3(0.5f, 0.5f, 0.5f));
 			this->shaderProgram.setVec3("viewPos", *(camera->getCameraPosition()));
+			this->shaderProgram.setVec3("direction", camera->getCameraFront());
+			this->shaderProgram.setFloat("cutOff", glm::cos(glm::radians(15.f)));
 
 
 			// create transformations
@@ -331,6 +347,38 @@ int Window::mainLoop()
 			glm::mat4 rot = glm::rotate(glm::mat4(1.f), glm::radians((GLfloat) glfwGetTime()*1), glm::vec3(0.f, 1.f, 0.f));
 
 			glm::mat4 trans;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 			dzwig->draw(&shaderProgram, camera, this->width, this->height);

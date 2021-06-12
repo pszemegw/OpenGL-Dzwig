@@ -29,7 +29,7 @@ Crane::Crane(GLfloat x, GLfloat y, GLfloat z, GLfloat height, GLfloat width, GLf
 	ropeTexture = new Texture2D(ropeTex);
 	concreteTexture = new Texture2D(concTex);
 
-	base = new CraneBase(towerWidth*3.f, towerWidth*0.5f, concreteTexture, posX, posY, posZ, VAO);
+	base = new CraneBase(towerWidth, towerWidth*0.5f, concreteTexture, posX, posY, posZ, segmentScale, VAO);
 	tower = new CraneTower(towerHeight, towerWidth, segmentScale, segmentTexture, posX, posY, posZ, VAO);
 	top = new CraneTop(towerWidth, segmentScale, towerHeight/2, posX, posY + towerHeight, posZ, segmentTexture, ropeTexture, concreteTexture, VAO);
 }
@@ -50,3 +50,10 @@ void Crane::moveHookX(GLfloat dx)
 {
 	top->moveHookX(dx);
 }
+
+void Crane::moveHookY(GLfloat dy)
+{
+	top->moveHookY(dy);
+}
+
+

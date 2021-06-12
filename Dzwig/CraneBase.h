@@ -19,15 +19,18 @@ class CraneBase
 {
 	Cuboid* segment;
 	GLuint VAO, VBO;
+	GLuint VBO0, VAO0;
 	GLfloat width = 2*glm::sqrt(2);
 	GLfloat height = 2 * glm::sqrt(2);
 	GLfloat posX, posY, posZ;
+	GLfloat segmentScale;
 	std::vector<glm::mat4> segmentTrans;
 	Texture2D* texture;
 
 public:
-	CraneBase(GLfloat w = 2 * glm::sqrt(2), GLfloat h = 2 * glm::sqrt(2), Texture2D* tex = nullptr, GLfloat x=0.f, GLfloat y=0.f, GLfloat z=0.f, GLuint vao=0);
+	CraneBase(GLfloat w = 2 * glm::sqrt(2), GLfloat h = 2 * glm::sqrt(2), Texture2D* tex = nullptr, GLfloat x=0.f, GLfloat y=0.f, GLfloat z=0.f, GLfloat segmentScale = .03f, GLuint vao=0);
 	void draw(ShaderProgram* s, Camera* c, GLuint w, GLuint h);
+	void generateVO(GLuint * vao, GLuint * vbo, Cuboid * segment);
 };
 
 #endif

@@ -55,6 +55,28 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 		-1.0f,  1.0f,  1.0f,  0.0f, 0.0f, // bottom-left
 	};
 
+	
+	generateVertices();
+	generateModelMatrix();
+}
+
+void Cuboid::generateVertices()
+{
+	//GLfloat scaleX, scaleY, scaleZ;
+	//scaleX = this->scaleX < 1.0f ? 1.0f : this->scaleX;
+	//scaleY = this->scaleY < 1.0f ? 1.0f : this->scaleY;
+	//scaleZ = this->scaleZ < 1.0f ? 1.0f : this->scaleZ;
+	//scaleX = glm::ceil(this->scaleX);
+	//scaleY = glm::ceil(this->scaleY);
+	//scaleZ = glm::ceil(this->scaleZ);
+	//scaleX = this->scaleX < 1.0f ? 1/this->scaleX : this->scaleX;
+	//scaleY = this->scaleY < 1.0f ? 1/this->scaleY : this->scaleY;
+	//scaleZ = this->scaleZ < 1.0f ? 1/this->scaleZ : this->scaleZ;
+
+	//if (scaleX > scaleY && scaleX > scaleZ) { scaleY = scaleX; scaleZ = scaleX; }
+	//if (scaleY > scaleX && scaleY > scaleZ) { scaleX = scaleY; scaleZ = scaleY; }
+	//if (scaleZ > scaleX && scaleZ > scaleY) { scaleY = scaleZ; scaleX = scaleZ; }
+
 	vertexTextureNormal = {
 		// back face (CCW winding)
 		 1.0f, -1.0f, -1.0f,					  0.0f, 0.0f, /* bottom-left			*/			0.0f, 0.0f, -1.0f,
@@ -63,49 +85,42 @@ Cuboid::Cuboid(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat
 		-1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleY, /*top-right	*/			0.0f, 0.0f, -1.0f,
 		 1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleY, /* top-left	*/				0.0f, 0.0f, -1.0f,
 		 1.0f, -1.0f, -1.0f,					  0.0f, 0.0f, /* bottom-left	*/					0.0f, 0.0f, -1.0f,
-		// front face (CCW winding)
-		-1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
-		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
-		-1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY,								0.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
-		// left face (CCW)
-		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f,  1.0f,					  1.0f*scaleZ, 0.0f,								-1.0f, 0.0f, 0.0f,
-		-1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
-		-1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
-		-1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleY,								-1.0f, 0.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
-		// right face (CCW)
-		 1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f,					  1.0f*scaleZ, 0.0f, 								1.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY, 								1.0f, 0.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f,					  0.0f, 0.0f, 										1.0f, 0.0f, 0.0f,
-		// bottom face (CCW)					      
-		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
-		 1.0f, -1.0f, -1.0f,					  1.0f*scaleX, 0.0f, 								0.0f, -1.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
-		-1.0f, -1.0f,  1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, -1.0f, 0.0f,
-		-1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
-		// top face (CCW)
-		-1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
-		 1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
-		-1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, 1.0f, 0.0f,
-		-1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f
+		 // front face (CCW winding)
+		 -1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
+		  1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 0.0f, 1.0f,
+		  1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
+		  1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleY,							0.0f, 0.0f, 1.0f,
+		 -1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY,								0.0f, 0.0f, 1.0f,
+		 -1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 0.0f, 1.0f,
+		 // left face (CCW)
+		 -1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
+		 -1.0f, -1.0f,  1.0f,					  1.0f*scaleZ, 0.0f,								-1.0f, 0.0f, 0.0f,
+		 -1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
+		 -1.0f,  1.0f,  1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							-1.0f, 0.0f, 0.0f,
+		 -1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleY,								-1.0f, 0.0f, 0.0f,
+		 -1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										-1.0f, 0.0f, 0.0f,
+		 // right face (CCW)
+		  1.0f, -1.0f,  1.0f,					  0.0f, 0.0f,										1.0f, 0.0f, 0.0f,
+		  1.0f, -1.0f, -1.0f,					  1.0f*scaleZ, 0.0f, 								1.0f, 0.0f, 0.0f,
+		  1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
+		  1.0f,  1.0f, -1.0f,					  1.0f*scaleZ, 1.0f*scaleY,							1.0f, 0.0f, 0.0f,
+		  1.0f,  1.0f,  1.0f,					  0.0f, 1.0f*scaleY, 								1.0f, 0.0f, 0.0f,
+		  1.0f, -1.0f,  1.0f,					  0.0f, 0.0f, 										1.0f, 0.0f, 0.0f,
+		  // bottom face (CCW)					      
+		  -1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
+		   1.0f, -1.0f, -1.0f,					  1.0f*scaleX, 0.0f, 								0.0f, -1.0f, 0.0f,
+		   1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
+		   1.0f, -1.0f,  1.0f,					  1.0f*scaleX, 1.0f*scaleZ, 						0.0f, -1.0f, 0.0f,
+		  -1.0f, -1.0f,  1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, -1.0f, 0.0f,
+		  -1.0f, -1.0f, -1.0f,					  0.0f, 0.0f,										0.0f, -1.0f, 0.0f,
+		  // top face (CCW)
+		  -1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f,
+		   1.0f,  1.0f,  1.0f,					  1.0f*scaleX, 0.0f,								0.0f, 1.0f, 0.0f,
+		   1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
+		   1.0f,  1.0f, -1.0f,					  1.0f*scaleX, 1.0f*scaleZ,							0.0f, 1.0f, 0.0f,
+		  -1.0f,  1.0f, -1.0f,					  0.0f, 1.0f*scaleZ, 								0.0f, 1.0f, 0.0f,
+		  -1.0f,  1.0f,  1.0f,					  0.0f, 0.0f,										0.0f, 1.0f, 0.0f
 	};
-
-	generateModelMatrix();
-}
-
-void Cuboid::generateVertices()
-{
-	
 }
 
 glm::mat4 Cuboid::getModelMatrix()
@@ -203,9 +218,10 @@ void Cuboid::setRotation2(GLfloat x, GLfloat y, GLfloat z, GLfloat angle)
 
 void Cuboid::setAll(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat scaleX, GLfloat scaleY, GLfloat scaleZ, GLfloat rotX, GLfloat rotY, GLfloat rotZ, GLfloat rotAngle)
 {
-	if (this->posX == posX && this->posY == posY && this->posZ == posZ
+	/*if (this->posX == posX && this->posY == posY && this->posZ == posZ
 		&& this->scaleX == scaleX && this->scaleY == scaleY && this->scaleZ == scaleZ
 		&& this->rotX == rotX && this->rotY == rotY && this->rotZ == rotZ && this->rotAngle == rotAngle) return;
+	*/
 	this->posX = posX;
 	this->posY = posY;
 	this->posZ = posZ;
