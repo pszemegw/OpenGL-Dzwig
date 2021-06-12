@@ -10,15 +10,15 @@
     - [x] Ramię
     - [ ] Kabina
     - [x] Podstawa dzwigu z obciazeniem
-    - [ ] Hak i lina
+    - [x] Hak i lina
     - [x] Przeciwwaga
 - [x] Teksturowanie
 - [x] Dodanie tła/skybox
 - [ ] Oświetlenie sceny
 - [x] Kamera
-- [ ] Dodanie interaktywnych elementów ruchomych
-    - [ ] Podnoszenie haka
-    - [ ] Obracanie dźwigu
+- [x] Dodanie interaktywnych elementów ruchomych
+    - [x] Podnoszenie haka
+    - [x] Obracanie dźwigu
 - [ ] Oddanie projektu
 
 ## Aktualny stan projektu

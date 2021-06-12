@@ -322,7 +322,7 @@ int Window::mainLoop()
 			// activate shader
 			shaderProgram.Use();
 			this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 1.f, .5f));
-			this->shaderProgram.setVec3("ambientColor", glm::vec3(0.2f, .2f, 1.0f));
+			this->shaderProgram.setVec3("ambientColor", glm::vec3(0.2f, .1f, 1.0f));
 			//this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 0.0f, 0.0f));
 			this->shaderProgram.setVec3("lightPos", *(camera->getCameraPosition()));
 			this->shaderProgram.setVec3("light.position", *(camera->getCameraPosition()));
