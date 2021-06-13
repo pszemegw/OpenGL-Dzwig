@@ -45,10 +45,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="iipw.png" />
-    <Image Include="weiti.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="gl_05.frag">
       <Filter>Shaders</Filter>
     </None>
@@ -116,5 +112,6 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer.h" />
   </ItemGroup>
 </Project>

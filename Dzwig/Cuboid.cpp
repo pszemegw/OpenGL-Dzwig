@@ -123,10 +123,10 @@ void Cuboid::generateVertices()
 	};
 }
 
-glm::mat4 Cuboid::getModelMatrix()
+glm::mat4* Cuboid::getModelMatrix()
 {
 	//generateModelMatrix();
-	return modelMatrix;
+	return &modelMatrix;
 }
 
 void Cuboid::translate()
@@ -165,20 +165,11 @@ void Cuboid::generateModelMatrix()
 	
 }
 
-/*GLfloat* Cuboid::getVertexArrayPointer()
-{
-	return &vertices[0];
-}*/
-
 GLfloat * Cuboid::getVertexTextureArrayPointer()
 {
 	return &vertexTextureNormal[0];
 }
 
-/*GLuint Cuboid::getVertexArraySize()
-{
-	return vertices.size();
-}*/
 
 GLuint Cuboid::getVertexTextureArraySize()
 {

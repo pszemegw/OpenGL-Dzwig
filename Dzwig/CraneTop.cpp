@@ -6,16 +6,16 @@ void CraneTop::arm()
 	GLfloat length2 = length - width / 2;
 
 	segment.setAll(posX - length, posY, posZ - width / 2, length /*+ width/2*/, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setAll(posX - length, posY, posZ + width / 2, length /*+ width / 2*/, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[0], &VBOs[0], &segment);
 	j += 2; index[1] = j;
 
 	segment.setAll(posX - length2, posY + width * glm::sqrt(3) / 2, posZ, length2, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.generateVertices();
 
 	generateVO(&VAOs[1], &VBOs[1], &segment);
@@ -24,22 +24,22 @@ void CraneTop::arm()
 	for (int i = 0; i < 2 * length / width - 1; ++i)
 	{
 		segment.setAll(posX - width / 2 - i * width, posY, posZ, segmentScale, segmentScale, width / 2);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 	segment.setAll(posX - 2 * length, posY, posZ, segmentScale, segmentScale, width / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	
 
 	for (int i = 0; i < 2 * length / width - 1; ++i)
 	{
 		segment.setAll(posX - width / 2 - i * width, posY + width * sqrt(3) / 4, posZ + width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 60);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 	for (int i = 0; i < 2 * length / width - 1; ++i)
 	{
 		segment.setAll(posX - width / 2 - i * width, posY + width * sqrt(3) / 4, posZ - width / 4, segmentScale, segmentScale, width / 2, 1, 0, 0, 120);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 	segment.generateVertices();
 
@@ -50,7 +50,7 @@ void CraneTop::arm()
 	{
 		segment.setAll(posX - i * width, posY + width*sqrt(3)/4, posZ, width*sqrt(7) / 4, segmentScale, segmentScale,0,0,1,-glm::degrees(glm::atan(sqrt(3)/2)));
 		if (i % 2) segment.setRotation(0, 0, 1, glm::degrees(glm::atan(sqrt(3) / 2)));
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 	segment.generateVertices();
 
@@ -59,10 +59,10 @@ void CraneTop::arm()
 
 	segment.setAll(posX - 2 * length + width / 2, posY + width * sqrt(3) / 4, posZ - width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 120);
 	segment.setRotation2(0, 1, 0, -45);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setAll(posX - 2 * length + width / 2, posY + width * sqrt(3) / 4, posZ + width / 4, segmentScale, segmentScale, width*sqrt(8) / 4, 1, 0, 0, 60);
 	segment.setRotation2(0, 1, 0, -45);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setRotation2(0, 1, 0, 0);
 
 	segment.generateVertices();
@@ -77,7 +77,7 @@ void CraneTop::arm()
 
 
 	segment.setAll(posX, posY + h / 2, posZ, segmentScale, h / 2, segmentScale, 0, 0, 1,/*glm::degrees(glm::atan(h2/2*(length-width)))*/0);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	
 	segment.generateVertices();
 	generateVO(&VAOs[5], &VBOs[5], &segment);
@@ -88,19 +88,19 @@ void CraneTop::arm()
 	GLfloat alpha = glm::radians(75.f);
 	segment.setAll(posX - width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ + width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 45);
 	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.setAll(posX + width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ + width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 135);
 	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.setAll(posX + width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ - width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 225);
 	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.setAll(posX - width / 4, posY + width * glm::sqrt(2)*glm::tan(alpha) / 4, posZ - width / 4, width*sqrt(2) / (4 * glm::cos(alpha)), segmentScale, segmentScale, 0, 1, 0, 315);
 	segment.setRotation2(0, 0, 1, 75);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.setRotation2(0, 1, 0, 0);
 
@@ -111,7 +111,7 @@ void CraneTop::arm()
 	//tyl
 
 	segment.setAll(posX + length / 2, posY, posZ, length / 2 + width/2, segmentScale, width / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[7], &VBOs[7], &segment);
@@ -120,9 +120,9 @@ void CraneTop::arm()
 	for (int i = 0; i < length / width; ++i)
 	{
 		segment.setAll(posX + (i+1)*width, posY+segmentScale + width * sqrt(3) / 8, posZ - width/2, segmentScale, segmentScale+ width * sqrt(3) / 8, segmentScale);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 		segment.setAll(posX + (i+1) * width, posY + segmentScale + width * sqrt(3) / 8, posZ + width / 2, segmentScale, segmentScale + width * sqrt(3) / 8, segmentScale);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 
 	segment.generateVertices();
@@ -130,9 +130,9 @@ void CraneTop::arm()
 	j += 2*length/width; index[9] = j;
 
 	segment.setAll(posX + length/2, posY + segmentScale + width * sqrt(3) / 4, posZ - width / 2, segmentScale + length/2, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setAll(posX + length / 2, posY + segmentScale + width * sqrt(3) / 4, posZ + width / 2, segmentScale + length / 2, segmentScale, segmentScale);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[9], &VBOs[9], &segment);
@@ -153,7 +153,7 @@ void CraneTop::lines()
 		length2, segmentScale / 2, segmentScale / 2,
 		0, 0, 1, x
 	);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.generateVertices();
 	generateVO(&VAOs[10], &VBOs[10], &segment);
 	j += 1; index[11] = j;
@@ -164,7 +164,7 @@ void CraneTop::lines()
 		length2/2, segmentScale / 2, segmentScale / 2,
 		0, 0, 1, x
 	);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[11], &VBOs[11], &segment);
@@ -178,7 +178,7 @@ void CraneTop::lines()
 		0, 0, 1, x
 	);
 
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[12], &VBOs[12], &segment);
@@ -212,10 +212,10 @@ CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat l, GLfloat x, GLfloat y, GL
 	lines();
 	
 	segment.setAll(posX, posY - segmentScale, posZ, width/3, segmentScale, width/2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.setAll(posX, posY - segmentScale, posZ, segmentScale / 3, hookLength, segmentScale / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[13], &VBOs[13], &segment);
@@ -224,24 +224,23 @@ CraneTop::CraneTop(GLfloat w, GLfloat scale, GLfloat l, GLfloat x, GLfloat y, GL
 	// obciazenie
 
 	segment.setAll(posX + length / 2 - width / 2, posY, posZ, 2 * width, width*sqrt(3) / 2, width / 4);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 	generateVO(&VAOs[14], &VBOs[14], &segment);
 	j += 1; index[15] = j;
-
-
-
-
-
 }
 
 void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat rot)
 {
+	glm::mat4 translateToRot = glm::translate(glm::mat4(1.0f), glm::vec3(-posX, 0, -posZ));
+	glm::mat4 translateToRot2 = glm::translate(glm::mat4(1.0f), glm::vec3(posX, 0, posZ));
 	glm::mat4 rotMat = glm::rotate(glm::mat4(1.0f), glm::radians(rot), glm::vec3(0, 1, 0));
-	glm::mat4 transpose = glm::translate(glm::mat4(1.0f), glm::vec3(hookPosX, 0, 0));
-	glm::mat4 transpose2 = glm::translate(glm::mat4(1.0f), glm::vec3(0, -hookLength, 0));
+	glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(hookPosX, 0, 0));
+	glm::mat4 translate2 = glm::translate(glm::mat4(1.0f), glm::vec3(0, -hookLength, 0));
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, hookLength, 1.0f));
+
+	rotMat = translateToRot2 * rotMat * translateToRot;
 
 	glBindVertexArray(VAOs[0]);
 	glActiveTexture(GL_TEXTURE0);
@@ -253,24 +252,13 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat r
 	for (int i = 0; i < segmentTrans.size()-6; ++i)
 	{
 		for (int k = 0; k < 16; k++)
-		{
-			//if (k == 3) glBindVertexArray(VAO);
-			//else glBindVertexArray(VAOs[]);
 			if (i == index[k]) glBindVertexArray(VAOs[k]);
-			//if (i >= index[9]) glBindVertexArray(VAO);
-		}
-		//if (i == 2) glBindVertexArray(VAOs[1]);
-		//if (i == 3) glBindVertexArray(VAOs[2]);
-		//if (i >= 3 + 2*length/width) glBindVertexArray(VAO);
-
 		s->setMat4("model", rotMat*segmentTrans[i]);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	glBindTexture(GL_TEXTURE_2D, ropeTexture->getTextureID());
 
 	// Liny
-
-	//glBindVertexArray(VAO);
 
 	for (int i = segmentTrans.size() - 6; i < segmentTrans.size() - 3; ++i)
 	{
@@ -282,16 +270,11 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat r
 	//Hak
 
 	for (int k = 0; k < 16; k++)
-	{
-		//if (k == 3) glBindVertexArray(VAO);
-		//else glBindVertexArray(VAOs[]);
 		if (segmentTrans.size() - 2 == index[k]) glBindVertexArray(VAOs[k]);
-		//if (i >= index[9]) glBindVertexArray(VAO);
-	}
 
-	s->setMat4("model", rotMat * transpose * segmentTrans[segmentTrans.size() - 3]);
+	s->setMat4("model", rotMat*translate * segmentTrans[segmentTrans.size() - 3]);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	s->setMat4("model", rotMat * transpose2 * transpose * segmentTrans[segmentTrans.size() - 2] * scale);
+	s->setMat4("model", rotMat * translate2 * translate * segmentTrans[segmentTrans.size() - 2] * scale);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
@@ -299,7 +282,6 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat r
 
 	for (int k = 0; k < 16; k++)
 		if (segmentTrans.size() - 1 == index[k]) glBindVertexArray(VAOs[k]);
-
 
 	glBindTexture(GL_TEXTURE_2D, concreteTexture->getTextureID());
 	s->setMat4("model", rotMat * segmentTrans[segmentTrans.size() - 1]);
@@ -309,40 +291,8 @@ void CraneTop::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h, GLfloat r
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 void CraneTop::generateVO(GLuint* vao, GLuint* vbo, Cuboid* segment)
 {
-	glGenVertexArrays(1, vao);
-	glBindVertexArray(*vao);
-	glGenBuffers(1, vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		segment->getVertexTextureArraySize() * sizeof(GLfloat),
-		segment->getVertexTextureArrayPointer(),
-		GL_STATIC_DRAW);
-
-	// position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(0);
-	// texture
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-	// normal
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
+	Renderer::generateVO(vao, vbo, segment);
 }
 

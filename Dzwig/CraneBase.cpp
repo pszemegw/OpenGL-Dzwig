@@ -17,20 +17,20 @@ CraneBase::CraneBase(
 	segment->setAll(posX, posY + segmentScale + height / 3, posZ - width * 1.3f, width / 2, height / 3, width * 2, 0, 1, 0, 90);
 	segment->generateVertices();
 	
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 
 	segment->setAll(posX, posY + segmentScale + height / 3, posZ + width * 1.3f, width / 2, height / 3, width * 2, 0, 1, 0, 90);
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 
 
 	segment->setAll(posX + width * 1.3f, posY + segmentScale + height, posZ, width / 2, height / 3, width * 2);
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 	segment->setAll(posX + width * 1.3f, posY + segmentScale + 5*height/3 + segmentScale, posZ, width / 2, height / 3, width * 2);
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 	segment->setAll(posX - width*1.3f, posY + segmentScale + height, posZ, width / 2, height/3, width * 2);
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 	segment->setAll(posX - width * 1.3f, posY + segmentScale + 5*height/3 + segmentScale, posZ, width / 2, height / 3, width * 2);
-	segmentTrans.push_back(segment->getModelMatrix());
+	segmentTrans.push_back(*(segment->getModelMatrix()));
 
 	generateVO(&VAO0, &VBO0, segment);
 }
@@ -66,25 +66,5 @@ void CraneBase::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 void CraneBase::generateVO(GLuint* vao, GLuint* vbo, Cuboid* segment)
 {
-	glGenVertexArrays(1, vao);
-	glBindVertexArray(*vao);
-	glGenBuffers(1, vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		segment->getVertexTextureArraySize() * sizeof(GLfloat),
-		segment->getVertexTextureArrayPointer(),
-		GL_STATIC_DRAW);
-
-	// position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(0);
-	// texture
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-	// normal
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
+	Renderer::generateVO(vao, vbo, segment);
 }

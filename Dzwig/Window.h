@@ -24,15 +24,12 @@ class Window
 	GLFWwindow* openglWindow;
 	ShaderProgram shaderProgram;
 	
-	//ShaderProgram skyboxShader;
 	Camera* camera;
 	Skybox* skybox;
 	Crane* dzwig;
 	bool lmbPressed = false;
 	bool rmbPressed = false;
 	bool isFocused = true;
-
-	bool test = true;
 
 	glm::dvec2 prevMousePos;
 
@@ -41,14 +38,15 @@ class Window
 
 	Light* light;
 
+	void drawGround(GLuint vao);
+
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-	//GLuint LoadMipmapTexture(GLuint texId, const char* fname);
+
 	static void onKey(GLFWwindow* window, int key, int scancode, int actions, int mods)
 	{
 		Window* obj = (Window*)glfwGetWindowUserPointer(window);
 		obj->onKey(key, scancode, actions, mods);
 	}
-
 
 	static void focus_callback(GLFWwindow* window, int focused)
 	{
@@ -76,7 +74,6 @@ class Window
 
 	
 public:
-	//Window();
 	Window(GLuint w = 800, GLuint h = 600);
 	int mainLoop();
 

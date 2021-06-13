@@ -6,25 +6,20 @@ void Crane::drawLights()
 
 	for (GLfloat h = towerWidth; h <= towerHeight; h += towerWidth * 6)
 		lights->addLight(glm::vec3(posX, h, posZ), 1.f, 0.1f, 0.9f,
-			glm::vec3(1.0f, 0.1f, 0.1f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
 
-	lights->addLight(glm::vec3(posX, towerHeight + segmentScale + towerWidth * glm::sqrt(2)*glm::tan(glm::radians(75.f)) / 2, posZ), 1.f, 0.1f, 0.9f,
-		glm::vec3(1.0f, 0.1f, 0.1f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+	lights->addLight(glm::vec3(posX, towerHeight + segmentScale + towerWidth * glm::sqrt(2)*glm::tan(glm::radians(75.f)), posZ), 1.f, 0.1f, 0.9f,
+		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
 
 
 	topLightsFirstIndex = lights->getNumberOfPointLights();
 
 	lights->addLight(glm::vec3(posX + towerWidth / 2 + towerHeight / 2, towerHeight + posY, posZ), 1.f, 0.1f, 0.9f,
-		glm::vec3(1.0f, 0.1f, 0.1f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
 
 	for (GLfloat x = posX; x >= posX - towerHeight; x -= towerWidth*6)
 		lights->addLight(glm::vec3(x, towerHeight + posY + towerWidth*sqrt(3)/2, posZ), 1.f, 0.1f, 0.9f,
-			glm::vec3(1.0f, 0.1f, 0.1f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
-
-	
-
-	/*lights->addLight(glm::vec3(x, towerHeight + posY + towerWidth * sqrt(3) / 2, posZ), 1.f, 0.1f, 0.9f,
-		glm::vec3(1.0f, 0.1f, 0.1f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));*/
+			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
 
 	topLightNum = lights->getNumberOfPointLights() - topLightsFirstIndex;
 }
@@ -74,14 +69,9 @@ void Crane::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	s->setMat4("projection", *(c->getProjectionMatrix()));
 	s->setMat4("view", c->getWorldToViewMatrix());
-	s->setMat4("model", segment.getModelMatrix());
+	s->setMat4("model", *(segment.getModelMatrix()));
 	glBindTexture(GL_TEXTURE_2D, ropeTexture->getTextureID());
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-
-
-
-
-	//drawLights();
 }
 
 void Crane::rotateCrane(GLfloat angleDeg)
@@ -92,18 +82,19 @@ void Crane::rotateCrane(GLfloat angleDeg)
 	for (int i = topLightsFirstIndex; i < topLightsFirstIndex + topLightNum + 1; ++i)
 	{
 		a = lights->getPointLightPos(i);
+		a.x -= posX;
+		a.z -= posZ;
 		GLfloat r = glm::sqrt(a.x*a.x + a.z*a.z);
 		GLfloat angle = -rotationAngle;
 		if (a.x < 0) angle += 180;
 
-		
-		//GLfloat theta = glm::atan(a.z / a.x);
 		glm::vec3 b(
 			r*glm::cos(glm::radians(angle)),
 			a.y,
 			r*sin(glm::radians(angle))
 			);
-	
+		b.x += posX;
+		b.z += posZ;
 		lights->updatePointLightPos(i, b);
 	}
 }

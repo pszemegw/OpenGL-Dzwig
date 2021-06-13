@@ -15,6 +15,7 @@ using namespace std;
 #include <glm/gtc/type_ptr.hpp>
 //#include "Window.h"
 #include "Camera.h"
+#include "Renderer.h"
 class CraneBase
 {
 	Cuboid* segment;

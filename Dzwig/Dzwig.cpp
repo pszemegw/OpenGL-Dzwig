@@ -16,6 +16,5 @@ using namespace std;
 int main()
 {
 	Window mainWindow(WIDTH, HEIGHT);
-	mainWindow.mainLoop();
 	return 0;
 }

@@ -17,9 +17,9 @@ CraneTower::CraneTower(
 	index[0] = j;
 
 	segment.setAll(posX, posY, posZ, width/4, segmentScale, 3*width, 0, 1, 0, 45);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setAll(posX, posY, posZ, width/4, segmentScale, 3*width, 0, 1, 0, 135);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 
@@ -31,13 +31,13 @@ CraneTower::CraneTower(
 	// pionowe belki
 
 	segment.setAll(posX-width/2, posY + height/2, posZ-width/2, segmentScale * 2, height/2, segmentScale * 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setPosition(posX -width / 2, posY +height / 2, posZ+ width / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setPosition(posX+width / 2, posY + height / 2, posZ + width / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 	segment.setPosition(posX+width / 2, posY+ height / 2, posZ -width / 2);
-	segmentTrans.push_back(segment.getModelMatrix());
+	segmentTrans.push_back(*(segment.getModelMatrix()));
 
 	segment.generateVertices();
 
@@ -80,7 +80,7 @@ CraneTower::CraneTower(
 			hh += width;
 		}
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 	}
 
 	index[3] = j+1;
@@ -100,7 +100,7 @@ CraneTower::CraneTower(
 		if (i % 2 == 1)
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 		hh += width;
 	}
 
@@ -118,7 +118,7 @@ CraneTower::CraneTower(
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 		hh += width;
 	}
 
@@ -136,7 +136,7 @@ CraneTower::CraneTower(
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segment.setRotation2(0, 1, 0, 90);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 		hh += width;
 	}
 
@@ -154,7 +154,7 @@ CraneTower::CraneTower(
 			rotangle = 135.f;
 		segment.setAll(posx, posy, posz, scalex, scaley, scalez, rotx, roty, rotz, rotangle);
 		segment.setRotation2(0, 1, 0, -90);
-		segmentTrans.push_back(segment.getModelMatrix());
+		segmentTrans.push_back(*(segment.getModelMatrix()));
 		hh += width;
 	}
 
@@ -188,25 +188,5 @@ void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 void CraneTower::generateVO(GLuint* vao, GLuint* vbo, Cuboid* segment)
 {
-	glGenVertexArrays(1, vao);
-	glBindVertexArray(*vao);
-	glGenBuffers(1, vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, *vbo);
-	glBufferData(
-		GL_ARRAY_BUFFER,
-		segment->getVertexTextureArraySize() * sizeof(GLfloat),
-		segment->getVertexTextureArrayPointer(),
-		GL_STATIC_DRAW);
-
-	// position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
-	glEnableVertexAttribArray(0);
-	// texture
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-	// normal
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
+	Renderer::generateVO(vao, vbo, segment);
 }

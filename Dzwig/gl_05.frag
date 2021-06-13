@@ -24,7 +24,7 @@ struct Material {
     float shininess;
 }; 
 
-struct Light {
+/*struct Light {
     vec3 position;  
     vec3 direction;
     float cutOff;
@@ -37,7 +37,7 @@ struct Light {
     float constant;
     float linear;
     float quadratic;
-};
+};*/
 
 struct DirLight {
     vec3 direction;
@@ -67,7 +67,7 @@ uniform PointLight cameraLight;
 
 
 uniform Material material;
-uniform Light light;
+//uniform Light light;
 
 uniform bool isCamLight;
 

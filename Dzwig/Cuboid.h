@@ -50,7 +50,7 @@ public:
 		GLfloat rotX=1.f, GLfloat rotY=1.f, GLfloat rotZ=1.f, GLfloat rotAngle = 0.f);
 	void generateVertices();
 
-	glm::mat4 getModelMatrix();
+	glm::mat4* getModelMatrix();
 
 	GLfloat* getVertexTextureArrayPointer();
 	GLuint getVertexTextureArraySize();
