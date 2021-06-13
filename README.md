@@ -21,6 +21,32 @@
     - [x] Obracanie dźwigu
 - [ ] Oddanie projektu
 
+## Obsługa programu
+- Kamera:
+	- Przy pomocy myszy (obrót)
+	- Klawiatura:
+		- W - do przodu
+		- S - do tyłu
+		- A - w "lewo"
+		- D - w "prawo"
+		- R - reset parametrów kamery (położenie, nachylenie etc.)
+		- Strzałka w górę/dół - poruszanie kamery w górę/dół (oś OY)
+		- Q/E - w dół/górę zgodnie z wektorem określającym "górę" kamery
+		- Klawiatura numeryczna:
+			- Obrót kamery: 2,4,6,8
+			- FOV: "/" - zmniejszenie, "*" - zwiększenie
+			- "+"/"-" - zwiększenie/zmniejszenie prędkości ruchu kamery
+- Dźwig:
+	- Strzałka w lewo/prawo - obrót dźwigu CW/CCW
+	- J/L - poruszanie liną na zewnątrz/do środka
+	- I/K - poruszanie liną góra/dół/górę
+- Oświetlenie:
+	- T - włącza/wyłącza światło pochodzące od kamery
+	- O/P - zwiększa/zmniejsza natężenie tegoż światła
+- ESC - wyjście
+- Po zmianie okna należy kliknąć wewnątrz okna aby wznowić działanie.
+			
+
 ## Aktualny stan projektu
 
 ![current state](http://gitlab.ii.pw.edu.pl/gkom.21l/101.3-dzwig-kratownicowy/-/raw/master/stan.PNG)
