@@ -56,6 +56,14 @@ void Camera::moveCamera(Movement m)
 	case BACKWARD:
 		cameraPos -= movSpeed *dt* cameraDirection;
 		break;
+
+	case Y_PLUS:
+		cameraPos += movSpeed * dt* cameraUp;
+		break;
+
+	case Y_MINUS:
+		cameraPos -= movSpeed * dt* cameraUp;
+		break;
 	}
 
 }
@@ -127,7 +135,7 @@ void Camera::resetCamera()
 
 void Camera::increaseCameraSpeed(GLfloat inc)
 {
-	movSpeed = movSpeed + inc > 25.f ? 25.f : movSpeed + inc;
+	movSpeed = movSpeed + inc > 30.f ? 30.f : movSpeed + inc;
 }
 
 void Camera::decreaseCameraSpeed(GLfloat dec)

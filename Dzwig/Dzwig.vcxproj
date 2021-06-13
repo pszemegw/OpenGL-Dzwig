@@ -36,7 +36,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -152,6 +152,7 @@
     <ClCompile Include="CubemapTexture.cpp" />
     <ClCompile Include="Cuboid.cpp" />
     <ClCompile Include="Dzwig.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CraneTower.h" />
     <ClInclude Include="CubemapTexture.h" />
     <ClInclude Include="Cuboid.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Texture.h" />

@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Cuboid.h"
 #include "Crane.h"
+#include "Light.h"
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
 #include <iostream>
@@ -37,6 +38,8 @@ class Window
 
 	Cuboid* cube;
 	Cuboid* ground;
+
+	Light* light;
 
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 	//GLuint LoadMipmapTexture(GLuint texId, const char* fname);

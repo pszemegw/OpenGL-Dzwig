@@ -36,7 +36,7 @@ class Camera
 
 	
 public:
-	enum Movement { UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD };
+	enum Movement { UP, DOWN, LEFT, RIGHT, FORWARD, BACKWARD, Y_PLUS, Y_MINUS };
 	//Camera();
 	Camera(GLfloat posX = 0.f, GLfloat posY = 0.f, GLfloat posZ = 0.f,
 		GLfloat yaw = -90.f, GLfloat pitch = 0.f,

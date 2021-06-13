@@ -4,9 +4,12 @@
 #include "CraneBase.h"
 #include "CraneTop.h"
 #include "CraneTower.h"
+#include "Light.h"
 class Crane
 {
 	Cuboid segment;
+
+	Light* lights;
 
 	CraneBase* base;
 	CraneTower* tower;
@@ -24,15 +27,24 @@ class Crane
 
 	GLuint VAO, VBO;
 
+	GLuint topLightsFirstIndex;
+	GLuint topLightNum;
+
+	void drawLights();
+
 public:
 	Crane(GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f, GLfloat height = 30.f, GLfloat width = 1.f, GLfloat length = 15.f, GLfloat scale = .03f,
 		std::string segTex = "metal2.png", std::string ropeTex = "c.png", std::string concTex = "concrete.jpg");
 
 	void draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h);
 
+	
+
 	void rotateCrane(GLfloat angleDeg);
 	void moveHookX(GLfloat dx);
 	void moveHookY(GLfloat dy);
+
+	void setLights(Light* l);
  
 };
 

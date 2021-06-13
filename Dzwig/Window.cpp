@@ -9,28 +9,32 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Window.h"
+
 #include <windows.h>
 
 using namespace std;
 
 void Window::onKey(int key, int scancode, int action, int mods)
 {
-	/*cout << key << endl;
 	if (!isFocused) return;
+	if (key == GLFW_KEY_T && action == GLFW_PRESS)
+		light->toggleCameraLight();
+	
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(this->openglWindow, GL_TRUE);
-	if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT))
+
+	/*if (key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->moveCamera(camera->DOWN);
 	if (key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera->moveCamera(camera->UP);
-	if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
+		camera->moveCamera(camera->UP);*/
+	/*if (key == GLFW_KEY_A && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->moveCamera(camera->LEFT);
 	if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->moveCamera(camera->RIGHT);
 	if (key == GLFW_KEY_S && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->moveCamera(camera->BACKWARD);
 	if (key == GLFW_KEY_W && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera->moveCamera(camera->FORWARD);
+		camera->moveCamera(camera->FORWARD);*/
 	if (key == GLFW_KEY_R && action == GLFW_PRESS)
 		camera->resetCamera();
 
@@ -49,7 +53,7 @@ void Window::onKey(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_KP_ADD && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->increaseCameraSpeed(.5f);
 	if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		camera->decreaseCameraSpeed(.5f);*/
+		camera->decreaseCameraSpeed(.5f);
 
 	/*if (key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		cube->setPosition(cube->getPosition()[0], cube->getPosition()[1]+1, cube->getPosition()[2]);
@@ -94,8 +98,8 @@ void Window::mouse_button_callback(int button, int action, int mods)
 
 void Window::keyboardInput()
 {
-	if (glfwGetKey(this->openglWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(this->openglWindow, true);
+	//if (glfwGetKey(this->openglWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	//	glfwSetWindowShouldClose(this->openglWindow, true);
 
 	if (glfwGetKey(openglWindow, GLFW_KEY_W) == GLFW_PRESS)
 		camera->moveCamera(Camera::FORWARD);
@@ -112,8 +116,14 @@ void Window::keyboardInput()
 	if (glfwGetKey(openglWindow, GLFW_KEY_E) == GLFW_PRESS)
 		camera->moveCamera(Camera::UP);
 
-	if (glfwGetKey(openglWindow, GLFW_KEY_R) == GLFW_PRESS)
-		camera->resetCamera();
+	if (glfwGetKey(openglWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
+		camera->moveCamera(Camera::Y_MINUS);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_UP) == GLFW_PRESS)
+		camera->moveCamera(Camera::Y_PLUS);
+
+	//if (glfwGetKey(openglWindow, GLFW_KEY_R) == GLFW_PRESS)
+	//	camera->resetCamera();
 
 	if (glfwGetKey(openglWindow, GLFW_KEY_KP_2) == GLFW_PRESS)
 		camera->rotateCamera(0, -5);
@@ -150,6 +160,16 @@ void Window::keyboardInput()
 		dzwig->moveHookY(0.1f);
 	if (glfwGetKey(openglWindow, GLFW_KEY_I) == GLFW_PRESS)
 		dzwig->moveHookY(-0.1f);
+
+	if (glfwGetKey(openglWindow, GLFW_KEY_O) == GLFW_PRESS)
+		light->cameraLightIntensityInc(0.0001f);
+	if (glfwGetKey(openglWindow, GLFW_KEY_P) == GLFW_PRESS)
+		light->cameraLightIntensityInc(-0.0001f);
+		
+	//if (glfwGetKey(openglWindow, GLFW_KEY_T) == GLFW_PRESS)
+	//	light->toggleCameraLight();
+	/*if (glfwGetKey(openglWindow, GLFW_KEY_I) == GLFW_PRESS)
+		dzwig->moveHookY(-0.1f);*/
 }
 
 
@@ -179,14 +199,24 @@ Window::Window(GLuint w, GLuint h)
 	//glHint(GL_FOG_HINT, GL_NICEST);
 	try
 	{
+		GLFWmonitor* primary = glfwGetPrimaryMonitor();
+		int monitorX, monitorY;
+		glfwGetMonitorPos(primary, &monitorX, &monitorY);
+		const GLFWvidmode *mode = glfwGetVideoMode(primary);
+		if (!mode)
+			return;
+
 		openglWindow = glfwCreateWindow(this->width, this->height, "GKOM Dzwig", nullptr, nullptr);
 		if (openglWindow == nullptr)
 			throw exception("GLFW window not created");
 		glfwMakeContextCurrent(openglWindow);
 		glfwSetWindowUserPointer(openglWindow, this);
+		
+		glfwSetWindowPos(openglWindow, monitorX + (mode->width - width) / 2,
+			monitorY + (mode->height - height) / 2);
 
 		// Set keyboard callback function
-		//glfwSetKeyCallback(openglWindow, Window::onKey);
+		glfwSetKeyCallback(openglWindow, Window::onKey);
 
 		// Set focus callback
 
@@ -227,10 +257,15 @@ Window::Window(GLuint w, GLuint h)
 			"skybox/zneg1.png" });
 		camera = new Camera(0.f,10.f,10.f,-90.f,0.f,90.f,width,height,0.1f,10000.f);
 		camera->increaseCameraSpeed(10.f);
+		light = new Light(&shaderProgram);
+
 		dzwig = new Crane();
+		dzwig->setLights(light);
 		this->shaderProgram = ShaderProgram("gl_05.vert", "gl_05.frag");
 		ground = new Cuboid(0, -1.f, 0, 10000, 1, 10000);
 		ground->setTexture("gnd1.jpg");
+
+		
 		
 
 	}
@@ -292,12 +327,33 @@ int Window::mainLoop()
 		
 		GLdouble lastFrame = 0.0f;
 
-		glEnable(GL_FOG);
+		/*glEnable(GL_FOG);
 		GLfloat fogColor[] = { 0.0f, 0.3f, 0.9f, 1.0f };
 		glFogfv(GL_FOG_COLOR, fogColor);
 		glFogi(GL_FOG_MODE, GL_LINEAR);
 		glFogf(GL_FOG_START, 0.1f);
-		glFogf(GL_FOG_END, 100.0f);
+		glFogf(GL_FOG_END, 100.0f);*/
+
+		//Light light(&shaderProgram);
+		
+		light->addLight(glm::vec3(1.0f, 1.f, 1.f), 1.f, 0.9f, 0.02f,
+			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		
+		light->addLight(glm::vec3(10.0f, 1.f, 10.f), 1.f, 0.01f, 0.01f,
+			glm::vec3(1.f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		light->addLight(glm::vec3(-10.0f, 1.f, -10.f), 1.f, 0.01f, 0.01f,
+			glm::vec3(0.f, 1.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		light->addLight(glm::vec3(10.0f, 1.f, -10.f), 1.f, 0.01f, 0.01f,
+			glm::vec3(0.f, 0.f, 1.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		light->addLight(glm::vec3(-10.0f, 1.f, 10.f), 1.f, 0.01f, 0.01f,
+			glm::vec3(1.f, 1.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		//light->addLight(glm::vec3(0.0f, 40.f, 0.f), 1.f, 0.01f, 0.01f,
+			//glm::vec3(1.f, 1.f, 1.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+
+		light->setCameraLight(camera->getCameraPosition(), 1.f, 0.01f, 0.01f,
+			glm::vec3(1.f, 1.f, 1.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+
+		
 
 		// main event loop
 		while (!glfwWindowShouldClose(openglWindow))
@@ -320,8 +376,10 @@ int Window::mainLoop()
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// activate shader
+
 			shaderProgram.Use();
-			this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 1.f, .5f));
+			
+			this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 1.f, 1.f));
 			this->shaderProgram.setVec3("ambientColor", glm::vec3(0.2f, .1f, 1.0f));
 			//this->shaderProgram.setVec3("lightColor", glm::vec3(1.f, 0.0f, 0.0f));
 			this->shaderProgram.setVec3("lightPos", *(camera->getCameraPosition()));
@@ -332,11 +390,17 @@ int Window::mainLoop()
 			shaderProgram.setFloat("light.linear", 0.01f);
 			shaderProgram.setFloat("light.quadratic", 0.0032f);
 
-			this->shaderProgram.setVec3("fogColor", glm::vec3(0.5f, 0.5f, 0.5f));
+			//this->shaderProgram.setVec3("fogColor", glm::vec3(0.5f, 0.5f, 0.5f));
 			this->shaderProgram.setVec3("viewPos", *(camera->getCameraPosition()));
 			this->shaderProgram.setVec3("direction", camera->getCameraFront());
-			this->shaderProgram.setFloat("cutOff", glm::cos(glm::radians(15.f)));
+			//this->shaderProgram.setFloat("cutOff", glm::cos(glm::radians(15.f)));
 
+			/*light->setCameraLight(camera->getCameraPosition(), 1.f, 0.01f, 0.01f,
+				glm::vec3(1.f, 1.f, 1.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));*/
+
+			light->updateCameraPosition(camera->getCameraPosition());
+
+			light->setShaderParams();
 
 			// create transformations
 			glm::mat4 view = camera->getWorldToViewMatrix();

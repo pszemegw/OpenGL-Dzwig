@@ -174,6 +174,7 @@ void CraneTower::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 
 	s->setMat4("projection", *(c->getProjectionMatrix()));
 	s->setMat4("view", c->getWorldToViewMatrix());
+	//s->setFloat("material.shininess", 256.0f);
 	glBindVertexArray(VAOs[0]);
 	for (int i = 0; i < segmentTrans.size(); ++i)
 	{

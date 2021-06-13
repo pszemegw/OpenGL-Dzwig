@@ -5,10 +5,10 @@
 + Przemysław Wieczorkowski
 
 ## Milestones
-- [ ] Model dźwigu
+- [x] Model dźwigu
     - [x] Trzon
     - [x] Ramię
-    - [ ] Kabina
+    - [x] Kabina
     - [x] Podstawa dzwigu z obciazeniem
     - [x] Hak i lina
     - [x] Przeciwwaga
