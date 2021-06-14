@@ -44,6 +44,7 @@
 	- T - włącza/wyłącza światło pochodzące od kamery
 	- O/P - zwiększa/zmniejsza natężenie tegoż światła
 	- 1/2/3/4 - wyłącza/włącza lampy wokół dźwigu
+	- 6 - wyłącza/włącza oświetlenie dźwigu
 - ESC - wyjście
 - Po zmianie okna należy kliknąć wewnątrz okna aby wznowić działanie.
 			
