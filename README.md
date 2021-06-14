@@ -18,7 +18,7 @@
 - [x] Dodanie interaktywnych elementów ruchomych
     - [x] Podnoszenie haka
     - [x] Obracanie dźwigu
-- [ ] Oddanie projektu
+- [x] Oddanie projektu
 
 ## Obsługa programu
 - Kamera:
