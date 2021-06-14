@@ -24,20 +24,6 @@ struct Material {
     float shininess;
 }; 
 
-/*struct Light {
-    vec3 position;  
-    vec3 direction;
-    float cutOff;
-    float outerCutOff;
-  
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-	
-    float constant;
-    float linear;
-    float quadratic;
-};*/
 
 struct DirLight {
     vec3 direction;
@@ -79,7 +65,6 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 
 void main()
 {
-	//float specularStrength = 0.5;
 
 	vec3 norm = normalize(Normal);
 	vec3 viewDir = normalize(viewPos - FragPos);
@@ -96,37 +81,8 @@ void main()
 	if(isCamLight)
 		result += CalcPointLight(cameraLight, norm, FragPos, viewDir);
 
-	//float distance    = length(light.position - FragPos); 
-	//float attenuation = 1.0 / (
-	//light.constant + 
-	//light.linear * distance + 
-	//light.quadratic * (distance * distance)); 
-
-	
-	//vec3 lightDir = normalize(lightPos - FragPos);  
-	//float diff = max(dot(norm, lightDir), 0.0);
-	//vec3 diffuse = diff * lightColor;
-
-	
-	//vec3 reflectDir = reflect(-lightDir, norm); 
-
-	//float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-	//vec3 specular = light.specular * (spec * material.specular);  
-
-	
-    //vec3 ambient = ambientStrength * ambientColor;
-	//vec3 ambient = light.ambient * texture(material.diffuse, TexCoord).rgb;
-
-	//directionalLight *= attenuation;
-	//diffuse   *= attenuation;
-    //specular *= attenuation;  
-
     FragColor = vec4(result ,1.0f);//mix(texture(texture1, TexCoord), texture(texture2, TexCoord), 0);
-	//texture(texture1,TexCoord) * (diffuse+specular+directionalLight)
-
-	// FOG
-
-	//FragColor = mix(vec4(fogColor,1.0), FragColor, visibility);
+	
 }
 
 
