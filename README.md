@@ -1,7 +1,6 @@
 # Dźwig kratownicowy
 
 ## Członkowie zespołu
-+ Konrad Lechowski
 + Przemysław Wieczorkowski
 
 ## Milestones
