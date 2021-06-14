@@ -241,10 +241,10 @@ void Window::onKey(int key, int scancode, int action, int mods)
 	if (key == GLFW_KEY_4 && (action == GLFW_PRESS))
 		dzwig->toggleLamp(3);
 
+	if (key == GLFW_KEY_6 && action == GLFW_PRESS)
+		dzwig->toggleCraneLights();
+
 }
-
-
-
 
 
 void Window::mouseCallback(double xpos, double ypos)

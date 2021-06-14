@@ -31,6 +31,8 @@ class Crane
 
 	GLuint topLightsFirstIndex;
 	GLuint topLightNum;
+	GLuint firstCraneLight;
+	GLuint lastCraneLight;
 	
 	GLboolean isLampOn[4];
 
@@ -52,6 +54,8 @@ public:
 
 	void setLights(Light* l);
 	void toggleLamp(GLuint i);
+
+	void toggleCraneLights();
  
 };
 

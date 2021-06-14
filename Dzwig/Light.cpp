@@ -75,9 +75,9 @@ void Light::cameraLightIntensityInc(GLfloat di)
 {
 	//cameraLight.constant -= di;
 	//cameraLight.linear -= di;
-	cameraLight.quadratic -= di;
-	cameraLight.linear -= di*10;
-	cameraLight.constant -= di * 20;
+	cameraLight.quadratic -= di*5;
+	cameraLight.linear -= di*5;
+	cameraLight.constant -= di *5;
 	//if (cameraLight.constant < 0.05f) cameraLight.constant = 0.05;
 	if (cameraLight.quadratic < 0.0001f) cameraLight.quadratic = 0.0001f;
 	if (cameraLight.quadratic > 200.0f) cameraLight.quadratic = 200.00f;

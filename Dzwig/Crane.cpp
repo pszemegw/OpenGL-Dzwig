@@ -2,6 +2,7 @@
 
 void Crane::addLights()
 {
+	firstCraneLight = lights->getNumberOfPointLights();
 	for (GLfloat h = towerWidth; h <= towerHeight; h += towerWidth * 6)
 		lights->addLight(glm::vec3(posX, h, posZ), 1.f, 0.1f, 0.9f,
 			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
@@ -20,7 +21,7 @@ void Crane::addLights()
 			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 
 	topLightNum = lights->getNumberOfPointLights() - topLightsFirstIndex;
-
+	lastCraneLight = lights->getNumberOfPointLights() - 1 - firstCraneLight;
 
 	lights->addLight(glm::vec3(posX + 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
 	lights->addLight(glm::vec3(posX - 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
@@ -156,6 +157,12 @@ void Crane::setLights(Light * l)
 void Crane::toggleLamp(GLuint i)
 {
 	lights->toggleLight(lights->getNumberOfPointLights() - 1 - i);
+}
+
+void Crane::toggleCraneLights()
+{
+	for (int i = firstCraneLight; i <= lastCraneLight; ++i)
+		lights->toggleLight(i);
 }
 
 
