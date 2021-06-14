@@ -30,7 +30,7 @@ class Light
 
 	ShaderProgram* shader;
 
-	GLboolean isCameraLightEnabled = true;
+	GLboolean isCameraLightEnabled = false;
 
 	std::vector<GLboolean> isEnabled;
 
