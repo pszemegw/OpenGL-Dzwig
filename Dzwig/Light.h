@@ -32,6 +32,8 @@ class Light
 
 	GLboolean isCameraLightEnabled = true;
 
+	std::vector<GLboolean> isEnabled;
+
 	std::vector<PointLight> lights;
 	PointLight cameraLight;
 
@@ -56,6 +58,8 @@ public:
 	void updateCameraPosition(glm::vec3 * pos);
 
 	void toggleCameraLight();
+
+	void toggleLight(GLuint i);
 
 	GLuint getNumberOfPointLights();
 

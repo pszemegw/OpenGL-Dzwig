@@ -24,7 +24,12 @@ void Light::setShaderParams()
 	shader->setInt("numPointL", lights.size());
 	for (int i = 0; i < lights.size(); ++i)
 	{
-		//std::cout << "X: " << i << std::endl;
+		if (!isEnabled[i])
+		{
+			shader->setBool("enabled[" + to_string(i) + "]", false);
+			continue;
+		}
+		
 		shader->setVec3("lights[" + to_string(i) + "].position", lights[i].position);
 		shader->setFloat("lights[" + to_string(i) + "].constant", lights[i].constant);
 		shader->setFloat("lights[" + to_string(i) + "].linear", lights[i].linear);
@@ -32,6 +37,8 @@ void Light::setShaderParams()
 		shader->setVec3("lights[" + to_string(i) + "].ambient", lights[i].ambient);
 		shader->setVec3("lights[" + to_string(i) + "].diffuse", lights[i].diffuse);
 		shader->setVec3("lights[" + to_string(i) + "].specular", lights[i].specular);
+
+		shader->setBool("enabled[" + to_string(i) + "]", true);
 	}
 
 	shader->setBool("isCamLight", isCameraLightEnabled);
@@ -50,6 +57,7 @@ void Light::setShaderParams()
 void Light::addLight(glm::vec3 position, GLfloat constant, GLfloat linear, GLfloat quadratic, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
 {
 	lights.push_back({ position,constant,linear,quadratic,ambient,diffuse,specular });
+	isEnabled.push_back(true);
 }
 
 void Light::setCameraLight(glm::vec3 *position, GLfloat constant, GLfloat linear, GLfloat quadratic, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
@@ -86,6 +94,12 @@ void Light::updateCameraPosition(glm::vec3* pos)
 void Light::toggleCameraLight()
 {
 	isCameraLightEnabled = !isCameraLightEnabled;
+}
+
+void Light::toggleLight(GLuint i)
+{
+	if (i >= lights.size()) return;
+	isEnabled[i] = !isEnabled[i];
 }
 
 GLuint Light::getNumberOfPointLights()

@@ -63,6 +63,7 @@ uniform DirLight dirLight;
 
 uniform int numPointL;
 uniform PointLight lights[MAX_POINT_LIGHTS];
+uniform bool enabled[MAX_POINT_LIGHTS];
 uniform PointLight cameraLight;
 
 
@@ -87,7 +88,10 @@ void main()
 	result = CalcDirLight(dirLight,norm,viewDir);
 
 	for(int i = 0; i < numPointL; i++)
-        result += CalcPointLight(lights[i], norm, FragPos, viewDir);  
+	{
+		if(enabled[i])
+			result += CalcPointLight(lights[i], norm, FragPos, viewDir);  
+	}
 
 	if(isCamLight)
 		result += CalcPointLight(cameraLight, norm, FragPos, viewDir);

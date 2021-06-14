@@ -1,6 +1,6 @@
 #include "Crane.h"
 
-void Crane::drawLights()
+void Crane::addLights()
 {
 	
 
@@ -22,6 +22,35 @@ void Crane::drawLights()
 			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
 
 	topLightNum = lights->getNumberOfPointLights() - topLightsFirstIndex;
+
+
+	lights->addLight(glm::vec3(posX + 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
+	lights->addLight(glm::vec3(posX - 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
+	lights->addLight(glm::vec3(posX - 10 * towerWidth, posY + towerWidth * 3, posZ - 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
+	lights->addLight(glm::vec3(posX + 10 * towerWidth, posY + towerWidth * 3, posZ - 10 * towerWidth), 5.f, 0.05f, .01f, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 1.f, 1.f));
+
+}
+
+void Crane::addLamps()
+{
+	segment.setAll(posX + 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth, segmentScale, towerWidth * 3, segmentScale);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX + 10 * towerWidth, posY + towerWidth * 3, posZ - 10 * towerWidth, segmentScale, towerWidth * 3, segmentScale);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX - 10 * towerWidth, posY + towerWidth * 3, posZ - 10 * towerWidth, segmentScale, towerWidth * 3, segmentScale);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX - 10 * towerWidth, posY + towerWidth * 3, posZ + 10 * towerWidth, segmentScale, towerWidth * 3, segmentScale);
+	segmentTrans.push_back(*segment.getModelMatrix());
+
+	segment.setAll(posX + 10 * towerWidth, posY + towerWidth * 6 + segmentScale*4, posZ + 10 * towerWidth, segmentScale*4, segmentScale*4, segmentScale*4);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX + 10 * towerWidth, posY + towerWidth * 6 + segmentScale * 4, posZ - 10 * towerWidth, segmentScale * 4, segmentScale * 4, segmentScale * 4);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX - 10 * towerWidth, posY + towerWidth * 6 + segmentScale * 4, posZ - 10 * towerWidth, segmentScale * 4, segmentScale * 4, segmentScale * 4);
+	segmentTrans.push_back(*segment.getModelMatrix());
+	segment.setAll(posX - 10 * towerWidth, posY + towerWidth * 6 + segmentScale * 4, posZ + 10 * towerWidth, segmentScale * 4, segmentScale * 4, segmentScale * 4);
+	segmentTrans.push_back(*segment.getModelMatrix());
+
 }
 
 Crane::Crane(GLfloat x, GLfloat y, GLfloat z, GLfloat height, GLfloat width, GLfloat length, GLfloat scale, std::string segTex, std::string ropeTex, std::string concTex)
@@ -57,8 +86,10 @@ Crane::Crane(GLfloat x, GLfloat y, GLfloat z, GLfloat height, GLfloat width, GLf
 	tower = new CraneTower(towerHeight, towerWidth, segmentScale, segmentTexture, posX, posY, posZ, VAO);
 	top = new CraneTop(towerWidth, segmentScale, towerHeight/2, posX, posY + towerHeight + towerWidth, posZ, segmentTexture, ropeTexture, concreteTexture, VAO);
 
-	segment.setAll(posX - towerWidth, posY + towerHeight, posZ, towerWidth*2, towerWidth , towerWidth);
 	
+	addLamps();
+
+	segment.setAll(posX - towerWidth, posY + towerHeight, posZ, towerWidth * 2, towerWidth, towerWidth);
 }
 
 void Crane::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
@@ -67,11 +98,39 @@ void Crane::draw(ShaderProgram * s, Camera * c, GLuint w, GLuint h)
 	tower->draw(s, c, w, h);
 	top->draw(s, c, w, h, rotationAngle);
 
+	s->Use();
 	s->setMat4("projection", *(c->getProjectionMatrix()));
 	s->setMat4("view", c->getWorldToViewMatrix());
 	s->setMat4("model", *(segment.getModelMatrix()));
 	glBindTexture(GL_TEXTURE_2D, ropeTexture->getTextureID());
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	for (int i = 0; i < 4; ++i)
+	{
+		s->setMat4("model", segmentTrans[i]);
+		glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+
+	ShaderProgram s1("gl_05.vert", "singleColor.frag");
+	
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	s1.Use();
+	
+	for (int i = 4; i < 8; ++i)
+	{
+		s1.setMat4("model", segmentTrans[i]);
+		//s1.setVec3("inputColor", glm::vec3(1.f, 1.f, 1.f));
+		//glBindTexture(GL_TEXTURE_2D, segmentTexture->getTextureID());
+		s1.setVec3("inputColor", glm::vec3(1.f, 1.f, 1.f));
+		s1.setMat4("projection", *c->getProjectionMatrix());
+		s1.setMat4("view", c->getWorldToViewMatrix());
+		
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+	s->Use();
+
 }
 
 void Crane::rotateCrane(GLfloat angleDeg)
@@ -79,7 +138,7 @@ void Crane::rotateCrane(GLfloat angleDeg)
 	rotationAngle += angleDeg;
 
 	glm::vec3 a;
-	for (int i = topLightsFirstIndex; i < topLightsFirstIndex + topLightNum + 1; ++i)
+	for (int i = topLightsFirstIndex; i < topLightsFirstIndex + topLightNum; ++i)
 	{
 		a = lights->getPointLightPos(i);
 		a.x -= posX;
@@ -112,7 +171,12 @@ void Crane::moveHookY(GLfloat dy)
 void Crane::setLights(Light * l)
 {
 	lights = l;
-	drawLights();
+	addLights();
+}
+
+void Crane::toggleLamp(GLuint i)
+{
+	lights->toggleLight(lights->getNumberOfPointLights() - 1 - i);
 }
 
 

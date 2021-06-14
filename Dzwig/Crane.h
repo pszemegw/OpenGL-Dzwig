@@ -23,14 +23,20 @@ class Crane
 	GLfloat towerHeight, towerWidth, armLength;
 	GLfloat segmentScale;
 
+	std::vector<glm::mat4> segmentTrans;
+
 	GLfloat rotationAngle = 0.f;
 
 	GLuint VAO, VBO;
 
 	GLuint topLightsFirstIndex;
 	GLuint topLightNum;
+	
+	GLboolean isLampOn[4];
 
-	void drawLights();
+	void addLights();
+
+	void addLamps();
 
 public:
 	Crane(GLfloat x = 0.f, GLfloat y = 0.f, GLfloat z = 0.f, GLfloat height = 30.f, GLfloat width = 1.f, GLfloat length = 15.f, GLfloat scale = .03f,
@@ -45,6 +51,7 @@ public:
 	void moveHookY(GLfloat dy);
 
 	void setLights(Light* l);
+	void toggleLamp(GLuint i);
  
 };
 

@@ -91,14 +91,14 @@ Window::Window(GLuint w, GLuint h)
 
 		// KAMERA
 
-		camera = new Camera(0.f,10.f,10.f,-90.f,0.f,90.f,width,height,0.1f,10000.f);
+		camera = new Camera(0.f,10.f,30.f,-90.f,0.f,90.f,width,height,0.1f,10000.f);
 		camera->increaseCameraSpeed(10.f);
 
 		// ŒWiAT£A
 		light = new Light(&shaderProgram);
 
 		// DWIG
-		dzwig = new Crane(1.f,1.f,9.f);
+		dzwig = new Crane();
 		dzwig->setLights(light);
 
 		//SHADER
@@ -230,6 +230,17 @@ void Window::onKey(int key, int scancode, int action, int mods)
 		camera->increaseCameraSpeed(.5f);
 	if (key == GLFW_KEY_KP_SUBTRACT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		camera->decreaseCameraSpeed(.5f);
+
+
+	if (key == GLFW_KEY_1 && (action == GLFW_PRESS))
+		dzwig->toggleLamp(0);
+	if (key == GLFW_KEY_2 && (action == GLFW_PRESS))
+		dzwig->toggleLamp(1);
+	if (key == GLFW_KEY_3 && (action == GLFW_PRESS))
+		dzwig->toggleLamp(2);
+	if (key == GLFW_KEY_4 && (action == GLFW_PRESS))
+		dzwig->toggleLamp(3);
+
 }
 
 
