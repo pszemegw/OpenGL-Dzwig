@@ -6,16 +6,16 @@ void Crane::addLights()
 
 	for (GLfloat h = towerWidth; h <= towerHeight; h += towerWidth * 6)
 		lights->addLight(glm::vec3(posX, h, posZ), 1.f, 0.1f, 0.9f,
-			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+			glm::vec3(1.0f, 0.f, 0.f), glm::vec3(1.f, 1.f, 1.f), glm::vec3(1.f, 0.f, 0.f));
 
 	lights->addLight(glm::vec3(posX, towerHeight + segmentScale + towerWidth * glm::sqrt(2)*glm::tan(glm::radians(75.f)), posZ), 1.f, 0.1f, 0.9f,
-		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 
 
 	topLightsFirstIndex = lights->getNumberOfPointLights();
 
 	lights->addLight(glm::vec3(posX + towerWidth / 2 + towerHeight / 2, towerHeight + posY, posZ), 1.f, 0.1f, 0.9f,
-		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(.8f, .8f, .8f), glm::vec3(1.f, 1.f, 1.f));
+		glm::vec3(1.0f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f));
 
 	for (GLfloat x = posX; x >= posX - towerHeight; x -= towerWidth*6)
 		lights->addLight(glm::vec3(x, towerHeight + posY + towerWidth*sqrt(3)/2, posZ), 1.f, 0.1f, 0.9f,
@@ -55,7 +55,7 @@ void Crane::addLamps()
 
 Crane::Crane(GLfloat x, GLfloat y, GLfloat z, GLfloat height, GLfloat width, GLfloat length, GLfloat scale, std::string segTex, std::string ropeTex, std::string concTex)
 {
-	glGenVertexArrays(1, &VAO);
+	/*glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -73,7 +73,8 @@ Crane::Crane(GLfloat x, GLfloat y, GLfloat z, GLfloat height, GLfloat width, GLf
 	glEnableVertexAttribArray(1);
 	// normal
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(5 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(2);*/
+	Renderer::generateVO(&VAO, &VBO, &segment);
 
 
 	posX = x; posY = y; posZ = z; towerHeight = height; towerWidth = width; armLength = length;

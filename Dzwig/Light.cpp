@@ -120,5 +120,5 @@ void Light::updatePointLightPos(GLuint index, glm::vec3 pos)
 	lights[index].position.x = pos.x;
 	lights[index].position.y = pos.y;
 	lights[index].position.z = pos.z;
-	setShaderParams();
+	//setShaderParams();
 }

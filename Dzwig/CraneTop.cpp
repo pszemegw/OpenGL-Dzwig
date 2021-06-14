@@ -189,7 +189,7 @@ void CraneTop::moveHookX(GLfloat dx)
 {
 	hookPosX += dx;
 	if (hookPosX < posX - 2*length + width) hookPosX = posX - 2*length + width;
-	else if (hookPosX > posX - width) hookPosX = posX - width;
+	else if (hookPosX > posX - 4*width) hookPosX = posX - 4*width;
 
 }
 
