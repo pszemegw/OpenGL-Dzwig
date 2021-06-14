@@ -50,7 +50,7 @@
 
 ## Aktualny stan projektu
 
-![current state](http://gitlab.ii.pw.edu.pl/gkom.21l/101.3-dzwig-kratownicowy/-/raw/master/stan.PNG)
+![current state](https://github.com/pszemegw/OpenGL-Dzwig/blob/master/stan.PNG)
 
 ## Literatura
 
